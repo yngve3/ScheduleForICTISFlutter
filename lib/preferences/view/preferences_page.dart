@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:schedule_for_ictis_flutter/favorite_schedules/view/favorite_schedules_list_page.dart';
 import 'package:schedule_for_ictis_flutter/preferences/widgets/preference_item.dart';
 import 'package:schedule_for_ictis_flutter/preferences/widgets/preference_title.dart';
 
@@ -28,17 +29,23 @@ class PreferencesList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Column(
+    return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        PreferenceTitle(title: "Расписание"),
+        const PreferenceTitle(title: "Расписание"),
         PreferenceItem(
-            title: "Избранные расписания",
-            subtitle: "Настройка быстрого доступа к расписаниям"
+          title: "Избранные расписания",
+          subtitle: "Настройка быстрого доступа к расписаниям",
+          onItemTapped: () => Navigator.of(context).push(
+              MaterialPageRoute(
+                  builder: (context) => const FavoriteSchedulesListPage()
+              )
+          ),
         ),
         PreferenceItem(
-            title: "ВПК",
-            subtitle: "Выбранное ВПК будет отображаться вместе с основным расписанием"
+          title: "ВПК",
+          subtitle: "Выбранное ВПК будет отображаться вместе с основным расписанием",
+          onItemTapped: () {},
         )
       ],
     );

@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:schedule_for_ictis_flutter/components/app_bar.dart';
+import 'package:schedule_for_ictis_flutter/favorite_schedules/widgets/schedule_item.dart';
 import 'package:schedule_for_ictis_flutter/themes/colors.dart';
+
+import '../models/fav_schedule.dart';
 
 class FavoriteSchedulesAddPage extends StatelessWidget {
   const FavoriteSchedulesAddPage({super.key});
@@ -7,23 +11,20 @@ class FavoriteSchedulesAddPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        scrolledUnderElevation: 0,
-        centerTitle: true,
-        title: Text(
-            "Поиск расписания",
-            style: Theme.of(context).textTheme.headlineLarge
-        ),
-        leading: IconButton(
-            icon: Image.asset("assets/icons/ic_back_arrow.png", width: 32, height: 32),
-            onPressed: ()  => Navigator.of(context).pop()
-        )
+      appBar: MyAppBar(
+        title: "Поиск расписания",
+        appBar: AppBar(),
       ),
-      body: const Padding(
-        padding: EdgeInsets.symmetric(horizontal: 15, vertical: 15),
+      body: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
         child: Column(
           children: [
-            SearchField()
+            const SearchField(),
+            const FoundSchedulesList(),
+            FilledButton(
+              onPressed: () => Navigator.of(context).pop(),
+              child: const Text("Сохранить"),
+            )
           ],
         ),
       )
@@ -34,14 +35,22 @@ class FavoriteSchedulesAddPage extends StatelessWidget {
 class SearchField extends StatelessWidget {
   const SearchField({super.key});
 
+  void _handleSubmit(value, context) {
+
+  }
+
   @override
   Widget build(BuildContext context) {
     return TextField(
+      cursorColor: Colors.black,
+      onSubmitted: (value) => _handleSubmit(value, context),
+      textInputAction: TextInputAction.search,
       decoration: InputDecoration(
         contentPadding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
         labelStyle: Theme.of(context).textTheme.bodyLarge,
         labelText: "Введите группу, преподавателя или аудиторию",
         filled: true,
+        focusColor: Colors.black,
         fillColor: CustomColors.cardBackgroundColor,
         border: UnderlineInputBorder(
           borderSide: BorderSide.none,
@@ -50,5 +59,33 @@ class SearchField extends StatelessWidget {
       )
     );
   }
+}
 
+class FoundSchedulesList extends StatelessWidget{
+  const FoundSchedulesList({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return const Expanded(
+          child: SingleChildScrollView(
+            scrollDirection: Axis.vertical,
+            child: Align(
+              alignment: Alignment.topLeft,
+              child: Wrap(
+                alignment: WrapAlignment.start,
+                spacing: 8,
+                runSpacing: 5,
+                direction: Axis.horizontal,
+                children: [
+                  ScheduleItem(favSchedule: FavSchedule("КТбо4-1", false), padding: 10),
+                  ScheduleItem(favSchedule: FavSchedule("КТбо4-10", false), padding: 10),
+                  ScheduleItem(favSchedule: FavSchedule("КТбо4-11", false), padding: 10),
+                  ScheduleItem(favSchedule: FavSchedule("КТбо4-15", false), padding: 10),
+                  ScheduleItem(favSchedule: FavSchedule("Проскуряков", true), padding: 10),
+                ],
+              ),
+            ),
+          )
+      );
+  }
 }

@@ -2,10 +2,15 @@ import 'package:flutter/material.dart';
 
 import '../models/fav_schedule.dart';
 
-class FavoriteSchedulesItem extends StatelessWidget {
-  const FavoriteSchedulesItem({super.key, required this.favSchedule});
+class ScheduleItem extends StatelessWidget {
+  const ScheduleItem({
+    super.key,
+    required this.favSchedule,
+    this.padding = 20
+  });
 
   final FavSchedule favSchedule;
+  final double padding;
 
   TextStyle? _getTextStyle(BuildContext context) {
     if (!favSchedule.isChosen) {
@@ -26,13 +31,16 @@ class FavoriteSchedulesItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      color: _getCardColor(context),
-      child: Padding(
-        padding: const EdgeInsets.all(20),
-        child: Text(
-            favSchedule.name,
-            style: _getTextStyle(context)
+    return GestureDetector(
+      onTap: () {},
+      child: Card(
+        color: _getCardColor(context),
+        child: Padding(
+          padding: EdgeInsets.all(padding),
+          child: Text(
+              favSchedule.name,
+              style: _getTextStyle(context)
+          ),
         ),
       ),
     );

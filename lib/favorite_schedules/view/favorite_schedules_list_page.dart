@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:schedule_for_ictis_flutter/components/app_bar.dart';
 import 'package:schedule_for_ictis_flutter/favorite_schedules/view/favorite_schedules_add_page.dart';
 
 import '../widgets/favorite_schedule_list.dart';
@@ -9,17 +10,9 @@ class FavoriteSchedulesListPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        scrolledUnderElevation: 0,
-        centerTitle: true,
-        title: Text(
-            "Расписания",
-            style: Theme.of(context).textTheme.headlineLarge
-        ),
-        leading: IconButton(
-            icon: Image.asset("assets/icons/ic_back_arrow.png", width: 32, height: 32),
-            onPressed: ()  => Navigator.of(context).pop()
-        ),
+      appBar: MyAppBar(
+        appBar: AppBar(),
+        title: "Расписания",
         actions: [
           IconButton(
               onPressed: () =>

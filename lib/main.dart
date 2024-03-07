@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/date_symbol_data_local.dart';
-import 'package:schedule_for_ictis_flutter/favorite_schedules/view/favorite_schedules_add_page.dart';
-import 'package:schedule_for_ictis_flutter/favorite_schedules/view/favorite_schedules_list_page.dart';
-import 'package:schedule_for_ictis_flutter/preferences/view/preferences_page.dart';
-import 'package:schedule_for_ictis_flutter/schedule/view/schedule_page.dart';
-import 'package:schedule_for_ictis_flutter/themes/light_theme.dart';
+import 'package:schedule_for_ictis_flutter/presentation/pages/schedule/cubit/schedule_cubit.dart';
+import 'package:schedule_for_ictis_flutter/presentation/pages/schedule/schedule_page.dart';
+import 'package:schedule_for_ictis_flutter/presentation/theme/light_theme.dart';
 
 void main() {
   runApp(const MyApp());
@@ -18,7 +17,10 @@ class MyApp extends StatelessWidget {
     initializeDateFormatting('ru_RU', null);
     return MaterialApp(
       theme: lightTheme,
-      home: const SchedulePage(),
+      home: BlocProvider(
+        create: (_) => ScheduleCubit(),
+        child: const SchedulePage(),
+      ),
     );
   }
 

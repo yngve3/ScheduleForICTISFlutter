@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:schedule_for_ictis_flutter/favorite_schedules/view/favorite_schedules_list_page.dart';
-import 'package:schedule_for_ictis_flutter/preferences/widgets/preference_item.dart';
-import 'package:schedule_for_ictis_flutter/preferences/widgets/preference_title.dart';
+
+import '../favorite_schedules/pages/favorite_schedules_list/favorite_schedules_list_page.dart';
 
 class PreferencesPage extends StatelessWidget {
   const PreferencesPage({super.key});
@@ -48,6 +47,50 @@ class PreferencesList extends StatelessWidget {
           onItemTapped: () {},
         )
       ],
+    );
+  }
+}
+
+class PreferenceTitle extends StatelessWidget {
+  const PreferenceTitle({super.key, required this.title});
+
+  final String title;
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(top: 20),
+      child: Text(
+          title,
+          style: Theme.of(context).textTheme.headlineMedium
+      ),
+    );
+  }
+}
+
+typedef ItemTapped = Function();
+
+class PreferenceItem extends StatelessWidget {
+  const PreferenceItem({
+    super.key,
+    required this.title,
+    required this.subtitle,
+    required this.onItemTapped
+  });
+
+  final String title;
+  final String subtitle;
+  final ItemTapped onItemTapped;
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+        child: InkWell(
+          child: ListTile(
+              title: Text(title, style: Theme.of(context).textTheme.titleLarge),
+              subtitle: Text(subtitle, style: Theme.of(context).textTheme.bodyMedium)
+          ),
+          onTap: () => onItemTapped(),
+        )
     );
   }
 }

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../models/fav_schedule.dart';
+import '../../../domain/models/fav_schedule.dart';
 
 class ScheduleItem extends StatelessWidget {
   const ScheduleItem({

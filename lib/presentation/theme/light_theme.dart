@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:schedule_for_ictis_flutter/themes/colors.dart';
-import 'package:schedule_for_ictis_flutter/themes/src/button_theme.dart';
-import 'package:schedule_for_ictis_flutter/themes/src/card_theme.dart';
+import 'package:schedule_for_ictis_flutter/presentation/theme/src/button_theme.dart';
+import 'package:schedule_for_ictis_flutter/presentation/theme/src/card_theme.dart';
+
+import 'colors.dart';
 
 const String fontNameDefault = 'Roboto';
 
@@ -35,13 +36,20 @@ ThemeData lightTheme = ThemeData(
       bodyLarge: TextStyle(
           fontFamily: fontNameDefault,
           fontWeight: FontWeight.w500,
+          height: 1.2,
           fontSize: 18
       ),
     bodyMedium: TextStyle(
         fontFamily: fontNameDefault,
         fontWeight: FontWeight.w500,
-        fontSize: 14,
+        fontSize: 16,
       color: CustomColors.textBodyMediumColor
+    ),
+    bodySmall: TextStyle(
+        fontFamily: fontNameDefault,
+        fontWeight: FontWeight.w500,
+        fontSize: 12,
+        color: CustomColors.textBodyMediumColor
     )
   )
 );

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:schedule_for_ictis_flutter/components/app_bar.dart';
-import 'package:schedule_for_ictis_flutter/favorite_schedules/widgets/schedule_item.dart';
-import 'package:schedule_for_ictis_flutter/themes/colors.dart';
+import 'package:schedule_for_ictis_flutter/presentation/widgets/app_bar.dart';
 
-import '../models/fav_schedule.dart';
+import '../../../../../domain/models/fav_schedule.dart';
+import '../../../../theme/colors.dart';
+import '../../../../widgets/schedule_item.dart';
 
 class FavoriteSchedulesAddPage extends StatelessWidget {
   const FavoriteSchedulesAddPage({super.key});
@@ -33,7 +33,9 @@ class FavoriteSchedulesAddPage extends StatelessWidget {
 }
 
 class SearchField extends StatelessWidget {
-  const SearchField({super.key});
+  const SearchField({
+    super.key,
+  });
 
   void _handleSubmit(value, context) {
 

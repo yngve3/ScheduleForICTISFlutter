@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:intl/intl.dart';
 import 'package:table_calendar/table_calendar.dart';
 
+import '../../../domain/models/couple/couple.dart';
 import '../../theme/colors.dart';
 import '../../widgets/date_header.dart';
 import 'cubit/schedule_cubit.dart';
@@ -35,8 +37,9 @@ class _Schedule extends State<Schedule> {
           return Column(
             children: [
               DateHeader(date: state.selectedDay),
+              const SizedBox(height: 10),
               TableCalendar(
-                weekendDays: const [],
+                weekendDays: const [DateTime.sunday],
                 headerVisible: false,
                 locale: 'ru_RU',
                 firstDay: DateTime.utc(2010, 10, 16),
@@ -46,13 +49,16 @@ class _Schedule extends State<Schedule> {
 
                 daysOfWeekStyle: DaysOfWeekStyle(
                   weekdayStyle: Theme.of(context).textTheme.bodyLarge!,
+                  weekendStyle: Theme.of(context).textTheme.bodyLarge!,
+                  dowTextFormatter: (date, locale) {
+                    return DateFormat.E(locale).format(date).toUpperCase();
+                  }
                 ),
-                daysOfWeekHeight: 42,
                 startingDayOfWeek: StartingDayOfWeek.monday,
 
                 calendarStyle: CalendarStyle(
                     isTodayHighlighted: false,
-                    tablePadding: const EdgeInsets.symmetric(horizontal: 15),
+                    tablePadding: const EdgeInsets.symmetric(horizontal: 20),
 
                     defaultTextStyle: Theme.of(context).textTheme.bodyLarge!,
                     outsideTextStyle: Theme.of(context).textTheme.bodyLarge!.copyWith(color: CustomColors.disabledColor),
@@ -61,6 +67,10 @@ class _Schedule extends State<Schedule> {
                     selectedDecoration: const BoxDecoration(
                         color: CustomColors.accentColor,
                         shape: BoxShape.circle
+                    ),
+
+                    weekendTextStyle: Theme.of(context).textTheme.bodyLarge!.copyWith(
+                      color: CustomColors.red
                     )
                 ),
 
@@ -114,8 +124,11 @@ class _WeekSchedule extends State<WeekSchedule> {
     super.initState();
   }
 
+  bool isAnimateToPage = false;
+
   @override
   Widget build(BuildContext context) {
+
     return Expanded(
         child: BlocListener<ScheduleCubit, ScheduleState> (
           // Когда пользователь меняет дату на календаре, меняется состояние,
@@ -127,16 +140,21 @@ class _WeekSchedule extends State<WeekSchedule> {
           listenWhen: (previousState, state) {
             return previousState.selectedDay.weekday - 1 == _controller.page;
           },
+
           listener: (context, state) {
+            isAnimateToPage = true;
             _controller.animateToPage(
                 state.selectedDay.weekday - 1,
-                duration: const Duration(milliseconds: 300),
+                duration: const Duration(milliseconds: 400),
                 curve: Curves.easeOut
-            );
+            ).then((_) => isAnimateToPage = false);
           },
+
           child: PageView(
               controller: _controller,
               onPageChanged: (pageNum) {
+                if (isAnimateToPage) return;
+
                 context.read<ScheduleCubit>().nextOrPreviousDay(pageNum + 1);
               },
               children: pageList.map((e) => DaySchedule(pageNum: e)).toList()
@@ -146,7 +164,7 @@ class _WeekSchedule extends State<WeekSchedule> {
   }
 }
 
-class DaySchedule extends StatelessWidget {
+class DaySchedule extends StatefulWidget {
   const DaySchedule({
     super.key,
     required this.pageNum
@@ -155,27 +173,73 @@ class DaySchedule extends StatelessWidget {
   final int pageNum;
 
   @override
+  State<StatefulWidget> createState() => _DaySchedule();
+}
+
+class _DaySchedule extends State<DaySchedule> with AutomaticKeepAliveClientMixin {
+  @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 15),
-      child: ListView(
-        children: const [
-          CouplesItem(),
-        ],
-      )
+    super.build(context);
+    return ListView(
+      shrinkWrap: true,
+      padding: const EdgeInsets.only(left: 15, right: 15, bottom: 15),
+      children: [
+        CouplesItem(
+            couple: Couple(
+              timeStart: const TimeOfDay(hour: 8, minute: 0),
+              timeEnd: const TimeOfDay(hour: 9, minute: 35),
+              audience: "Д-212",
+              coupleType: CoupleType.practice,
+              discipline: "Управление проектами разработки программного обеспечения",
+              lecturer: "Скороход С. В."
+            )
+        ),
+        CouplesItem(
+            couple: Couple(
+                timeStart: const TimeOfDay(hour: 8, minute: 0),
+                timeEnd: const TimeOfDay(hour: 9, minute: 35),
+                audience: "LMS",
+                coupleType: CoupleType.lecture,
+                discipline: "Управление проектами разработки программного обеспечения",
+                lecturer: "Скороход С. В."
+            )
+        )
+      ],
     );
   }
+
+  @override
+  bool get wantKeepAlive => true;
 }
 
 class CouplesItem extends StatelessWidget {
   const CouplesItem({
     super.key,
+    required this.couple
   });
 
+  final Couple couple;
+
+  Color _getDividerColor() {
+    if (couple.isOnline()) return CustomColors.green;
+
+    return CustomColors.accentColor;
+  }
+
+  Color _getCircleColor() {
+    switch (couple.coupleType) {
+      case CoupleType.laboratory: return CustomColors.red;
+      case CoupleType.practice: return CustomColors.yellow;
+      case CoupleType.lecture: return CustomColors.green;
+      case CoupleType.exam: return Colors.black;
+      case CoupleType.none: return CustomColors.green;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     return Container(
+      margin: const EdgeInsets.only(top: 10),
       padding: const EdgeInsets.symmetric(horizontal: 20),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(10),
@@ -194,7 +258,7 @@ class CouplesItem extends StatelessWidget {
                 ],
               ),
             ),
-            const VerticalDivider(thickness: 2, color: CustomColors.accentColor),
+            VerticalDivider(thickness: 1, color: _getDividerColor()),
             Expanded(
                 child: Padding(
                   padding: const EdgeInsets.symmetric(vertical: 10),
@@ -203,9 +267,9 @@ class CouplesItem extends StatelessWidget {
                     children: [
                       Row(
                         children: [
-                          Text("Д-212", style: Theme.of(context).textTheme.bodyLarge),
+                          Text(couple.audience, style: Theme.of(context).textTheme.bodyLarge),
                           const SizedBox(width: 8),
-                          const Icon(Icons.circle, color: Colors.green),
+                          Icon(Icons.circle, color: _getCircleColor()),
                           const SizedBox(width: 8),
                           Text(
                               "Лекция",
@@ -215,6 +279,7 @@ class CouplesItem extends StatelessWidget {
                           )
                         ],
                       ),
+                      const SizedBox(height: 5),
                       Text(
                           "Управление проектами разработки программного обеспечения",
                           softWrap: true,
@@ -222,6 +287,7 @@ class CouplesItem extends StatelessWidget {
                               fontWeight: FontWeight.w400
                           )
                       ),
+                      const SizedBox(height: 5),
                       Text(
                           "Скороход С. В.",
                           style: Theme.of(context).textTheme.bodyMedium?.copyWith(

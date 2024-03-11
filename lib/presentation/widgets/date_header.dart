@@ -15,8 +15,7 @@ class DateHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     String formattedDate = dateFormat.format(date).firstSymToUpperCase();
-    return Padding(
-      padding: const EdgeInsets.only(top: 20, bottom: 10),
+    return SafeArea(
       child: ListTile(
         title: Text(formattedDate, style: Theme.of(context).textTheme.headlineLarge),
         subtitle: Text("Учебная неделя №$studyWeek"),

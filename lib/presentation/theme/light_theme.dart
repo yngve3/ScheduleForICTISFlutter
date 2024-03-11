@@ -5,6 +5,7 @@ import 'package:schedule_for_ictis_flutter/presentation/theme/src/card_theme.dar
 import 'colors.dart';
 
 const String fontNameDefault = 'Roboto';
+const double offsetSize = 2;
 
 ThemeData lightTheme = ThemeData(
   brightness: Brightness.light,
@@ -17,19 +18,19 @@ ThemeData lightTheme = ThemeData(
     headlineLarge: TextStyle(
         fontFamily: fontNameDefault,
         fontWeight: FontWeight.bold,
-        fontSize: 28
+        fontSize: 24 + offsetSize
     ),
     headlineMedium: TextStyle(
         fontFamily: fontNameDefault,
         fontWeight: FontWeight.w500,
-        fontSize: 26
+        fontSize: 22 + offsetSize
     ),
 
     //title
     titleLarge: TextStyle(
         fontFamily: fontNameDefault,
         fontWeight: FontWeight.w500,
-        fontSize: 20
+        fontSize: 16 + offsetSize
     ),
 
       //body
@@ -37,18 +38,18 @@ ThemeData lightTheme = ThemeData(
           fontFamily: fontNameDefault,
           fontWeight: FontWeight.w500,
           height: 1.2,
-          fontSize: 18
+          fontSize: 14 + offsetSize
       ),
     bodyMedium: TextStyle(
         fontFamily: fontNameDefault,
         fontWeight: FontWeight.w500,
-        fontSize: 16,
+        fontSize: 12 + offsetSize,
       color: CustomColors.textBodyMediumColor
     ),
     bodySmall: TextStyle(
         fontFamily: fontNameDefault,
         fontWeight: FontWeight.w500,
-        fontSize: 12,
+        fontSize: 10 + offsetSize,
         color: CustomColors.textBodyMediumColor
     )
   )

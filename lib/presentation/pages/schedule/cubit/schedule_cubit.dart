@@ -1,5 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:flutter/cupertino.dart';
+import 'dart:developer';
 
 part 'schedule_state.dart';
 
@@ -20,6 +21,7 @@ class ScheduleCubit extends Cubit<ScheduleState> {
 
   void nextOrPreviousDay(int weekDay) {
     int selectedWeekDay = state.selectedDay.weekday;
+    print(weekDay - selectedWeekDay);
 
     if (weekDay - selectedWeekDay == 1) {
       nextDay();

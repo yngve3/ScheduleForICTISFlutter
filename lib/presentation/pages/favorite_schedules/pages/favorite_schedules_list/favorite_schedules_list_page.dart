@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:schedule_for_ictis_flutter/presentation/widgets/app_bar.dart';
 
 import '../../../../../domain/models/fav_schedule.dart';
+import '../../../../route/routes.dart';
 import '../../../../widgets/schedule_item.dart';
-import '../favorite_schedules_add/favorite_schedules_add_page.dart';
 
 class FavoriteSchedulesListPage extends StatelessWidget {
   const FavoriteSchedulesListPage({super.key});
@@ -17,11 +18,7 @@ class FavoriteSchedulesListPage extends StatelessWidget {
         actions: [
           IconButton(
               onPressed: () =>
-                  Navigator.of(context).push(
-                      MaterialPageRoute(
-                          builder: (context) => const FavoriteSchedulesAddPage()
-                      )
-                  ),
+                context.go(Routes.addFavoriteSchedule.path),
               icon: Image.asset("assets/icons/ic_add.png", width: 32, height: 32)
           )
         ],
@@ -35,7 +32,7 @@ class FavoriteSchedulesListPage extends StatelessWidget {
             ),
             const SizedBox(height: 15),
             FilledButton(
-              onPressed: () => Navigator.of(context).pop(),
+              onPressed: () => context.pop(),
               child: const Text("Готово"),
             )
           ],

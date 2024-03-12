@@ -6,6 +6,7 @@ import 'package:table_calendar/table_calendar.dart';
 import '../../../domain/models/couple/couple.dart';
 import '../../theme/colors.dart';
 import '../../widgets/date_header.dart';
+import '../../widgets/schedule/couples_item.dart';
 import 'cubit/schedule_cubit.dart';
 
 class SchedulePage extends StatelessWidget {
@@ -13,8 +14,11 @@ class SchedulePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
-      body: Schedule(),
+    return Scaffold(
+      body: BlocProvider(
+        create: (context) => ScheduleCubit(),
+        child: const Schedule(),
+      ),
     );
   }
 
@@ -186,10 +190,10 @@ class _DaySchedule extends State<DaySchedule> with AutomaticKeepAliveClientMixin
       children: [
         CouplesItem(
             couple: Couple(
-              timeStart: const TimeOfDay(hour: 8, minute: 0),
+              timeStart: const TimeOfDay(hour: 23, minute: 0),
               timeEnd: const TimeOfDay(hour: 9, minute: 35),
               audience: "Д-212",
-              coupleType: CoupleType.practice,
+              type: CoupleType.practice,
               discipline: "Управление проектами разработки программного обеспечения",
               lecturer: "Скороход С. В."
             )
@@ -199,7 +203,7 @@ class _DaySchedule extends State<DaySchedule> with AutomaticKeepAliveClientMixin
                 timeStart: const TimeOfDay(hour: 8, minute: 0),
                 timeEnd: const TimeOfDay(hour: 9, minute: 35),
                 audience: "LMS",
-                coupleType: CoupleType.lecture,
+                type: CoupleType.lecture,
                 discipline: "Управление проектами разработки программного обеспечения",
                 lecturer: "Скороход С. В."
             )
@@ -210,97 +214,4 @@ class _DaySchedule extends State<DaySchedule> with AutomaticKeepAliveClientMixin
 
   @override
   bool get wantKeepAlive => true;
-}
-
-class CouplesItem extends StatelessWidget {
-  const CouplesItem({
-    super.key,
-    required this.couple
-  });
-
-  final Couple couple;
-
-  Color _getDividerColor() {
-    if (couple.isOnline()) return CustomColors.green;
-
-    return CustomColors.accentColor;
-  }
-
-  Color _getCircleColor() {
-    switch (couple.coupleType) {
-      case CoupleType.laboratory: return CustomColors.red;
-      case CoupleType.practice: return CustomColors.yellow;
-      case CoupleType.lecture: return CustomColors.green;
-      case CoupleType.exam: return Colors.black;
-      case CoupleType.none: return CustomColors.green;
-    }
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      margin: const EdgeInsets.only(top: 10),
-      padding: const EdgeInsets.symmetric(horizontal: 20),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(10),
-        color: CustomColors.cardBackgroundColor,
-      ),
-      child: IntrinsicHeight(
-        child: Row(
-          children: [
-            Padding(
-              padding: const EdgeInsets.only(top: 38),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.end,
-                children: [
-                  Text("08:00", style: Theme.of(context).textTheme.bodyLarge),
-                  Text("09:35", style: Theme.of(context).textTheme.bodySmall)
-                ],
-              ),
-            ),
-            VerticalDivider(thickness: 1, color: _getDividerColor()),
-            Expanded(
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 10),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Row(
-                        children: [
-                          Text(couple.audience, style: Theme.of(context).textTheme.bodyLarge),
-                          const SizedBox(width: 8),
-                          Icon(Icons.circle, color: _getCircleColor()),
-                          const SizedBox(width: 8),
-                          Text(
-                              "Лекция",
-                              style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                                  color: CustomColors.textBodyMediumColor
-                              )
-                          )
-                        ],
-                      ),
-                      const SizedBox(height: 5),
-                      Text(
-                          "Управление проектами разработки программного обеспечения",
-                          softWrap: true,
-                          style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                              fontWeight: FontWeight.w400
-                          )
-                      ),
-                      const SizedBox(height: 5),
-                      Text(
-                          "Скороход С. В.",
-                          style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                            fontWeight: FontWeight.w400
-                          )
-                      )
-                    ],
-                  ),
-                )
-            )
-          ],
-        ),
-      ),
-    );
-  }
 }

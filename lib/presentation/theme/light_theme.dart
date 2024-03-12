@@ -12,6 +12,7 @@ ThemeData lightTheme = ThemeData(
   useMaterial3: true,
   cardTheme: cardTheme,
   filledButtonTheme: filledButtonThemeData,
+  splashColor: Colors.transparent,
   textTheme: const TextTheme(
 
     //headline

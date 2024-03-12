@@ -9,22 +9,25 @@ class Couple with _$Couple {
     required TimeOfDay timeStart,
     required TimeOfDay timeEnd,
     required String audience,
-    required CoupleType coupleType,
+    required CoupleType type,
     required String discipline,
     required String lecturer
   }) = _Couple;
 
-  bool isOnline() {
-    return audience == "LMS";
-  }
-
+  bool get isOnline => audience == "LMS";
 
 }
 
 enum CoupleType {
-  lecture,
-  practice,
-  laboratory,
-  exam,
-  none
+  lecture(name: "Лекция"),
+  practice(name: "Практика"),
+  laboratory(name: "Лабораторная"),
+  exam(name: "Экзамен"),
+  none(name: "");
+
+  const CoupleType({
+    required this.name
+  });
+
+  final String name;
 }

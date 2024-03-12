@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
-import '../favorite_schedules/pages/favorite_schedules_list/favorite_schedules_list_page.dart';
+import '../../route/routes.dart';
 
 class PreferencesPage extends StatelessWidget {
   const PreferencesPage({super.key});
@@ -35,11 +36,7 @@ class PreferencesList extends StatelessWidget {
         PreferenceItem(
           title: "Избранные расписания",
           subtitle: "Настройка быстрого доступа к расписаниям",
-          onItemTapped: () => Navigator.of(context).push(
-              MaterialPageRoute(
-                  builder: (context) => const FavoriteSchedulesListPage()
-              )
-          ),
+          onItemTapped: () => context.go(Routes.favoriteSchedules.path)
         ),
         PreferenceItem(
           title: "ВПК",
@@ -57,6 +54,7 @@ class PreferenceTitle extends StatelessWidget {
   final String title;
   @override
   Widget build(BuildContext context) {
+
     return Padding(
       padding: const EdgeInsets.only(top: 20),
       child: Text(

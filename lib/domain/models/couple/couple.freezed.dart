@@ -19,7 +19,7 @@ mixin _$Couple {
   TimeOfDay get timeStart => throw _privateConstructorUsedError;
   TimeOfDay get timeEnd => throw _privateConstructorUsedError;
   String get audience => throw _privateConstructorUsedError;
-  CoupleType get coupleType => throw _privateConstructorUsedError;
+  CoupleType get type => throw _privateConstructorUsedError;
   String get discipline => throw _privateConstructorUsedError;
   String get lecturer => throw _privateConstructorUsedError;
 
@@ -36,7 +36,7 @@ abstract class $CoupleCopyWith<$Res> {
       {TimeOfDay timeStart,
       TimeOfDay timeEnd,
       String audience,
-      CoupleType coupleType,
+      CoupleType type,
       String discipline,
       String lecturer});
 }
@@ -57,7 +57,7 @@ class _$CoupleCopyWithImpl<$Res, $Val extends Couple>
     Object? timeStart = null,
     Object? timeEnd = null,
     Object? audience = null,
-    Object? coupleType = null,
+    Object? type = null,
     Object? discipline = null,
     Object? lecturer = null,
   }) {
@@ -74,9 +74,9 @@ class _$CoupleCopyWithImpl<$Res, $Val extends Couple>
           ? _value.audience
           : audience // ignore: cast_nullable_to_non_nullable
               as String,
-      coupleType: null == coupleType
-          ? _value.coupleType
-          : coupleType // ignore: cast_nullable_to_non_nullable
+      type: null == type
+          ? _value.type
+          : type // ignore: cast_nullable_to_non_nullable
               as CoupleType,
       discipline: null == discipline
           ? _value.discipline
@@ -101,7 +101,7 @@ abstract class _$$CoupleImplCopyWith<$Res> implements $CoupleCopyWith<$Res> {
       {TimeOfDay timeStart,
       TimeOfDay timeEnd,
       String audience,
-      CoupleType coupleType,
+      CoupleType type,
       String discipline,
       String lecturer});
 }
@@ -120,7 +120,7 @@ class __$$CoupleImplCopyWithImpl<$Res>
     Object? timeStart = null,
     Object? timeEnd = null,
     Object? audience = null,
-    Object? coupleType = null,
+    Object? type = null,
     Object? discipline = null,
     Object? lecturer = null,
   }) {
@@ -137,9 +137,9 @@ class __$$CoupleImplCopyWithImpl<$Res>
           ? _value.audience
           : audience // ignore: cast_nullable_to_non_nullable
               as String,
-      coupleType: null == coupleType
-          ? _value.coupleType
-          : coupleType // ignore: cast_nullable_to_non_nullable
+      type: null == type
+          ? _value.type
+          : type // ignore: cast_nullable_to_non_nullable
               as CoupleType,
       discipline: null == discipline
           ? _value.discipline
@@ -160,7 +160,7 @@ class _$CoupleImpl extends _Couple {
       {required this.timeStart,
       required this.timeEnd,
       required this.audience,
-      required this.coupleType,
+      required this.type,
       required this.discipline,
       required this.lecturer})
       : super._();
@@ -172,7 +172,7 @@ class _$CoupleImpl extends _Couple {
   @override
   final String audience;
   @override
-  final CoupleType coupleType;
+  final CoupleType type;
   @override
   final String discipline;
   @override
@@ -180,7 +180,7 @@ class _$CoupleImpl extends _Couple {
 
   @override
   String toString() {
-    return 'Couple(timeStart: $timeStart, timeEnd: $timeEnd, audience: $audience, coupleType: $coupleType, discipline: $discipline, lecturer: $lecturer)';
+    return 'Couple(timeStart: $timeStart, timeEnd: $timeEnd, audience: $audience, type: $type, discipline: $discipline, lecturer: $lecturer)';
   }
 
   @override
@@ -193,8 +193,7 @@ class _$CoupleImpl extends _Couple {
             (identical(other.timeEnd, timeEnd) || other.timeEnd == timeEnd) &&
             (identical(other.audience, audience) ||
                 other.audience == audience) &&
-            (identical(other.coupleType, coupleType) ||
-                other.coupleType == coupleType) &&
+            (identical(other.type, type) || other.type == type) &&
             (identical(other.discipline, discipline) ||
                 other.discipline == discipline) &&
             (identical(other.lecturer, lecturer) ||
@@ -202,8 +201,8 @@ class _$CoupleImpl extends _Couple {
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, timeStart, timeEnd, audience,
-      coupleType, discipline, lecturer);
+  int get hashCode => Object.hash(
+      runtimeType, timeStart, timeEnd, audience, type, discipline, lecturer);
 
   @JsonKey(ignore: true)
   @override
@@ -217,7 +216,7 @@ abstract class _Couple extends Couple {
       {required final TimeOfDay timeStart,
       required final TimeOfDay timeEnd,
       required final String audience,
-      required final CoupleType coupleType,
+      required final CoupleType type,
       required final String discipline,
       required final String lecturer}) = _$CoupleImpl;
   _Couple._() : super._();
@@ -229,7 +228,7 @@ abstract class _Couple extends Couple {
   @override
   String get audience;
   @override
-  CoupleType get coupleType;
+  CoupleType get type;
   @override
   String get discipline;
   @override

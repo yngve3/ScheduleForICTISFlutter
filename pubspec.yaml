@@ -39,6 +39,7 @@ dependencies:
   intl: ^0.19.0
   flutter_bloc: ^8.0.0
   freezed_annotation: ^2.4.1
+  go_router: ^13.2.0
 
 dev_dependencies:
   flutter_test:
@@ -68,6 +69,12 @@ flutter:
   assets:
    - assets/icons/ic_add.png
    - assets/icons/ic_back_arrow.png
+   - assets/icons/ic_home/ic_home.png
+   - assets/icons/ic_home/ic_home_active.png
+   - assets/icons/ic_schedule/ic_schedule.png
+   - assets/icons/ic_schedule/ic_schedule_active.png
+   - assets/icons/ic_settings/ic_settings.png
+   - assets/icons/ic_settings/ic_settings_active.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

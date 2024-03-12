@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:schedule_for_ictis_flutter/presentation/widgets/app_bar.dart';
 
 import '../../../../../domain/models/fav_schedule.dart';
@@ -22,7 +23,7 @@ class FavoriteSchedulesAddPage extends StatelessWidget {
             const SearchField(),
             const FoundSchedulesList(),
             FilledButton(
-              onPressed: () => Navigator.of(context).pop(),
+              onPressed: () => context.pop(),
               child: const Text("Сохранить"),
             )
           ],

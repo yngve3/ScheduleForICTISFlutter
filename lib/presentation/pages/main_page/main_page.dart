@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:schedule_for_ictis_flutter/presentation/theme/icons.dart';
 
 import '../../route/routes.dart';
 import '../../theme/colors.dart';
@@ -26,9 +27,9 @@ class MainPage extends StatelessWidget {
   void _onItemTapped(int index, BuildContext context) {
     switch (index) {
       case 0:
-        GoRouter.of(context).go(Routes.schedule.path);
+        context.go(Routes.schedule.path);
       case 1:
-        GoRouter.of(context).go(Routes.preferences.path);
+        context.go(Routes.preferences.path);
     }
   }
 
@@ -46,13 +47,13 @@ class MainPage extends StatelessWidget {
         elevation: 0,
         items: [
           BottomNavigationBarItem(
-            icon: Image.asset("assets/icons/ic_schedule/ic_schedule.png", width: 27, height: 27),
-            activeIcon: Image.asset("assets/icons/ic_schedule/ic_schedule_active.png", width: 27, height: 27),
+            icon: CustomIcons.schedule.image(),
+            activeIcon: CustomIcons.schedule.image(active: true),
             label: "Schedule",
           ),
           BottomNavigationBarItem(
-              icon: Image.asset("assets/icons/ic_settings/ic_settings.png", width: 27, height: 27),
-              activeIcon: Image.asset("assets/icons/ic_settings/ic_settings_active.png", width: 27, height: 27),
+              icon: CustomIcons.settings.image(),
+              activeIcon: CustomIcons.settings.image(active: true),
               label: "Preferences"
           ),
         ],

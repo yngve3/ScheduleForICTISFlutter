@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:schedule_for_ictis_flutter/presentation/theme/icons.dart';
 
 class MyAppBar extends StatelessWidget implements PreferredSizeWidget{
 
@@ -24,7 +25,7 @@ class MyAppBar extends StatelessWidget implements PreferredSizeWidget{
           style: Theme.of(context).textTheme.headlineLarge
       ),
       leading: IconButton(
-          icon: Image.asset("assets/icons/ic_back_arrow.png", width: 32, height: 32),
+          icon: CustomIcons.backArrow,
           onPressed: ()  => context.pop()
       ),
       actions: actions,

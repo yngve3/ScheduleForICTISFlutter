@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-import '../../../domain/models/couple/couple.dart';
-import '../../theme/colors.dart';
+import '../../domain/models/couple/couple.dart';
+import '../theme/colors.dart';
 
 class CouplesItem extends StatelessWidget {
   const CouplesItem({

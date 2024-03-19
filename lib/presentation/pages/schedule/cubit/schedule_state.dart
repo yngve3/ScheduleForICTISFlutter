@@ -1,7 +1,9 @@
-part of 'schedule_cubit.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
+part 'schedule_state.freezed.dart';
 
-@immutable
-class ScheduleState {
-  const ScheduleState(this.selectedDay);
-  final DateTime selectedDay;
+@freezed
+class ScheduleState with _$ScheduleState {
+  factory ScheduleState({
+    required DateTime selectedDay,
+  }) = _ScheduleState;
 }

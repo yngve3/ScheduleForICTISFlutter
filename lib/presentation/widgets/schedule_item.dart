@@ -1,19 +1,23 @@
 import 'package:flutter/material.dart';
 
-import '../../../domain/models/fav_schedule.dart';
+import '../../domain/models/schedule_subject/schedule_subject.dart';
+
+typedef ScheduleItemTappedCallback = Function(ScheduleSubject scheduleSubject);
 
 class ScheduleItem extends StatelessWidget {
   const ScheduleItem({
     super.key,
-    required this.favSchedule,
+    required this.scheduleSubject,
+    required this.callback,
     this.padding = 20
   });
 
-  final FavSchedule favSchedule;
+  final ScheduleSubject scheduleSubject;
   final double padding;
+  final ScheduleItemTappedCallback callback;
 
   TextStyle? _getTextStyle(BuildContext context) {
-    if (!favSchedule.isChosen) {
+    if (!scheduleSubject.isChosen) {
       return Theme.of(context).textTheme.bodyLarge;
     }
 
@@ -23,7 +27,7 @@ class ScheduleItem extends StatelessWidget {
   }
 
   Color? _getCardColor(BuildContext context) {
-    if (!favSchedule.isChosen) {
+    if (!scheduleSubject.isChosen) {
       return null;
     }
     return Colors.black;
@@ -32,13 +36,13 @@ class ScheduleItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () {},
+      onTap: () => callback(scheduleSubject),
       child: Card(
         color: _getCardColor(context),
         child: Padding(
           padding: EdgeInsets.all(padding),
           child: Text(
-              favSchedule.name,
+              scheduleSubject.name,
               style: _getTextStyle(context)
           ),
         ),

@@ -2,25 +2,27 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:schedule_for_ictis_flutter/presentation/pages/schedule/schedule_day.dart';
 
+import '../../../domain/models/schedule/schedule.dart';
 import 'cubit/schedule_cubit.dart';
 import 'cubit/schedule_state.dart';
 
-class WeekSchedule extends StatefulWidget {
-  WeekSchedule({
+class WeekScheduleWidget extends StatefulWidget {
+  WeekScheduleWidget({
     super.key,
-    required this.selectedDay
+    required this.selectedDay,
+    required this.weekSchedule
   });
 
   DateTime selectedDay;
+  WeekSchedule weekSchedule;
 
   @override
   State<StatefulWidget> createState() => _WeekSchedule();
 }
 
-class _WeekSchedule extends State<WeekSchedule> {
+class _WeekSchedule extends State<WeekScheduleWidget> {
 
   late PageController _controller;
-  final List<int> pageList = [1, 2, 3, 4, 5, 6, 7];
 
   @override
   void initState() {
@@ -63,7 +65,7 @@ class _WeekSchedule extends State<WeekSchedule> {
 
                 context.read<ScheduleCubit>().nextOrPreviousDay(pageNum + 1);
               },
-              children: pageList.map((e) => DaySchedule(pageNum: e)).toList()
+              children: widget.weekSchedule.daySchedules.map((e) => DayScheduleWidget(daySchedule: e)).toList()
           ),
         )
     );

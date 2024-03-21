@@ -5,10 +5,18 @@ import 'package:schedule_for_ictis_flutter/app_config.dart';
 import 'package:schedule_for_ictis_flutter/domain/models/schedule_subject/schedule_subject.dart';
 import 'package:schedule_for_ictis_flutter/main.dart';
 
+import '../../objectbox.g.dart';
+
 class SearchResultEmptyException implements Exception {}
 class SearchRequestFailure implements Exception {}
 
 class FavoriteSchedulesRepository {
+
+  late final Box<ScheduleSubject> _favoriteSchedulesBox;
+
+  FavoriteSchedulesRepository() {
+    _favoriteSchedulesBox = objectBox.store.box<ScheduleSubject>();
+  }
 
   // api запрос [baseURL/?query=:query] может вернуть три варианта json:
   // {"status": "error", "message": "no args provided"}
@@ -18,7 +26,6 @@ class FavoriteSchedulesRepository {
   // {"choices": [{"name": "КТбо4-1", "group": "126.html", ...}, ...]}
   // - когда результатов несколько.
   // Во всех случаях статус код = 200
-
   Future<List<ScheduleSubject>> netSearch(String query) async {
     final response =  await http.get(Uri.parse('${AppConfig.baseURL}/?query=$query'));
 
@@ -40,18 +47,27 @@ class FavoriteSchedulesRepository {
   }
 
   Stream<List<ScheduleSubject>> getFromDBAll() {
-    return objectBox.getFavoriteSchedules();
+    QueryBuilder<ScheduleSubject> query = _favoriteSchedulesBox.query();
+    return query.watch(triggerImmediately: true).map((query) => query.find());
   }
 
   void saveToDB(ScheduleSubject scheduleSubject) {
-    objectBox.addFavoriteSchedule(scheduleSubject);
+    _favoriteSchedulesBox.putAsync(scheduleSubject);
   }
 
   void saveToDBMany(List<ScheduleSubject> scheduleSubjects) {
-    objectBox.addFavoriteSchedules(scheduleSubjects);
+    _favoriteSchedulesBox.putManyAsync(scheduleSubjects);
   }
 
   void deleteFromDBMany(List<int> ids) {
-    objectBox.deleteFavoriteSchedules(ids);
+    _favoriteSchedulesBox.removeManyAsync(ids);
+  }
+
+  Stream<ScheduleSubject?> getSelectedFavoriteSchedule() {
+    QueryBuilder<ScheduleSubject> query = _favoriteSchedulesBox.query(
+        ScheduleSubject_.isChosen.equals(true)
+    );
+
+    return query.watch(triggerImmediately: true).map((query) => query.findFirst());
   }
 }

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:schedule_for_ictis_flutter/data/repositories/favorite_schedules_repository.dart';
 import 'package:schedule_for_ictis_flutter/presentation/pages/favorite_schedules/pages/favorite_schedules_list/cubit/favorite_schedules_list_cubit.dart';
 import 'package:schedule_for_ictis_flutter/presentation/pages/favorite_schedules/pages/favorite_schedules_list/cubit/favorite_schedules_list_state.dart';
 import 'package:schedule_for_ictis_flutter/presentation/theme/icons.dart';
@@ -8,7 +9,7 @@ import 'package:schedule_for_ictis_flutter/presentation/widgets/app_bar.dart';
 
 import '../../../../../domain/models/schedule_subject/schedule_subject.dart';
 import '../../../../route/routes.dart';
-import '../../../../widgets/schedule_item.dart';
+import '../../../../widgets/schedule_subject_widget.dart';
 
 class FavoriteSchedulesListPage extends StatelessWidget {
   const FavoriteSchedulesListPage({super.key});
@@ -28,7 +29,7 @@ class FavoriteSchedulesListPage extends StatelessWidget {
         ],
       ),
       body: BlocProvider (
-        create: (context) => FavoriteSchedulesListCubit()..getFavoriteSchedules(),
+        create: (context) => FavoriteSchedulesListCubit(FavoriteSchedulesRepository())..getFavoriteSchedules(),
         child: BlocBuilder<FavoriteSchedulesListCubit, FavoriteSchedulesListState>(
           builder: (context, state) =>
               Padding(
@@ -71,7 +72,7 @@ class FavoriteSchedulesList extends StatelessWidget {
                   onDismissed: (DismissDirection direction) {
                     context.read<FavoriteSchedulesListCubit>().delete(element);
                   },
-                  child: ScheduleItem(
+                  child: ScheduleSubjectWidget(
                       scheduleSubject: element,
                       callback: (scheduleSubject) {
                         context.read<FavoriteSchedulesListCubit>().select(scheduleSubject);

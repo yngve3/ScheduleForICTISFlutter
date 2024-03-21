@@ -17,6 +17,7 @@ final _privateConstructorUsedError = UnsupportedError(
 /// @nodoc
 mixin _$ScheduleState {
   DateTime get selectedDay => throw _privateConstructorUsedError;
+  WeekSchedule get weekSchedule => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $ScheduleStateCopyWith<ScheduleState> get copyWith =>
@@ -29,7 +30,7 @@ abstract class $ScheduleStateCopyWith<$Res> {
           ScheduleState value, $Res Function(ScheduleState) then) =
       _$ScheduleStateCopyWithImpl<$Res, ScheduleState>;
   @useResult
-  $Res call({DateTime selectedDay});
+  $Res call({DateTime selectedDay, WeekSchedule weekSchedule});
 }
 
 /// @nodoc
@@ -46,12 +47,17 @@ class _$ScheduleStateCopyWithImpl<$Res, $Val extends ScheduleState>
   @override
   $Res call({
     Object? selectedDay = null,
+    Object? weekSchedule = null,
   }) {
     return _then(_value.copyWith(
       selectedDay: null == selectedDay
           ? _value.selectedDay
           : selectedDay // ignore: cast_nullable_to_non_nullable
               as DateTime,
+      weekSchedule: null == weekSchedule
+          ? _value.weekSchedule
+          : weekSchedule // ignore: cast_nullable_to_non_nullable
+              as WeekSchedule,
     ) as $Val);
   }
 }
@@ -64,7 +70,7 @@ abstract class _$$ScheduleStateImplCopyWith<$Res>
       __$$ScheduleStateImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({DateTime selectedDay});
+  $Res call({DateTime selectedDay, WeekSchedule weekSchedule});
 }
 
 /// @nodoc
@@ -79,12 +85,17 @@ class __$$ScheduleStateImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? selectedDay = null,
+    Object? weekSchedule = null,
   }) {
     return _then(_$ScheduleStateImpl(
       selectedDay: null == selectedDay
           ? _value.selectedDay
           : selectedDay // ignore: cast_nullable_to_non_nullable
               as DateTime,
+      weekSchedule: null == weekSchedule
+          ? _value.weekSchedule
+          : weekSchedule // ignore: cast_nullable_to_non_nullable
+              as WeekSchedule,
     ));
   }
 }
@@ -92,14 +103,16 @@ class __$$ScheduleStateImplCopyWithImpl<$Res>
 /// @nodoc
 
 class _$ScheduleStateImpl implements _ScheduleState {
-  _$ScheduleStateImpl({required this.selectedDay});
+  _$ScheduleStateImpl({required this.selectedDay, required this.weekSchedule});
 
   @override
   final DateTime selectedDay;
+  @override
+  final WeekSchedule weekSchedule;
 
   @override
   String toString() {
-    return 'ScheduleState(selectedDay: $selectedDay)';
+    return 'ScheduleState(selectedDay: $selectedDay, weekSchedule: $weekSchedule)';
   }
 
   @override
@@ -108,11 +121,13 @@ class _$ScheduleStateImpl implements _ScheduleState {
         (other.runtimeType == runtimeType &&
             other is _$ScheduleStateImpl &&
             (identical(other.selectedDay, selectedDay) ||
-                other.selectedDay == selectedDay));
+                other.selectedDay == selectedDay) &&
+            (identical(other.weekSchedule, weekSchedule) ||
+                other.weekSchedule == weekSchedule));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, selectedDay);
+  int get hashCode => Object.hash(runtimeType, selectedDay, weekSchedule);
 
   @JsonKey(ignore: true)
   @override
@@ -122,11 +137,14 @@ class _$ScheduleStateImpl implements _ScheduleState {
 }
 
 abstract class _ScheduleState implements ScheduleState {
-  factory _ScheduleState({required final DateTime selectedDay}) =
-      _$ScheduleStateImpl;
+  factory _ScheduleState(
+      {required final DateTime selectedDay,
+      required final WeekSchedule weekSchedule}) = _$ScheduleStateImpl;
 
   @override
   DateTime get selectedDay;
+  @override
+  WeekSchedule get weekSchedule;
   @override
   @JsonKey(ignore: true)
   _$$ScheduleStateImplCopyWith<_$ScheduleStateImpl> get copyWith =>

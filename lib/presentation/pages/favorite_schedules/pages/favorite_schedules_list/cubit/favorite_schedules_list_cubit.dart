@@ -6,13 +6,13 @@ import '../../../../../../data/repositories/favorite_schedules_repository.dart';
 import 'favorite_schedules_list_state.dart';
 
 class FavoriteSchedulesListCubit extends Cubit<FavoriteSchedulesListState> {
-  FavoriteSchedulesListCubit() : super(const FavoriteSchedulesListState(favoriteSchedules: []));
+  FavoriteSchedulesListCubit(this.repository) : super(const FavoriteSchedulesListState(favoriteSchedules: []));
 
-  final FavoriteSchedulesRepository _repository = FavoriteSchedulesRepository();
+  final FavoriteSchedulesRepository repository;
   List<int> deletionIdsList = [];
 
   void getFavoriteSchedules() {
-    _repository.getFromDBAll().listen((favoriteSchedules) {
+    repository.getFromDBAll().listen((favoriteSchedules) {
       emit(FavoriteSchedulesListState(favoriteSchedules: favoriteSchedules));
     });
   }
@@ -34,8 +34,8 @@ class FavoriteSchedulesListCubit extends Cubit<FavoriteSchedulesListState> {
   }
 
   void saveChanges() {
-    _repository.saveToDBMany(state.favoriteSchedules);
-    _repository.deleteFromDBMany(deletionIdsList);
+    repository.saveToDBMany(state.favoriteSchedules);
+    repository.deleteFromDBMany(deletionIdsList);
   }
 
   void _unselectSelected(List<ScheduleSubject> list) {

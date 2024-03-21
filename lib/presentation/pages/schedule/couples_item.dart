@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-import '../../domain/models/couple/couple.dart';
-import '../theme/colors.dart';
+import '../../../domain/models/couple/couple.dart';
+import '../../theme/colors.dart';
 
 class CouplesItem extends StatelessWidget {
   const CouplesItem({
@@ -24,6 +24,8 @@ class CouplesItem extends StatelessWidget {
       case CoupleType.lecture: return CustomColors.green;
       case CoupleType.exam: return Colors.black;
       case CoupleType.none: return CustomColors.green;
+      case null:
+        return Colors.transparent;
     }
   }
 
@@ -44,8 +46,8 @@ class CouplesItem extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
-                  Text(couple.timeStart.format(context), style: Theme.of(context).textTheme.bodyLarge),
-                  Text(couple.timeEnd.format(context), style: Theme.of(context).textTheme.bodySmall)
+                  Text("08:00", style: Theme.of(context).textTheme.bodyLarge),
+                  Text("09:35", style: Theme.of(context).textTheme.bodySmall)
                 ],
               ),
             ),
@@ -58,12 +60,12 @@ class CouplesItem extends StatelessWidget {
                     children: [
                       Row(
                         children: [
-                          Text(couple.audience, style: Theme.of(context).textTheme.bodyLarge),
+                          Text(couple.audiences, style: Theme.of(context).textTheme.bodyLarge),
                           const SizedBox(width: 8),
                           Icon(Icons.circle, color: _getCircleColor()),
                           const SizedBox(width: 8),
                           Text(
-                              couple.type.name,
+                              couple.type!.name,
                               style: Theme.of(context).textTheme.bodyLarge?.copyWith(
                                   color: CustomColors.textBodyMediumColor
                               )
@@ -80,7 +82,7 @@ class CouplesItem extends StatelessWidget {
                       ),
                       const SizedBox(height: 5),
                       Text(
-                          couple.lecturer,
+                          couple.lecturers,
                           style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                               fontWeight: FontWeight.w400
                           )

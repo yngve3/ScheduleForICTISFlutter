@@ -1,49 +1,28 @@
 import 'package:flutter/material.dart';
+import 'package:schedule_for_ictis_flutter/presentation/pages/schedule/couples_item.dart';
 
-import '../../../domain/models/couple/couple.dart';
-import '../../widgets/couples_item.dart';
+import '../../../domain/models/schedule/schedule.dart';
 
-class DaySchedule extends StatefulWidget {
-  const DaySchedule({
+class DayScheduleWidget extends StatefulWidget {
+  const DayScheduleWidget({
     super.key,
-    required this.pageNum
+    required this.daySchedule
   });
 
-  final int pageNum;
+  final DaySchedule daySchedule;
 
   @override
   State<StatefulWidget> createState() => _DaySchedule();
 }
 
-class _DaySchedule extends State<DaySchedule> with AutomaticKeepAliveClientMixin {
+class _DaySchedule extends State<DayScheduleWidget> with AutomaticKeepAliveClientMixin {
   @override
   Widget build(BuildContext context) {
     super.build(context);
     return ListView(
       shrinkWrap: true,
       padding: const EdgeInsets.only(left: 15, right: 15, bottom: 15),
-      children: [
-        CouplesItem(
-            couple: Couple(
-                timeStart: const TimeOfDay(hour: 23, minute: 0),
-                timeEnd: const TimeOfDay(hour: 9, minute: 35),
-                audience: "Д-212",
-                type: CoupleType.practice,
-                discipline: "Управление проектами разработки программного обеспечения",
-                lecturer: "Скороход С. В."
-            )
-        ),
-        CouplesItem(
-            couple: Couple(
-                timeStart: const TimeOfDay(hour: 8, minute: 0),
-                timeEnd: const TimeOfDay(hour: 9, minute: 35),
-                audience: "LMS",
-                type: CoupleType.lecture,
-                discipline: "Управление проектами разработки программного обеспечения",
-                lecturer: "Скороход С. В."
-            )
-        )
-      ],
+      children: widget.daySchedule.couples.map((element) => CouplesItem(couple: element)).toList()
     );
   }
 

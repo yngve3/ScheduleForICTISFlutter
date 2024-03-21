@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:schedule_for_ictis_flutter/data/repositories/favorite_schedules_repository.dart';
 import 'package:schedule_for_ictis_flutter/presentation/pages/favorite_schedules/pages/favorite_schedules_add/cubit/schedule_search_cubit.dart';
 import 'package:schedule_for_ictis_flutter/presentation/widgets/app_bar.dart';
-import 'package:schedule_for_ictis_flutter/presentation/widgets/schedule_item.dart';
+import 'package:schedule_for_ictis_flutter/presentation/widgets/schedule_subject_widget.dart';
 
 import '../../../../../domain/models/schedule_subject/schedule_subject.dart';
 import '../../../../theme/colors.dart';
@@ -25,7 +26,7 @@ class FavoriteSchedulesAddPage extends StatelessWidget {
         appBar: AppBar(),
       ),
       body: BlocProvider (
-        create: (context) => ScheduleSearchCubit(),
+        create: (context) => ScheduleSearchCubit(FavoriteSchedulesRepository()),
         child: BlocBuilder<ScheduleSearchCubit, ScheduleSearchState> (
           builder: (context, state) {
             return Padding(
@@ -95,7 +96,7 @@ class FoundSchedulesList extends StatelessWidget {
                 spacing: 8,
                 runSpacing: 5,
                 direction: Axis.horizontal,
-                children: list.map((e) => ScheduleItem(
+                children: list.map((e) => ScheduleSubjectWidget(
                     scheduleSubject: e,
                     callback: (element) {
                       context.read<ScheduleSearchCubit>().select(element);

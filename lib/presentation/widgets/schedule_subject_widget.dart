@@ -4,8 +4,8 @@ import '../../domain/models/schedule_subject/schedule_subject.dart';
 
 typedef ScheduleItemTappedCallback = Function(ScheduleSubject scheduleSubject);
 
-class ScheduleItem extends StatelessWidget {
-  const ScheduleItem({
+class ScheduleSubjectWidget extends StatelessWidget {
+  const ScheduleSubjectWidget({
     super.key,
     required this.scheduleSubject,
     required this.callback,

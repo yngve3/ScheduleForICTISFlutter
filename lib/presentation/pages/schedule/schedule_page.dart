@@ -35,12 +35,18 @@ class _Schedule extends State<Schedule> {
   CalendarFormat _calendarFormat = CalendarFormat.week;
 
   @override
+  void initState() {
+    context.read<ScheduleCubit>().getWeekSchedule();
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return BlocBuilder<ScheduleCubit, ScheduleState>(
         builder: (context, state) {
           return Column(
             children: [
-              DateHeader(date: state.selectedDay),
+              DateHeader(date: state.selectedDay, studyWeek: state.weekSchedule.weekNum),
               const SizedBox(height: 10),
               TableCalendar(
                 weekendDays: const [DateTime.sunday],
@@ -95,7 +101,10 @@ class _Schedule extends State<Schedule> {
                   return isSameDay(state.selectedDay, day);
                 },
               ),
-              WeekSchedule(selectedDay: state.selectedDay)
+              WeekScheduleWidget(
+                selectedDay: state.selectedDay,
+                weekSchedule: state.weekSchedule,
+              )
             ],
           );
         }

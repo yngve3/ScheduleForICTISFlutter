@@ -6,11 +6,11 @@ import 'package:schedule_for_ictis_flutter/presentation/pages/favorite_schedules
 
 
 class ScheduleSearchCubit extends Cubit<ScheduleSearchState> {
-  ScheduleSearchCubit() : super(const ScheduleSearchState(searchResult: []));
-  final FavoriteSchedulesRepository _repository = FavoriteSchedulesRepository();
+  ScheduleSearchCubit(this.repository) : super(const ScheduleSearchState(searchResult: []));
+  final FavoriteSchedulesRepository repository;
 
   void search(String query) async {
-    final searchResult = await _repository.netSearch(query);
+    final searchResult = await repository.netSearch(query);
 
     emit(ScheduleSearchState(searchResult: searchResult));
   }
@@ -28,7 +28,7 @@ class ScheduleSearchCubit extends Cubit<ScheduleSearchState> {
     final selected = _findSelectedOrNull(state.searchResult);
 
     if (selected != null) {
-      _repository.saveToDB(selected.copyWith(isChosen: false));
+      repository.saveToDB(selected.copyWith(isChosen: false));
     }
   }
 

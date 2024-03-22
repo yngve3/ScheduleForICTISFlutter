@@ -1,11 +1,61 @@
 import 'package:flutter/material.dart';
 
-import '../../../domain/models/couple/couple.dart';
+import '../../../domain/models/couple/couple_type.dart';
+import '../../../domain/models/schedule/day_schedule_item.dart';
 import '../../theme/colors.dart';
 
-class CouplesItem extends StatelessWidget {
+abstract class ScheduleDayItem {
+  Widget buildWidget(BuildContext context);
+}
+
+class EventItem implements ScheduleDayItem {
+  const EventItem({
+    required this.event
+  });
+
+  final Event event;
+
+  @override
+  Widget buildWidget(BuildContext context) {
+    return Container(
+      margin: const EdgeInsets.only(top: 10),
+      padding: const EdgeInsets.symmetric(horizontal: 20),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(10),
+        color: CustomColors.cardBackgroundColor,
+      ),
+      child: Row(
+        children: [
+          TimeLeftPanel(timeStart: event.timeStart, timeEnd: event.timeEnd),
+          Expanded(
+              child: Column(
+                children: [
+                  Text(event.title, style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                      fontWeight: FontWeight.w400
+                  )),
+                  Text(event.description, style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                      fontWeight: FontWeight.w400
+                  ))
+                ],
+              )
+          )
+        ],
+      ),
+    );
+  }
+}
+
+class UnknownItem implements ScheduleDayItem {
+  @override
+  Widget buildWidget(BuildContext context) {
+    return const ListTile(
+      title: Text("unknown item"),
+    );
+  }
+}
+
+class CouplesItem implements ScheduleDayItem {
   const CouplesItem({
-    super.key,
     required this.couple
   });
 
@@ -30,7 +80,7 @@ class CouplesItem extends StatelessWidget {
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget buildWidget(BuildContext context) {
     return Container(
       margin: const EdgeInsets.only(top: 10),
       padding: const EdgeInsets.symmetric(horizontal: 20),
@@ -41,16 +91,7 @@ class CouplesItem extends StatelessWidget {
       child: IntrinsicHeight(
         child: Row(
           children: [
-            Padding(
-              padding: const EdgeInsets.only(top: 38),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.end,
-                children: [
-                  Text("08:00", style: Theme.of(context).textTheme.bodyLarge),
-                  Text("09:35", style: Theme.of(context).textTheme.bodySmall)
-                ],
-              ),
-            ),
+            TimeLeftPanel(timeStart: couple.timeStart, timeEnd: couple.timeEnd),
             VerticalDivider(thickness: 1, color: _getDividerColor()),
             Expanded(
                 child: Padding(
@@ -65,7 +106,7 @@ class CouplesItem extends StatelessWidget {
                           Icon(Icons.circle, color: _getCircleColor()),
                           const SizedBox(width: 8),
                           Text(
-                              couple.type!.name,
+                              couple.type.name,
                               style: Theme.of(context).textTheme.bodyLarge?.copyWith(
                                   color: CustomColors.textBodyMediumColor
                               )
@@ -96,4 +137,30 @@ class CouplesItem extends StatelessWidget {
       ),
     );
   }
+}
+
+class TimeLeftPanel extends StatelessWidget {
+  const TimeLeftPanel({
+    super.key,
+    required this.timeStart,
+    required this.timeEnd
+  });
+
+  final TimeOfDay timeStart;
+  final TimeOfDay timeEnd;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(top: 38),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.end,
+        children: [
+          Text(timeStart.format(context), style: Theme.of(context).textTheme.bodyLarge),
+          Text(timeEnd.format(context), style: Theme.of(context).textTheme.bodySmall)
+        ],
+      ),
+    );
+  }
+
 }

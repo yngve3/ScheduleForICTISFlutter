@@ -1,5 +1,6 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:schedule_for_ictis_flutter/domain/models/schedule/schedule.dart';
+
+import '../../../../domain/models/schedule/week_schedule/week_schedule.dart';
 part 'schedule_state.freezed.dart';
 
 @freezed

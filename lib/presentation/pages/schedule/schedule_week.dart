@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:schedule_for_ictis_flutter/presentation/pages/schedule/schedule_day.dart';
 
-import '../../../domain/models/schedule/schedule.dart';
+import '../../../domain/models/schedule/week_schedule/week_schedule.dart';
 import 'cubit/schedule_cubit.dart';
 import 'cubit/schedule_state.dart';
 

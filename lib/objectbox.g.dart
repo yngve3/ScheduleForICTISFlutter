@@ -15,8 +15,9 @@ import 'package:objectbox/internal.dart'
 import 'package:objectbox/objectbox.dart' as obx;
 import 'package:objectbox_flutter_libs/objectbox_flutter_libs.dart';
 
-import 'domain/models/couple/couple.dart';
-import 'domain/models/schedule/schedule.dart';
+import 'data/models/couple_db.dart';
+import 'data/models/day_schedule_db.dart';
+import 'data/models/week_schedule_db.dart';
 import 'domain/models/schedule_subject/schedule_subject.dart';
 
 export 'package:objectbox/objectbox.dart'; // so that callers only have to import this file
@@ -52,106 +53,101 @@ final _entities = <obx_int.ModelEntity>[
       relations: <obx_int.ModelRelation>[],
       backlinks: <obx_int.ModelBacklink>[]),
   obx_int.ModelEntity(
-      id: const obx_int.IdUid(3, 6564081225644799157),
-      name: 'DaySchedule',
-      lastPropertyId: const obx_int.IdUid(3, 5856057666645421310),
+      id: const obx_int.IdUid(6, 5480714166435319607),
+      name: 'CoupleDB',
+      lastPropertyId: const obx_int.IdUid(6, 8995788885646466761),
       flags: 0,
       properties: <obx_int.ModelProperty>[
         obx_int.ModelProperty(
-            id: const obx_int.IdUid(1, 5795760961840172971),
+            id: const obx_int.IdUid(1, 6784161525306467972),
             name: 'id',
             type: 6,
             flags: 1),
         obx_int.ModelProperty(
-            id: const obx_int.IdUid(2, 1168014137087986006),
-            name: 'date',
-            type: 10,
+            id: const obx_int.IdUid(2, 4275684804891642941),
+            name: 'audiences',
+            type: 9,
             flags: 0),
         obx_int.ModelProperty(
-            id: const obx_int.IdUid(3, 5856057666645421310),
+            id: const obx_int.IdUid(3, 4940579546972549732),
+            name: 'discipline',
+            type: 9,
+            flags: 0),
+        obx_int.ModelProperty(
+            id: const obx_int.IdUid(4, 7949174116230514789),
+            name: 'lecturers',
+            type: 9,
+            flags: 0),
+        obx_int.ModelProperty(
+            id: const obx_int.IdUid(5, 7804159640948060540),
+            name: 'dayScheduleId',
+            type: 11,
+            flags: 520,
+            indexId: const obx_int.IdUid(5, 7434552496165741410),
+            relationTarget: 'DayScheduleDB'),
+        obx_int.ModelProperty(
+            id: const obx_int.IdUid(6, 8995788885646466761),
+            name: 'dbType',
+            type: 9,
+            flags: 0)
+      ],
+      relations: <obx_int.ModelRelation>[],
+      backlinks: <obx_int.ModelBacklink>[]),
+  obx_int.ModelEntity(
+      id: const obx_int.IdUid(9, 8637567801753414186),
+      name: 'DayScheduleDB',
+      lastPropertyId: const obx_int.IdUid(2, 965904485105953696),
+      flags: 0,
+      properties: <obx_int.ModelProperty>[
+        obx_int.ModelProperty(
+            id: const obx_int.IdUid(1, 6363031504345999642),
+            name: 'id',
+            type: 6,
+            flags: 1),
+        obx_int.ModelProperty(
+            id: const obx_int.IdUid(2, 965904485105953696),
             name: 'weekScheduleId',
             type: 11,
             flags: 520,
-            indexId: const obx_int.IdUid(2, 8863087589233199454),
-            relationTarget: 'WeekSchedule')
+            indexId: const obx_int.IdUid(8, 4832409830394496983),
+            relationTarget: 'WeekScheduleDB')
       ],
       relations: <obx_int.ModelRelation>[],
       backlinks: <obx_int.ModelBacklink>[
         obx_int.ModelBacklink(
-            name: 'couples', srcEntity: 'Couple', srcField: 'daySchedule')
+            name: 'couples', srcEntity: 'CoupleDB', srcField: 'daySchedule')
       ]),
   obx_int.ModelEntity(
-      id: const obx_int.IdUid(4, 701607334596766764),
-      name: 'WeekSchedule',
-      lastPropertyId: const obx_int.IdUid(3, 5499231742823135521),
+      id: const obx_int.IdUid(10, 2107067233892169345),
+      name: 'WeekScheduleDB',
+      lastPropertyId: const obx_int.IdUid(3, 3198016435380073846),
       flags: 0,
       properties: <obx_int.ModelProperty>[
         obx_int.ModelProperty(
-            id: const obx_int.IdUid(1, 16813341898936457),
+            id: const obx_int.IdUid(1, 4364730252489929958),
             name: 'id',
             type: 6,
             flags: 1),
         obx_int.ModelProperty(
-            id: const obx_int.IdUid(2, 6836084117422674255),
+            id: const obx_int.IdUid(2, 526765531046512864),
             name: 'weekNum',
             type: 6,
             flags: 0),
         obx_int.ModelProperty(
-            id: const obx_int.IdUid(3, 5499231742823135521),
+            id: const obx_int.IdUid(3, 3198016435380073846),
             name: 'scheduleSubjectId',
             type: 11,
             flags: 520,
-            indexId: const obx_int.IdUid(3, 9169203081076276422),
+            indexId: const obx_int.IdUid(9, 3110764413310385585),
             relationTarget: 'ScheduleSubject')
       ],
       relations: <obx_int.ModelRelation>[],
       backlinks: <obx_int.ModelBacklink>[
         obx_int.ModelBacklink(
             name: 'daySchedules',
-            srcEntity: 'DaySchedule',
+            srcEntity: 'DayScheduleDB',
             srcField: 'weekSchedule')
-      ]),
-  obx_int.ModelEntity(
-      id: const obx_int.IdUid(5, 3955847375317494942),
-      name: 'Couple',
-      lastPropertyId: const obx_int.IdUid(6, 2016668046429502095),
-      flags: 0,
-      properties: <obx_int.ModelProperty>[
-        obx_int.ModelProperty(
-            id: const obx_int.IdUid(1, 5206147708866401738),
-            name: 'id',
-            type: 6,
-            flags: 1),
-        obx_int.ModelProperty(
-            id: const obx_int.IdUid(2, 5792695101486551096),
-            name: 'audiences',
-            type: 9,
-            flags: 0),
-        obx_int.ModelProperty(
-            id: const obx_int.IdUid(3, 962648145084222784),
-            name: 'discipline',
-            type: 9,
-            flags: 0),
-        obx_int.ModelProperty(
-            id: const obx_int.IdUid(4, 3458241965252757428),
-            name: 'lecturers',
-            type: 9,
-            flags: 0),
-        obx_int.ModelProperty(
-            id: const obx_int.IdUid(5, 960069697671965780),
-            name: 'dayScheduleId',
-            type: 11,
-            flags: 520,
-            indexId: const obx_int.IdUid(4, 986850672223871259),
-            relationTarget: 'DaySchedule'),
-        obx_int.ModelProperty(
-            id: const obx_int.IdUid(6, 2016668046429502095),
-            name: 'dbType',
-            type: 9,
-            flags: 0)
-      ],
-      relations: <obx_int.ModelRelation>[],
-      backlinks: <obx_int.ModelBacklink>[])
+      ])
 ];
 
 /// Shortcut for [Store.new] that passes [getObjectBoxModel] and for Flutter
@@ -189,11 +185,18 @@ Future<obx.Store> openStore(
 obx_int.ModelDefinition getObjectBoxModel() {
   final model = obx_int.ModelInfo(
       entities: _entities,
-      lastEntityId: const obx_int.IdUid(5, 3955847375317494942),
-      lastIndexId: const obx_int.IdUid(4, 986850672223871259),
+      lastEntityId: const obx_int.IdUid(10, 2107067233892169345),
+      lastIndexId: const obx_int.IdUid(9, 3110764413310385585),
       lastRelationId: const obx_int.IdUid(0, 0),
       lastSequenceId: const obx_int.IdUid(0, 0),
-      retiredEntityUids: const [1910578607431801677],
+      retiredEntityUids: const [
+        1910578607431801677,
+        6564081225644799157,
+        701607334596766764,
+        3955847375317494942,
+        6365253965074262032,
+        2803109517062443162
+      ],
       retiredIndexUids: const [],
       retiredPropertyUids: const [
         8531280715951716256,
@@ -201,7 +204,25 @@ obx_int.ModelDefinition getObjectBoxModel() {
         4041494958170106113,
         8705310470934911829,
         6357635646213294641,
-        493050093322022615
+        493050093322022615,
+        5795760961840172971,
+        1168014137087986006,
+        5856057666645421310,
+        16813341898936457,
+        6836084117422674255,
+        5499231742823135521,
+        5206147708866401738,
+        5792695101486551096,
+        962648145084222784,
+        3458241965252757428,
+        960069697671965780,
+        2016668046429502095,
+        1724291030451517162,
+        8958418185775935014,
+        2648183407103052794,
+        8448514585900121930,
+        4342852172978207443,
+        2495668294353778742
       ],
       retiredRelationUids: const [],
       modelVersion: 5,
@@ -253,88 +274,15 @@ obx_int.ModelDefinition getObjectBoxModel() {
 
           return object;
         }),
-    DaySchedule: obx_int.EntityDefinition<DaySchedule>(
+    CoupleDB: obx_int.EntityDefinition<CoupleDB>(
         model: _entities[1],
-        toOneRelations: (DaySchedule object) => [object.weekSchedule],
-        toManyRelations: (DaySchedule object) => {
-              obx_int.RelInfo<Couple>.toOneBacklink(5, object.id,
-                  (Couple srcObject) => srcObject.daySchedule): object.couples
-            },
-        getId: (DaySchedule object) => object.id,
-        setId: (DaySchedule object, int id) {
+        toOneRelations: (CoupleDB object) => [object.daySchedule],
+        toManyRelations: (CoupleDB object) => {},
+        getId: (CoupleDB object) => object.id,
+        setId: (CoupleDB object, int id) {
           object.id = id;
         },
-        objectToFB: (DaySchedule object, fb.Builder fbb) {
-          fbb.startTable(4);
-          fbb.addInt64(0, object.id);
-          fbb.addInt64(1, object.date.millisecondsSinceEpoch);
-          fbb.addInt64(2, object.weekSchedule.targetId);
-          fbb.finish(fbb.endTable());
-          return object.id;
-        },
-        objectFromFB: (obx.Store store, ByteData fbData) {
-          final buffer = fb.BufferContext(fbData);
-          final rootOffset = buffer.derefObject(0);
-          final dateParam = DateTime.fromMillisecondsSinceEpoch(
-              const fb.Int64Reader().vTableGet(buffer, rootOffset, 6, 0));
-          final object = DaySchedule(date: dateParam)
-            ..id = const fb.Int64Reader().vTableGet(buffer, rootOffset, 4, 0);
-          object.weekSchedule.targetId =
-              const fb.Int64Reader().vTableGet(buffer, rootOffset, 8, 0);
-          object.weekSchedule.attach(store);
-          obx_int.InternalToManyAccess.setRelInfo<DaySchedule>(
-              object.couples,
-              store,
-              obx_int.RelInfo<Couple>.toOneBacklink(
-                  5, object.id, (Couple srcObject) => srcObject.daySchedule));
-          return object;
-        }),
-    WeekSchedule: obx_int.EntityDefinition<WeekSchedule>(
-        model: _entities[2],
-        toOneRelations: (WeekSchedule object) => [object.scheduleSubject],
-        toManyRelations: (WeekSchedule object) => {
-              obx_int.RelInfo<DaySchedule>.toOneBacklink(3, object.id,
-                      (DaySchedule srcObject) => srcObject.weekSchedule):
-                  object.daySchedules
-            },
-        getId: (WeekSchedule object) => object.id,
-        setId: (WeekSchedule object, int id) {
-          object.id = id;
-        },
-        objectToFB: (WeekSchedule object, fb.Builder fbb) {
-          fbb.startTable(4);
-          fbb.addInt64(0, object.id);
-          fbb.addInt64(1, object.weekNum);
-          fbb.addInt64(2, object.scheduleSubject.targetId);
-          fbb.finish(fbb.endTable());
-          return object.id;
-        },
-        objectFromFB: (obx.Store store, ByteData fbData) {
-          final buffer = fb.BufferContext(fbData);
-          final rootOffset = buffer.derefObject(0);
-          final weekNumParam =
-              const fb.Int64Reader().vTableGet(buffer, rootOffset, 6, 0);
-          final object = WeekSchedule(weekNum: weekNumParam)
-            ..id = const fb.Int64Reader().vTableGet(buffer, rootOffset, 4, 0);
-          object.scheduleSubject.targetId =
-              const fb.Int64Reader().vTableGet(buffer, rootOffset, 8, 0);
-          object.scheduleSubject.attach(store);
-          obx_int.InternalToManyAccess.setRelInfo<WeekSchedule>(
-              object.daySchedules,
-              store,
-              obx_int.RelInfo<DaySchedule>.toOneBacklink(3, object.id,
-                  (DaySchedule srcObject) => srcObject.weekSchedule));
-          return object;
-        }),
-    Couple: obx_int.EntityDefinition<Couple>(
-        model: _entities[3],
-        toOneRelations: (Couple object) => [object.daySchedule],
-        toManyRelations: (Couple object) => {},
-        getId: (Couple object) => object.id,
-        setId: (Couple object, int id) {
-          object.id = id;
-        },
-        objectToFB: (Couple object, fb.Builder fbb) {
+        objectToFB: (CoupleDB object, fb.Builder fbb) {
           final audiencesOffset = fbb.writeString(object.audiences);
           final disciplineOffset = fbb.writeString(object.discipline);
           final lecturersOffset = fbb.writeString(object.lecturers);
@@ -359,7 +307,7 @@ obx_int.ModelDefinition getObjectBoxModel() {
               .vTableGet(buffer, rootOffset, 8, '');
           final lecturersParam = const fb.StringReader(asciiOptimization: true)
               .vTableGet(buffer, rootOffset, 10, '');
-          final object = Couple(
+          final object = CoupleDB(
               audiences: audiencesParam,
               discipline: disciplineParam,
               lecturers: lecturersParam)
@@ -369,6 +317,77 @@ obx_int.ModelDefinition getObjectBoxModel() {
           object.daySchedule.targetId =
               const fb.Int64Reader().vTableGet(buffer, rootOffset, 12, 0);
           object.daySchedule.attach(store);
+          return object;
+        }),
+    DayScheduleDB: obx_int.EntityDefinition<DayScheduleDB>(
+        model: _entities[2],
+        toOneRelations: (DayScheduleDB object) => [object.weekSchedule],
+        toManyRelations: (DayScheduleDB object) => {
+              obx_int.RelInfo<CoupleDB>.toOneBacklink(5, object.id,
+                  (CoupleDB srcObject) => srcObject.daySchedule): object.couples
+            },
+        getId: (DayScheduleDB object) => object.id,
+        setId: (DayScheduleDB object, int id) {
+          object.id = id;
+        },
+        objectToFB: (DayScheduleDB object, fb.Builder fbb) {
+          fbb.startTable(3);
+          fbb.addInt64(0, object.id);
+          fbb.addInt64(1, object.weekSchedule.targetId);
+          fbb.finish(fbb.endTable());
+          return object.id;
+        },
+        objectFromFB: (obx.Store store, ByteData fbData) {
+          final buffer = fb.BufferContext(fbData);
+          final rootOffset = buffer.derefObject(0);
+
+          final object = DayScheduleDB()
+            ..id = const fb.Int64Reader().vTableGet(buffer, rootOffset, 4, 0);
+          object.weekSchedule.targetId =
+              const fb.Int64Reader().vTableGet(buffer, rootOffset, 6, 0);
+          object.weekSchedule.attach(store);
+          obx_int.InternalToManyAccess.setRelInfo<DayScheduleDB>(
+              object.couples,
+              store,
+              obx_int.RelInfo<CoupleDB>.toOneBacklink(
+                  5, object.id, (CoupleDB srcObject) => srcObject.daySchedule));
+          return object;
+        }),
+    WeekScheduleDB: obx_int.EntityDefinition<WeekScheduleDB>(
+        model: _entities[3],
+        toOneRelations: (WeekScheduleDB object) => [object.scheduleSubject],
+        toManyRelations: (WeekScheduleDB object) => {
+              obx_int.RelInfo<DayScheduleDB>.toOneBacklink(2, object.id,
+                      (DayScheduleDB srcObject) => srcObject.weekSchedule):
+                  object.daySchedules
+            },
+        getId: (WeekScheduleDB object) => object.id,
+        setId: (WeekScheduleDB object, int id) {
+          object.id = id;
+        },
+        objectToFB: (WeekScheduleDB object, fb.Builder fbb) {
+          fbb.startTable(4);
+          fbb.addInt64(0, object.id);
+          fbb.addInt64(1, object.weekNum);
+          fbb.addInt64(2, object.scheduleSubject.targetId);
+          fbb.finish(fbb.endTable());
+          return object.id;
+        },
+        objectFromFB: (obx.Store store, ByteData fbData) {
+          final buffer = fb.BufferContext(fbData);
+          final rootOffset = buffer.derefObject(0);
+          final weekNumParam =
+              const fb.Int64Reader().vTableGet(buffer, rootOffset, 6, 0);
+          final object = WeekScheduleDB(weekNum: weekNumParam)
+            ..id = const fb.Int64Reader().vTableGet(buffer, rootOffset, 4, 0);
+          object.scheduleSubject.targetId =
+              const fb.Int64Reader().vTableGet(buffer, rootOffset, 8, 0);
+          object.scheduleSubject.attach(store);
+          obx_int.InternalToManyAccess.setRelInfo<WeekScheduleDB>(
+              object.daySchedules,
+              store,
+              obx_int.RelInfo<DayScheduleDB>.toOneBacklink(2, object.id,
+                  (DayScheduleDB srcObject) => srcObject.weekSchedule));
           return object;
         })
   };
@@ -395,69 +414,66 @@ class ScheduleSubject_ {
       obx.QueryBooleanProperty<ScheduleSubject>(_entities[0].properties[3]);
 }
 
-/// [DaySchedule] entity fields to define ObjectBox queries.
-class DaySchedule_ {
-  /// see [DaySchedule.id]
+/// [CoupleDB] entity fields to define ObjectBox queries.
+class CoupleDB_ {
+  /// see [CoupleDB.id]
   static final id =
-      obx.QueryIntegerProperty<DaySchedule>(_entities[1].properties[0]);
+      obx.QueryIntegerProperty<CoupleDB>(_entities[1].properties[0]);
 
-  /// see [DaySchedule.date]
-  static final date =
-      obx.QueryDateProperty<DaySchedule>(_entities[1].properties[1]);
-
-  /// see [DaySchedule.weekSchedule]
-  static final weekSchedule = obx.QueryRelationToOne<DaySchedule, WeekSchedule>(
-      _entities[1].properties[2]);
-
-  /// see [DaySchedule.couples]
-  static final couples =
-      obx.QueryBacklinkToMany<Couple, DaySchedule>(Couple_.daySchedule);
-}
-
-/// [WeekSchedule] entity fields to define ObjectBox queries.
-class WeekSchedule_ {
-  /// see [WeekSchedule.id]
-  static final id =
-      obx.QueryIntegerProperty<WeekSchedule>(_entities[2].properties[0]);
-
-  /// see [WeekSchedule.weekNum]
-  static final weekNum =
-      obx.QueryIntegerProperty<WeekSchedule>(_entities[2].properties[1]);
-
-  /// see [WeekSchedule.scheduleSubject]
-  static final scheduleSubject =
-      obx.QueryRelationToOne<WeekSchedule, ScheduleSubject>(
-          _entities[2].properties[2]);
-
-  /// see [WeekSchedule.daySchedules]
-  static final daySchedules =
-      obx.QueryBacklinkToMany<DaySchedule, WeekSchedule>(
-          DaySchedule_.weekSchedule);
-}
-
-/// [Couple] entity fields to define ObjectBox queries.
-class Couple_ {
-  /// see [Couple.id]
-  static final id =
-      obx.QueryIntegerProperty<Couple>(_entities[3].properties[0]);
-
-  /// see [Couple.audiences]
+  /// see [CoupleDB.audiences]
   static final audiences =
-      obx.QueryStringProperty<Couple>(_entities[3].properties[1]);
+      obx.QueryStringProperty<CoupleDB>(_entities[1].properties[1]);
 
-  /// see [Couple.discipline]
+  /// see [CoupleDB.discipline]
   static final discipline =
-      obx.QueryStringProperty<Couple>(_entities[3].properties[2]);
+      obx.QueryStringProperty<CoupleDB>(_entities[1].properties[2]);
 
-  /// see [Couple.lecturers]
+  /// see [CoupleDB.lecturers]
   static final lecturers =
-      obx.QueryStringProperty<Couple>(_entities[3].properties[3]);
+      obx.QueryStringProperty<CoupleDB>(_entities[1].properties[3]);
 
-  /// see [Couple.daySchedule]
-  static final daySchedule =
-      obx.QueryRelationToOne<Couple, DaySchedule>(_entities[3].properties[4]);
+  /// see [CoupleDB.daySchedule]
+  static final daySchedule = obx.QueryRelationToOne<CoupleDB, DayScheduleDB>(
+      _entities[1].properties[4]);
 
-  /// see [Couple.dbType]
+  /// see [CoupleDB.dbType]
   static final dbType =
-      obx.QueryStringProperty<Couple>(_entities[3].properties[5]);
+      obx.QueryStringProperty<CoupleDB>(_entities[1].properties[5]);
+}
+
+/// [DayScheduleDB] entity fields to define ObjectBox queries.
+class DayScheduleDB_ {
+  /// see [DayScheduleDB.id]
+  static final id =
+      obx.QueryIntegerProperty<DayScheduleDB>(_entities[2].properties[0]);
+
+  /// see [DayScheduleDB.weekSchedule]
+  static final weekSchedule =
+      obx.QueryRelationToOne<DayScheduleDB, WeekScheduleDB>(
+          _entities[2].properties[1]);
+
+  /// see [DayScheduleDB.couples]
+  static final couples =
+      obx.QueryBacklinkToMany<CoupleDB, DayScheduleDB>(CoupleDB_.daySchedule);
+}
+
+/// [WeekScheduleDB] entity fields to define ObjectBox queries.
+class WeekScheduleDB_ {
+  /// see [WeekScheduleDB.id]
+  static final id =
+      obx.QueryIntegerProperty<WeekScheduleDB>(_entities[3].properties[0]);
+
+  /// see [WeekScheduleDB.weekNum]
+  static final weekNum =
+      obx.QueryIntegerProperty<WeekScheduleDB>(_entities[3].properties[1]);
+
+  /// see [WeekScheduleDB.scheduleSubject]
+  static final scheduleSubject =
+      obx.QueryRelationToOne<WeekScheduleDB, ScheduleSubject>(
+          _entities[3].properties[2]);
+
+  /// see [WeekScheduleDB.daySchedules]
+  static final daySchedules =
+      obx.QueryBacklinkToMany<DayScheduleDB, WeekScheduleDB>(
+          DayScheduleDB_.weekSchedule);
 }

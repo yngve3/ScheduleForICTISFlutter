@@ -1,21 +1,37 @@
-import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:objectbox/objectbox.dart';
-part 'schedule_subject.freezed.dart';
-part 'schedule_subject.g.dart';
 
-@freezed
-class ScheduleSubject with _$ScheduleSubject {
-  @Entity(realClass: ScheduleSubject)
-  factory ScheduleSubject({
-    @Id(assignable: true) int? dbId,
-    @JsonKey(name: "group")
-    required String id,
+@Entity()
+class ScheduleSubject {
+  @Id() int? dbId;
+  final String id;
+  final String name;
+  final bool isChosen;
 
-    required String name,
+  ScheduleSubject({
+    this.dbId = 0,
+    required this.id,
+    required this.name,
+    required this.isChosen
+  });
 
-    @Default(false)
-    bool isChosen
-  }) = _ScheduleSubject;
+  factory ScheduleSubject.fromJson(Map<String, dynamic> json) =>
+      ScheduleSubject(
+        dbId: json['dbId'] as int?,
+        id: json['group'] as String,
+        name: json['name'] as String,
+        isChosen: json['isChosen'] as bool? ?? false,
+      );
 
-  factory ScheduleSubject.fromJson(Map<String, dynamic> json) => _$ScheduleSubjectFromJson(json);
+  ScheduleSubject copyWith({
+    int? dbId,
+    String? id,
+    String? name,
+    bool? isChosen
+  }) =>
+      ScheduleSubject(
+        dbId: dbId ?? this.dbId,
+        id: id ?? this.id,
+        name: name ?? this.name,
+        isChosen: isChosen ?? this.isChosen
+      );
 }

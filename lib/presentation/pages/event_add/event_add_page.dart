@@ -13,22 +13,47 @@ class EventAddPage extends StatelessWidget {
         appBar: AppBar(),
         title: "Мероприятие"
       ),
-      body: Column(
-        children: [
-          InputField(
-            hint: "Название",
-            onSubmit: (value) {},
-          ),
-          InputField(
-            hint: "Описание",
-            onSubmit: (value) {},
-            isMultiLines: true,
-            icon: const Icon(Icons.list),
-          )
-        ],
+      body: Padding(
+        padding: const EdgeInsets.symmetric(
+            horizontal: 15
+        ),
+        child: Column(
+          children: [
+            const EventPropertiesFields(),
+            FilledButton(
+              child: const Text("Создать"),
+              onPressed: () {},
+            )
+          ]
+        ),
       ),
     );
   }
+}
+
+class EventPropertiesFields extends StatelessWidget {
+  const EventPropertiesFields({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Expanded(
+        child: Column(
+          children: [
+            InputField(
+              hint: "Название",
+              onSubmit: (value) {},
+            ),
+            InputField(
+              hint: "Описание",
+              onSubmit: (value) {},
+              isMultiLines: true,
+              icon: const Icon(Icons.list),
+            )
+          ],
+        )
+    );
+  }
+
 }
 
 typedef InputFieldSubmitCallback = Function(String value);
@@ -53,7 +78,7 @@ class InputField extends StatelessWidget {
   }
 
   int? _getMinLines() {
-    if (isMultiLines) return 2;
+    if (isMultiLines) return 1;
     return null;
   }
 
@@ -62,13 +87,15 @@ class InputField extends StatelessWidget {
     return Card(
       child: TextField(
           cursorColor: Colors.black,
-
           onSubmitted: onSubmit,
           minLines: _getMinLines(),
           maxLines: _getMaxLines(),
           textInputAction: TextInputAction.next,
           decoration: InputDecoration(
-              contentPadding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+              contentPadding: const EdgeInsets.symmetric(
+                  horizontal: 48,
+                  vertical: 10
+              ),
               labelStyle: Theme.of(context).textTheme.bodyLarge,
               labelText: hint,
               filled: true,

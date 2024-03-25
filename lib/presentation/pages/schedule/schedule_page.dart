@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_expandable_fab/flutter_expandable_fab.dart';
+import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:schedule_for_ictis_flutter/presentation/pages/schedule/schedule_week.dart';
+import 'package:schedule_for_ictis_flutter/presentation/theme/icons.dart';
 import 'package:table_calendar/table_calendar.dart';
 
+import '../../route/routes.dart';
 import '../../theme/colors.dart';
 import '../../widgets/date_header.dart';
 import 'cubit/schedule_cubit.dart';
@@ -19,6 +23,34 @@ class SchedulePage extends StatelessWidget {
         create: (context) => ScheduleCubit(),
         child: const Schedule(),
       ),
+      floatingActionButtonLocation: ExpandableFab.location,
+      floatingActionButton: ExpandableFab(
+        distance: 70,
+        type: ExpandableFabType.up,
+        openButtonBuilder: RotateFloatingActionButtonBuilder(
+          child: CustomIcons.addWhite,
+          fabSize: ExpandableFabSize.regular,
+        ),
+        closeButtonBuilder: RotateFloatingActionButtonBuilder(
+          child: RotationTransition(
+              turns: const AlwaysStoppedAnimation(45/360),
+              child: CustomIcons.addWhite
+          ),
+          fabSize: ExpandableFabSize.regular,
+        ),
+        children: [
+          FloatingActionButton.small(
+            heroTag: null,
+            onPressed: () => context.go(Routes.addEvent.path),
+            child: CustomIcons.event,
+          ),
+          FloatingActionButton.small(
+            heroTag: null,
+            onPressed: () {},
+            child: CustomIcons.task,
+          ),
+        ],
+      )
     );
   }
 
@@ -36,7 +68,7 @@ class _Schedule extends State<Schedule> {
 
   @override
   void initState() {
-    context.read<ScheduleCubit>().getWeekSchedule();
+    context.read<ScheduleCubit>().loadSchedule();
     super.initState();
   }
 

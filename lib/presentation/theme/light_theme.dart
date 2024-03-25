@@ -13,6 +13,10 @@ ThemeData lightTheme = ThemeData(
   cardTheme: cardTheme,
   filledButtonTheme: filledButtonThemeData,
   splashColor: Colors.transparent,
+  floatingActionButtonTheme: const FloatingActionButtonThemeData(
+    backgroundColor: CustomColors.accentColor,
+    shape: CircleBorder(),
+  ),
   textTheme: const TextTheme(
 
     //headline

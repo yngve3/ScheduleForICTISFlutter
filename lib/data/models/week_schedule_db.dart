@@ -4,8 +4,7 @@ import 'day_schedule_db.dart';
 
 @Entity()
 class WeekScheduleDB {
-  @Id() int id = 0;
-  final int weekNum;
+  @Id() int weekNum;
   final scheduleSubject = ToOne<ScheduleSubject>();
 
   @Backlink('weekSchedule')

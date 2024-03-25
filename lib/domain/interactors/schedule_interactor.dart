@@ -12,27 +12,25 @@ class ScheduleInteractor {
   final FavoriteSchedulesRepository favoriteSchedulesRepository = FavoriteSchedulesRepository();
 
 
-  Future<WeekSchedule> getWeekSchedule({int? weekNum}) {
+  Future<WeekSchedule> getWeekSchedule({int? weekNum}) async {
     final scheduleSubject = favoriteSchedulesRepository.getSelectedFavoriteSchedule();
 
-    WeekSchedule weekSchedule;
+    if (scheduleSubject != null) {
+      final schedule = await scheduleRepository.getWeekSchedule(scheduleSubject, weekNum: weekNum);
+      return generateWeekSchedule(schedule);
+    }
 
-    scheduleSubject.listen((event) async {
-      final schedule = await scheduleRepository.getWeekSchedule(event!, weekNum: weekNum);
-      weekSchedule = await generateWeekSchedule(schedule);
-    });
-
-    return weekSchedule;
-
+    return WeekSchedule.empty();
   }
 
-  Future<WeekSchedule> generateWeekSchedule(WeekScheduleDB weekScheduleDB) async {
+  WeekSchedule generateWeekSchedule(WeekScheduleDB weekScheduleDB) {
     List<DaySchedule> daySchedules = [];
     for (final dayScheduleDB in weekScheduleDB.daySchedules) {
       List<DayScheduleItem> couples = [];
       for (int i = 0; i < dayScheduleDB.couples.length; i++) {
         final coupleDB = dayScheduleDB.couples[i];
-        couples.add(Couple.fromCoupleDB(coupleDB, i + 1));
+        final couple = Couple.fromCoupleDB(coupleDB, i + 1);
+        if (!couple.isEmpty) couples.add(couple);
       }
 
       couples.add(Event(const TimeOfDay(hour: 11, minute: 1), const TimeOfDay(hour: 2, minute: 2), title: "fk", description: "lsakdjf"));

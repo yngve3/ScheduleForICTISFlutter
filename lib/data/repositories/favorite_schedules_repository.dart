@@ -63,11 +63,18 @@ class FavoriteSchedulesRepository {
     _favoriteSchedulesBox.removeManyAsync(ids);
   }
 
-  Stream<ScheduleSubject?> getSelectedFavoriteSchedule() {
+  // Stream<ScheduleSubject?> getSelectedFavoriteSchedule() {
+  //   QueryBuilder<ScheduleSubject> query = _favoriteSchedulesBox.query(
+  //       ScheduleSubject_.isChosen.equals(true)
+  //   );
+  //
+  //   return query.watch(triggerImmediately: true).map((query) => query.findFirst());
+  // }
+
+  ScheduleSubject? getSelectedFavoriteSchedule() {
     QueryBuilder<ScheduleSubject> query = _favoriteSchedulesBox.query(
         ScheduleSubject_.isChosen.equals(true)
     );
-
-    return query.watch(triggerImmediately: true).map((query) => query.findFirst());
+    return query.build().findFirst();
   }
 }

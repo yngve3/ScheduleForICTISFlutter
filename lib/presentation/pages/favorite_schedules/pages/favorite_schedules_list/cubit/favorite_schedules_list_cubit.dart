@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:schedule_for_ictis_flutter/domain/models/schedule_subject/schedule_subject.dart';
 import 'package:collection/collection.dart';
@@ -11,10 +13,18 @@ class FavoriteSchedulesListCubit extends Cubit<FavoriteSchedulesListState> {
   final FavoriteSchedulesRepository repository;
   List<int> deletionIdsList = [];
 
+  late StreamSubscription<List<ScheduleSubject>> subscription;
+
   void getFavoriteSchedules() {
-    repository.getFromDBAll().listen((favoriteSchedules) {
+    subscription = repository.getFromDBAll().listen((favoriteSchedules) {
       emit(FavoriteSchedulesListState(favoriteSchedules: favoriteSchedules));
     });
+  }
+
+  @override
+  Future<void> close() {
+    subscription.cancel();
+    return super.close();
   }
 
   void select(ScheduleSubject scheduleSubject) {

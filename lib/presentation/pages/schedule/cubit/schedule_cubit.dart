@@ -24,12 +24,21 @@ class ScheduleCubit extends Cubit<ScheduleState> {
     emit(state.copyWith(selectedDay: newDay));
   }
 
-  void selectDay(DateTime date) {
+  void selectDay(DateTime date) async {
     final weekNumDifference = _weekNumDifference(date);
     if (weekNumDifference != 0) {
-      interactor.getWeekSchedule(weekNum: state.weekSchedule.weekNum + weekNumDifference);
+      final schedule = await interactor.getWeekSchedule(
+          weekNum: state.weekSchedule.weekNum + weekNumDifference
+      );
+      emit(ScheduleState(selectedDay: date, weekSchedule: schedule));
+    } else {
+      emit(state.copyWith(selectedDay: date));
     }
-    emit(state.copyWith(selectedDay: date));
+  }
+
+  void loadSchedule() async {
+    final weekSchedule = await interactor.getWeekSchedule();
+    emit(state.copyWith(weekSchedule: weekSchedule));
   }
 
   void nextOrPreviousDay(int weekDay) {

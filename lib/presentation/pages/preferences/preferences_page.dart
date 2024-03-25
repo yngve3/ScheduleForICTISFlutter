@@ -65,8 +65,6 @@ class PreferenceTitle extends StatelessWidget {
   }
 }
 
-typedef ItemTapped = Function();
-
 class PreferenceItem extends StatelessWidget {
   const PreferenceItem({
     super.key,
@@ -77,7 +75,7 @@ class PreferenceItem extends StatelessWidget {
 
   final String title;
   final String subtitle;
-  final ItemTapped onItemTapped;
+  final VoidCallback onItemTapped;
 
   @override
   Widget build(BuildContext context) {

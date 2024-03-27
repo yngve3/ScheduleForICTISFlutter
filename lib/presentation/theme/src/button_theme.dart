@@ -18,3 +18,8 @@ FilledButtonThemeData filledButtonThemeData = FilledButtonThemeData(
       ),
     )
 );
+
+FloatingActionButtonThemeData floatingActionButtonThemeData = const FloatingActionButtonThemeData(
+      backgroundColor: CustomColors.accentColor,
+      shape: CircleBorder(),
+);

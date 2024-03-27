@@ -24,7 +24,7 @@ class FavoriteSchedulesListPage extends StatelessWidget {
           IconButton(
               onPressed: () =>
                 context.go(Routes.addFavoriteSchedule.path),
-              icon: CustomIcons.add
+              icon: CustomIcons.add.image()
           )
         ],
       ),

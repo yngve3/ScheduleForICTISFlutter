@@ -25,7 +25,7 @@ class MyAppBar extends StatelessWidget implements PreferredSizeWidget{
           style: Theme.of(context).textTheme.headlineLarge
       ),
       leading: IconButton(
-          icon: CustomIcons.backArrow,
+          icon: CustomIcons.backArrow.image(),
           onPressed: ()  => context.pop()
       ),
       actions: actions,

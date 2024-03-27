@@ -36,7 +36,6 @@ class Couple extends DayScheduleItem {
   }
 
   bool get isOnline => audiences.contains("LMS");
-
   bool get isVPK => discipline.contains("ВПК");
   bool get isVUC => discipline.contains("ВУЦ");
   bool get isEmpty => discipline.isEmpty;
@@ -55,8 +54,8 @@ class Event extends DayScheduleItem {
 extension TimeFromCoupleNum on TimeOfDay {
   static TimeOfDay? timeStart(int coupleNum) {
     switch (coupleNum) {
-      case 1: return const TimeOfDay(hour: 8, minute: 0);
-      case 2: return const TimeOfDay(hour: 9, minute: 50);
+      case 1: return const TimeOfDay(hour: 8,  minute: 0);
+      case 2: return const TimeOfDay(hour: 9,  minute: 50);
       case 3: return const TimeOfDay(hour: 11, minute: 55);
       case 4: return const TimeOfDay(hour: 13, minute: 45);
       case 5: return const TimeOfDay(hour: 15, minute: 50);
@@ -68,7 +67,7 @@ extension TimeFromCoupleNum on TimeOfDay {
 
   static TimeOfDay? timeEnd(int coupleNum) {
     switch (coupleNum) {
-      case 1: return const TimeOfDay(hour: 9, minute: 35);
+      case 1: return const TimeOfDay(hour: 9,  minute: 35);
       case 2: return const TimeOfDay(hour: 11, minute: 25);
       case 3: return const TimeOfDay(hour: 13, minute: 30);
       case 4: return const TimeOfDay(hour: 15, minute: 20);

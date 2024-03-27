@@ -28,13 +28,13 @@ class SchedulePage extends StatelessWidget {
         distance: 70,
         type: ExpandableFabType.up,
         openButtonBuilder: RotateFloatingActionButtonBuilder(
-          child: CustomIcons.addWhite,
+          child: CustomIcons.addWhite.image(),
           fabSize: ExpandableFabSize.regular,
         ),
         closeButtonBuilder: RotateFloatingActionButtonBuilder(
           child: RotationTransition(
               turns: const AlwaysStoppedAnimation(45/360),
-              child: CustomIcons.addWhite
+              child: CustomIcons.addWhite.image()
           ),
           fabSize: ExpandableFabSize.regular,
         ),
@@ -42,12 +42,12 @@ class SchedulePage extends StatelessWidget {
           FloatingActionButton.small(
             heroTag: null,
             onPressed: () => context.go(Routes.addEvent.path),
-            child: CustomIcons.event,
+            child: CustomIcons.event.image(),
           ),
           FloatingActionButton.small(
             heroTag: null,
             onPressed: () {},
-            child: CustomIcons.task,
+            child: CustomIcons.task.image(),
           ),
         ],
       )

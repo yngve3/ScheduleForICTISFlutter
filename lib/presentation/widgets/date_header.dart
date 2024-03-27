@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
+import 'package:schedule_for_ictis_flutter/presentation/widgets/date_text.dart';
 
 class DateHeader extends StatelessWidget {
-  DateHeader({
+  const DateHeader({
     super.key,
     required this.date,
     this.studyWeek = 1
@@ -10,22 +10,14 @@ class DateHeader extends StatelessWidget {
 
   final DateTime date;
   final int studyWeek;
-  final DateFormat dateFormat = DateFormat("EEEE, d MMMM", 'ru_RU');
 
   @override
   Widget build(BuildContext context) {
-    String formattedDate = dateFormat.format(date).firstSymToUpperCase();
     return SafeArea(
       child: ListTile(
-        title: Text(formattedDate, style: Theme.of(context).textTheme.headlineLarge),
+        title: DateText(date: date, style: Theme.of(context).textTheme.headlineLarge),
         subtitle: Text("Учебная неделя №$studyWeek"),
       ),
     );
-  }
-}
-
-extension SymbolsCaseChanging on String {
-  String firstSymToUpperCase() {
-    return this[0].toUpperCase() + substring(1);
   }
 }

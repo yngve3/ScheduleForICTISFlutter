@@ -1,7 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:schedule_for_ictis_flutter/presentation/pages/event_add/cubit/event_add_cubit.dart';
+import 'package:schedule_for_ictis_flutter/presentation/pages/event_add/cubit/event_add_state.dart';
+import 'package:schedule_for_ictis_flutter/presentation/theme/icons.dart';
 import 'package:schedule_for_ictis_flutter/presentation/widgets/app_bar.dart';
 
-import '../../theme/colors.dart';
+import '../../widgets/property/properties/date_property.dart';
+import '../../widgets/property/properties/input_property.dart';
+import '../../widgets/property/properties/time_property.dart';
 
 class EventAddPage extends StatelessWidget {
   const EventAddPage({super.key});
@@ -9,106 +15,56 @@ class EventAddPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: MyAppBar(
-        appBar: AppBar(),
-        title: "Мероприятие"
-      ),
-      body: Padding(
-        padding: const EdgeInsets.symmetric(
-            horizontal: 15
-        ),
-        child: Column(
-          children: [
-            const EventPropertiesFields(),
-            FilledButton(
-              child: const Text("Создать"),
-              onPressed: () {},
-            )
-          ]
-        ),
-      ),
+      appBar: MyAppBar(appBar: AppBar(), title: "Мероприятие"),
+      body: BlocProvider(
+          create: (context) => EventAddCubit(), child: const EventAdd()),
     );
   }
 }
 
-class EventPropertiesFields extends StatelessWidget {
-  const EventPropertiesFields({super.key});
+class EventAdd extends StatelessWidget {
+  const EventAdd({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Expanded(
-        child: Column(
-          children: [
-            InputField(
-              hint: "Название",
-              onSubmit: (value) {},
+    final cubit = BlocProvider.of<EventAddCubit>(context);
+    return BlocBuilder<EventAddCubit, EventAddState>(
+      builder: (context, state) => Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 15),
+        child: Column(children: [
+          Expanded(
+            child: Column(
+              children: [
+                InputProperty(
+                    hint: "Название",
+                    onChanged: (value) => cubit.titleChanged(value)),
+                InputProperty(
+                    hint: "Описание",
+                    isMultiLines: true,
+                    icon: CustomIcons.list.image(),
+                    onChanged: (value) => cubit.descriptionChanged(value)),
+                TimeProperty(
+                  timeStart: state.timeStart,
+                  timeEnd: state.timeEnd,
+                  onTimeEndChosen: (time) => cubit.timeEndChanged(time),
+                  onTimeStartChosen: (time) => cubit.timeStartChanged(time),
+                ),
+                DateProperty(
+                  date: state.date,
+                  onDateChosen: (date) => cubit.dateChanged(date),
+                ),
+              ],
             ),
-            InputField(
-              hint: "Описание",
-              onSubmit: (value) {},
-              isMultiLines: true,
-              icon: const Icon(Icons.list),
-            )
-          ],
-        )
-    );
-  }
-
-}
-
-typedef InputFieldSubmitCallback = Function(String value);
-
-class InputField extends StatelessWidget {
-  const InputField({
-    super.key,
-    required this.hint,
-    required this.onSubmit,
-    this.isMultiLines = false,
-    this.icon
-  });
-
-  final String hint;
-  final bool isMultiLines;
-  final Icon? icon;
-  final InputFieldSubmitCallback onSubmit;
-
-  int? _getMaxLines() {
-    if (isMultiLines) return null;
-    return 1;
-  }
-
-  int? _getMinLines() {
-    if (isMultiLines) return 1;
-    return null;
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Card(
-      child: TextField(
-          cursorColor: Colors.black,
-          onSubmitted: onSubmit,
-          minLines: _getMinLines(),
-          maxLines: _getMaxLines(),
-          textInputAction: TextInputAction.next,
-          decoration: InputDecoration(
-              contentPadding: const EdgeInsets.symmetric(
-                  horizontal: 48,
-                  vertical: 10
-              ),
-              labelStyle: Theme.of(context).textTheme.bodyLarge,
-              labelText: hint,
-              filled: true,
-              focusColor: Colors.black,
-              fillColor: CustomColors.cardBackgroundColor,
-              prefixIcon: icon,
-              border: UnderlineInputBorder(
-                  borderSide: BorderSide.none,
-                  borderRadius: BorderRadius.circular(10)
-              )
-          )
+          ),
+          FilledButton(
+            onPressed:
+              state.isSaveButtonEnabled
+                  ? () => cubit.saveEvent()
+                  : null,
+            child: const Text("Создать"),
+          ),
+        ]),
       ),
     );
   }
 }
-

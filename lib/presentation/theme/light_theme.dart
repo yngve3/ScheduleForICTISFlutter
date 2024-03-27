@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:schedule_for_ictis_flutter/presentation/theme/src/button_theme.dart';
 import 'package:schedule_for_ictis_flutter/presentation/theme/src/card_theme.dart';
+import 'package:schedule_for_ictis_flutter/presentation/theme/src/input_decorator_theme.dart';
 
 import 'colors.dart';
 
 const String fontNameDefault = 'Roboto';
-const double offsetSize = 2;
 
 ThemeData lightTheme = ThemeData(
   brightness: Brightness.light,
@@ -13,29 +13,27 @@ ThemeData lightTheme = ThemeData(
   cardTheme: cardTheme,
   filledButtonTheme: filledButtonThemeData,
   splashColor: Colors.transparent,
-  floatingActionButtonTheme: const FloatingActionButtonThemeData(
-    backgroundColor: CustomColors.accentColor,
-    shape: CircleBorder(),
-  ),
+  floatingActionButtonTheme: floatingActionButtonThemeData,
+  inputDecorationTheme: inputDecorationTheme,
   textTheme: const TextTheme(
 
     //headline
     headlineLarge: TextStyle(
         fontFamily: fontNameDefault,
         fontWeight: FontWeight.bold,
-        fontSize: 24 + offsetSize
+        fontSize: 26
     ),
     headlineMedium: TextStyle(
         fontFamily: fontNameDefault,
         fontWeight: FontWeight.w500,
-        fontSize: 22 + offsetSize
+        fontSize: 24
     ),
 
     //title
     titleLarge: TextStyle(
         fontFamily: fontNameDefault,
         fontWeight: FontWeight.w500,
-        fontSize: 16 + offsetSize
+        fontSize: 18
     ),
 
       //body
@@ -43,18 +41,18 @@ ThemeData lightTheme = ThemeData(
           fontFamily: fontNameDefault,
           fontWeight: FontWeight.w500,
           height: 1.2,
-          fontSize: 14 + offsetSize
+          fontSize: 16
       ),
     bodyMedium: TextStyle(
         fontFamily: fontNameDefault,
         fontWeight: FontWeight.w500,
-        fontSize: 12 + offsetSize,
-      color: CustomColors.textBodyMediumColor
+        fontSize: 14,
+        color: CustomColors.textBodyMediumColor
     ),
     bodySmall: TextStyle(
         fontFamily: fontNameDefault,
         fontWeight: FontWeight.w500,
-        fontSize: 10 + offsetSize,
+        fontSize: 12,
         color: CustomColors.textBodyMediumColor
     )
   )

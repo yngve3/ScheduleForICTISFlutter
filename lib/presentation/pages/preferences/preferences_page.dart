@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:schedule_for_ictis_flutter/presentation/extensions/context_ext.dart';
 
 import '../../route/routes.dart';
 
@@ -13,7 +14,7 @@ class PreferencesPage extends StatelessWidget {
         centerTitle: true,
         title: Padding(
           padding: const EdgeInsets.only(top: 20),
-          child: Text("Настройки", style: Theme.of(context).textTheme.headlineLarge),
+          child: Text("Настройки", style: context.textTheme.headlineLarge),
         ),
       ),
       body: const Padding(
@@ -59,7 +60,7 @@ class PreferenceTitle extends StatelessWidget {
       padding: const EdgeInsets.only(top: 20),
       child: Text(
           title,
-          style: Theme.of(context).textTheme.headlineMedium
+          style: context.textTheme.headlineMedium
       ),
     );
   }
@@ -82,8 +83,8 @@ class PreferenceItem extends StatelessWidget {
     return Card(
         child: InkWell(
           child: ListTile(
-              title: Text(title, style: Theme.of(context).textTheme.titleLarge),
-              subtitle: Text(subtitle, style: Theme.of(context).textTheme.bodyMedium)
+              title: Text(title, style: context.textTheme.titleLarge),
+              subtitle: Text(subtitle, style: context.textTheme.bodyMedium)
           ),
           onTap: () => onItemTapped(),
         )

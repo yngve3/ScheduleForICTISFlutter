@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:schedule_for_ictis_flutter/presentation/extensions/context_ext.dart';
 import 'package:schedule_for_ictis_flutter/presentation/pages/event_add/cubit/event_add_cubit.dart';
 import 'package:schedule_for_ictis_flutter/presentation/pages/event_add/cubit/event_add_state.dart';
-import 'package:schedule_for_ictis_flutter/presentation/theme/icons.dart';
 import 'package:schedule_for_ictis_flutter/presentation/widgets/app_bar.dart';
 
+import '../../../gen/assets.gen.dart';
 import '../../widgets/property/properties/date_property.dart';
 import '../../widgets/property/properties/input_property.dart';
 import '../../widgets/property/properties/time_property.dart';
@@ -41,7 +42,7 @@ class EventAdd extends StatelessWidget {
                 InputProperty(
                     hint: "Описание",
                     isMultiLines: true,
-                    icon: CustomIcons.list.image(),
+                    icon: Assets.icons.icList.image(color: context.customColors.text1),
                     onChanged: (value) => cubit.descriptionChanged(value)),
                 TimeProperty(
                   timeStart: state.timeStart,

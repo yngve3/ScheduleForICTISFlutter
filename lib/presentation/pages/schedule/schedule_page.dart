@@ -2,13 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_expandable_fab/flutter_expandable_fab.dart';
 import 'package:go_router/go_router.dart';
-import 'package:intl/intl.dart';
+import 'package:schedule_for_ictis_flutter/presentation/extensions/context_ext.dart';
 import 'package:schedule_for_ictis_flutter/presentation/pages/schedule/schedule_week.dart';
-import 'package:schedule_for_ictis_flutter/presentation/theme/icons.dart';
+import 'package:schedule_for_ictis_flutter/presentation/theme/src/table_calendar/table_calendar_theme.dart';
 import 'package:table_calendar/table_calendar.dart';
 
+import '../../../gen/assets.gen.dart';
 import '../../route/routes.dart';
-import '../../theme/colors.dart';
 import '../../widgets/date_header.dart';
 import 'cubit/schedule_cubit.dart';
 import 'cubit/schedule_state.dart';
@@ -28,13 +28,13 @@ class SchedulePage extends StatelessWidget {
         distance: 70,
         type: ExpandableFabType.up,
         openButtonBuilder: RotateFloatingActionButtonBuilder(
-          child: CustomIcons.addWhite.image(),
+          child: Assets.icons.icAdd.image(color: context.customColors.background),
           fabSize: ExpandableFabSize.regular,
         ),
         closeButtonBuilder: RotateFloatingActionButtonBuilder(
           child: RotationTransition(
               turns: const AlwaysStoppedAnimation(45/360),
-              child: CustomIcons.addWhite.image()
+              child: Assets.icons.icAdd.image(color: context.customColors.background)
           ),
           fabSize: ExpandableFabSize.regular,
         ),
@@ -42,12 +42,12 @@ class SchedulePage extends StatelessWidget {
           FloatingActionButton.small(
             heroTag: null,
             onPressed: () => context.go(Routes.addEvent.path),
-            child: CustomIcons.event.image(),
+            child: Assets.icons.icEvent.image(color: context.customColors.background),
           ),
           FloatingActionButton.small(
             heroTag: null,
             onPressed: () {},
-            child: CustomIcons.task.image(),
+            child: Assets.icons.icTask.image(color: context.customColors.background),
           ),
         ],
       )
@@ -74,6 +74,10 @@ class _Schedule extends State<Schedule> {
 
   @override
   Widget build(BuildContext context) {
+    final calendarStyle = Theme.of(context).extension<TableCalendarTheme>()!.calendarStyle;
+    final daysOfWeekStyle = Theme.of(context).extension<TableCalendarTheme>()!.daysOfWeekStyle;
+    final headerVisible = Theme.of(context).extension<TableCalendarTheme>()!.headerVisible;
+
     return BlocBuilder<ScheduleCubit, ScheduleState>(
         builder: (context, state) {
           return Column(
@@ -82,39 +86,18 @@ class _Schedule extends State<Schedule> {
               const SizedBox(height: 10),
               TableCalendar(
                 weekendDays: const [DateTime.sunday],
-                headerVisible: false,
+                startingDayOfWeek: StartingDayOfWeek.monday,
+
+                headerVisible: headerVisible,
                 locale: 'ru_RU',
+
                 firstDay: DateTime.utc(2010, 10, 16),
                 lastDay: DateTime.utc(2030, 3, 14),
                 focusedDay: state.selectedDay,
                 calendarFormat: _calendarFormat,
 
-                daysOfWeekStyle: DaysOfWeekStyle(
-                  weekdayStyle: Theme.of(context).textTheme.bodyLarge!,
-                  weekendStyle: Theme.of(context).textTheme.bodyLarge!,
-                  dowTextFormatter: (date, locale) {
-                    return DateFormat.E(locale).format(date).toUpperCase();
-                  }
-                ),
-                startingDayOfWeek: StartingDayOfWeek.monday,
-
-                calendarStyle: CalendarStyle(
-                    isTodayHighlighted: false,
-                    tablePadding: const EdgeInsets.symmetric(horizontal: 20),
-
-                    defaultTextStyle: Theme.of(context).textTheme.bodyLarge!,
-                    outsideTextStyle: Theme.of(context).textTheme.bodyLarge!.copyWith(color: CustomColors.disabledColor),
-
-                    selectedTextStyle: Theme.of(context).textTheme.bodyLarge!.copyWith(color: Colors.white),
-                    selectedDecoration: const BoxDecoration(
-                        color: CustomColors.accentColor,
-                        shape: BoxShape.circle
-                    ),
-
-                    weekendTextStyle: Theme.of(context).textTheme.bodyLarge!.copyWith(
-                      color: CustomColors.red
-                    )
-                ),
+                daysOfWeekStyle: daysOfWeekStyle,
+                calendarStyle: calendarStyle,
 
                 onDaySelected: (selectedDay, focusedDay) {
                   if (!isSameDay(state.selectedDay, selectedDay)) {

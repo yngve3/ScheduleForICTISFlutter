@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:schedule_for_ictis_flutter/presentation/extensions/context_ext.dart';
 
 import '../../../domain/models/couple/couple_type.dart';
 import '../../../domain/models/schedule/day_schedule_item.dart';
@@ -22,7 +23,7 @@ class EventItem implements ScheduleDayItem {
       padding: const EdgeInsets.symmetric(horizontal: 20),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(10),
-        color: CustomColors.cardBackgroundColor,
+        color: context.customColors.card,
       ),
       child: Row(
         children: [
@@ -30,10 +31,10 @@ class EventItem implements ScheduleDayItem {
           Expanded(
               child: Column(
                 children: [
-                  Text(event.title, style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                  Text(event.title, style: context.textTheme.bodyLarge?.copyWith(
                       fontWeight: FontWeight.w400
                   )),
-                  Text(event.description, style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                  Text(event.description, style: context.textTheme.bodyMedium?.copyWith(
                       fontWeight: FontWeight.w400
                   ))
                 ],
@@ -61,19 +62,19 @@ class CouplesItem implements ScheduleDayItem {
 
   final Couple couple;
 
-  Color _getDividerColor() {
-    if (couple.isOnline) return CustomColors.green;
+  Color _getDividerColor(BuildContext context) {
+    if (couple.isOnline) return context.customColors.greenIndicator;
 
-    return CustomColors.accentColor;
+    return context.customColors.accent;
   }
 
-  Color _getCircleColor() {
+  Color _getCircleColor(BuildContext context) {
     switch (couple.type) {
-      case CoupleType.laboratory: return CustomColors.red;
-      case CoupleType.practice: return CustomColors.yellow;
-      case CoupleType.lecture: return CustomColors.green;
-      case CoupleType.exam: return Colors.black;
-      case CoupleType.none: return CustomColors.green;
+      case CoupleType.laboratory: return context.customColors.redIndicator;
+      case CoupleType.practice: return context.customColors.yellowIndicator;
+      case CoupleType.lecture: return context.customColors.greenIndicator;
+      case CoupleType.exam: return context.customColors.text1;
+      case CoupleType.none: return context.customColors.greenIndicator;
       case null:
         return Colors.transparent;
     }
@@ -86,13 +87,13 @@ class CouplesItem implements ScheduleDayItem {
       padding: const EdgeInsets.symmetric(horizontal: 20),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(10),
-        color: CustomColors.cardBackgroundColor,
+        color: context.customColors.card,
       ),
       child: IntrinsicHeight(
         child: Row(
           children: [
             TimeLeftPanel(timeStart: couple.timeStart, timeEnd: couple.timeEnd),
-            VerticalDivider(thickness: 1, color: _getDividerColor()),
+            VerticalDivider(thickness: 1, color: _getDividerColor(context)),
             Expanded(
                 child: Padding(
                   padding: const EdgeInsets.symmetric(vertical: 10),
@@ -101,14 +102,14 @@ class CouplesItem implements ScheduleDayItem {
                     children: [
                       Row(
                         children: [
-                          Text(couple.audiences, style: Theme.of(context).textTheme.bodyLarge),
+                          Text(couple.audiences, style: context.textTheme.bodyLarge),
                           const SizedBox(width: 8),
-                          Icon(Icons.circle, color: _getCircleColor()),
+                          Icon(Icons.circle, color: _getCircleColor(context)),
                           const SizedBox(width: 8),
                           Text(
                               couple.type.name,
-                              style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                                  color: CustomColors.textBodyMediumColor
+                              style: context.textTheme.bodyLarge?.copyWith(
+                                  color: context.customColors.text2
                               )
                           )
                         ],
@@ -117,14 +118,14 @@ class CouplesItem implements ScheduleDayItem {
                       Text(
                           couple.discipline,
                           softWrap: true,
-                          style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                          style: context.textTheme.bodyLarge?.copyWith(
                               fontWeight: FontWeight.w400
                           )
                       ),
                       const SizedBox(height: 5),
                       Text(
                           couple.lecturers,
-                          style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                          style: context.textTheme.bodyMedium?.copyWith(
                               fontWeight: FontWeight.w400
                           )
                       )
@@ -156,8 +157,8 @@ class TimeLeftPanel extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.end,
         children: [
-          Text(timeStart.format(context), style: Theme.of(context).textTheme.bodyLarge),
-          Text(timeEnd.format(context), style: Theme.of(context).textTheme.bodySmall)
+          Text(timeStart.format(context), style: context.textTheme.bodyLarge),
+          Text(timeEnd.format(context), style: context.textTheme.bodySmall)
         ],
       ),
     );

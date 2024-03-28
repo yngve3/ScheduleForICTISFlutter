@@ -2,12 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:schedule_for_ictis_flutter/data/repositories/favorite_schedules_repository.dart';
+import 'package:schedule_for_ictis_flutter/presentation/extensions/context_ext.dart';
 import 'package:schedule_for_ictis_flutter/presentation/pages/favorite_schedules/pages/favorite_schedules_list/cubit/favorite_schedules_list_cubit.dart';
 import 'package:schedule_for_ictis_flutter/presentation/pages/favorite_schedules/pages/favorite_schedules_list/cubit/favorite_schedules_list_state.dart';
-import 'package:schedule_for_ictis_flutter/presentation/theme/icons.dart';
 import 'package:schedule_for_ictis_flutter/presentation/widgets/app_bar.dart';
 
 import '../../../../../domain/models/schedule_subject/schedule_subject.dart';
+import '../../../../../gen/assets.gen.dart';
 import '../../../../route/routes.dart';
 import '../../../../widgets/schedule_subject_widget.dart';
 
@@ -24,7 +25,7 @@ class FavoriteSchedulesListPage extends StatelessWidget {
           IconButton(
               onPressed: () =>
                 context.go(Routes.addFavoriteSchedule.path),
-              icon: CustomIcons.add.image()
+              icon: Assets.icons.icAdd.image(color: context.customColors.text1)
           )
         ],
       ),

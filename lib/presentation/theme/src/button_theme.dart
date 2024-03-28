@@ -1,25 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:schedule_for_ictis_flutter/presentation/theme/theme_ext/colors_ext.dart';
 
-import '../colors.dart';
-
-FilledButtonThemeData filledButtonThemeData = FilledButtonThemeData(
+FilledButtonThemeData filledButtonThemeData(ThemeColors colors, TextTheme textTheme) => FilledButtonThemeData(
     style: FilledButton.styleFrom(
-      backgroundColor: CustomColors.accentColor,
+      backgroundColor: colors.accent,
       minimumSize: const Size.fromHeight(46),
       padding: const EdgeInsets.symmetric(vertical: 15),
       alignment: Alignment.bottomCenter,
-      textStyle: const TextStyle(
-          fontFamily: 'Roboto',
-          fontWeight: FontWeight.w500,
-          fontSize: 18
-      ),
+      textStyle: textTheme.titleLarge,
       shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(10)
       ),
     )
 );
 
-FloatingActionButtonThemeData floatingActionButtonThemeData = const FloatingActionButtonThemeData(
-      backgroundColor: CustomColors.accentColor,
-      shape: CircleBorder(),
+FloatingActionButtonThemeData floatingActionButtonThemeData(ThemeColors colors) => FloatingActionButtonThemeData(
+      backgroundColor: colors.accent,
+      shape: const CircleBorder(),
 );

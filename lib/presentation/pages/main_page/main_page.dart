@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:schedule_for_ictis_flutter/presentation/theme/icons.dart';
+import 'package:schedule_for_ictis_flutter/presentation/extensions/context_ext.dart';
 
+import '../../../gen/assets.gen.dart';
 import '../../route/routes.dart';
-import '../../theme/colors.dart';
 
 class MainPage extends StatelessWidget {
   const MainPage({
@@ -40,20 +40,20 @@ class MainPage extends StatelessWidget {
       bottomNavigationBar: BottomNavigationBar(
         showSelectedLabels: false,
         showUnselectedLabels: false,
-        selectedItemColor: CustomColors.accentColor,
-        selectedIconTheme: const IconThemeData(
-            color: CustomColors.accentColor
+        selectedItemColor: context.customColors.accent,
+        selectedIconTheme: IconThemeData(
+            color: context.customColors.accent
         ),
         elevation: 0,
         items: [
           BottomNavigationBarItem(
-            icon: CustomIcons.schedule.image(),
-            activeIcon: CustomIcons.schedule.image(active: true),
+            icon: Assets.icons.icSchedule.image(color: context.customColors.text1),
+            activeIcon: Assets.icons.icSchedule.image(color: context.customColors.accent),
             label: "Schedule",
           ),
           BottomNavigationBarItem(
-              icon: CustomIcons.settings.image(),
-              activeIcon: CustomIcons.settings.image(active: true),
+              icon: Assets.icons.icSettings.image(color: context.customColors.text1),
+              activeIcon: Assets.icons.icSettings.image(color: context.customColors.accent),
               label: "Preferences"
           ),
         ],

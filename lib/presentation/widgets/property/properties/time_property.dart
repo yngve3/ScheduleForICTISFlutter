@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:schedule_for_ictis_flutter/presentation/extensions/context_ext.dart';
 
-import '../../../theme/icons.dart';
+import '../../../../gen/assets.gen.dart';
 import '../../../widgets/property/property.dart';
 import '../../../widgets/property/tiles/clickable_tile.dart';
 
@@ -30,16 +31,16 @@ class TimeProperty extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Property(
-      icon: CustomIcons.time.image(),
+      icon: Assets.icons.icTime.image(color: context.customColors.text1),
       children: [
         ClickableTile(
             title: Text(
               "Время начала",
-              style: Theme.of(context).textTheme.bodyLarge,
+              style: context.textTheme.bodyLarge,
             ),
             trailing: Text(
               timeStart?.format(context) ?? "",
-              style: Theme.of(context).textTheme.bodyMedium,
+              style: context.textTheme.bodyMedium,
             ),
             onTileClicked: () async {
               final time = await _showTimePicker(context);
@@ -49,11 +50,11 @@ class TimeProperty extends StatelessWidget {
         ClickableTile(
             title: Text(
               "Время конца",
-              style: Theme.of(context).textTheme.bodyLarge,
+              style: context.textTheme.bodyLarge,
             ),
             trailing: Text(
               timeEnd?.format(context) ?? "",
-              style: Theme.of(context).textTheme.bodyMedium,
+              style: context.textTheme.bodyMedium,
             ),
             onTileClicked: () async {
               final time = await _showTimePicker(context);
@@ -64,3 +65,4 @@ class TimeProperty extends StatelessWidget {
     );
   }
 }
+

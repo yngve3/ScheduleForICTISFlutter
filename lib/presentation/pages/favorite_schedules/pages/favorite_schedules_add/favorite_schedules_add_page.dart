@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:schedule_for_ictis_flutter/data/repositories/favorite_schedules_repository.dart';
+import 'package:schedule_for_ictis_flutter/presentation/extensions/context_ext.dart';
 import 'package:schedule_for_ictis_flutter/presentation/pages/favorite_schedules/pages/favorite_schedules_add/cubit/schedule_search_cubit.dart';
 import 'package:schedule_for_ictis_flutter/presentation/widgets/app_bar.dart';
 import 'package:schedule_for_ictis_flutter/presentation/widgets/schedule_subject_widget.dart';
 
 import '../../../../../domain/models/schedule_subject/schedule_subject.dart';
-import '../../../../theme/colors.dart';
 import 'cubit/schedule_search_state.dart';
 
 class FavoriteSchedulesAddPage extends StatelessWidget {
@@ -57,20 +57,12 @@ class SearchField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TextField(
-      cursorColor: Colors.black,
+      cursorColor: context.customColors.text1,
       onSubmitted: (value) => context.read<ScheduleSearchCubit>().search(value),
       textInputAction: TextInputAction.search,
-      decoration: InputDecoration(
-        contentPadding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
-        labelStyle: Theme.of(context).textTheme.bodyLarge,
+      decoration: const InputDecoration(
+        contentPadding: EdgeInsets.symmetric(horizontal: 15, vertical: 10),
         labelText: "Введите группу, преподавателя или аудиторию",
-        filled: true,
-        focusColor: Colors.black,
-        fillColor: CustomColors.cardBackgroundColor,
-        border: UnderlineInputBorder(
-          borderSide: BorderSide.none,
-          borderRadius: BorderRadius.circular(10)
-        )
       )
     );
   }

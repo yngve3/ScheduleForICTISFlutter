@@ -62,6 +62,7 @@ dev_dependencies:
   freezed: ^2.4.7
   json_serializable: ^6.7.1
   objectbox_generator: any
+  flutter_gen_runner: ^5.4.0
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
@@ -76,21 +77,7 @@ flutter:
 
   # To add assets to your application, add an assets section, like this:
   assets:
-   - assets/icons/ic_add_black.png
-   - assets/icons/ic_back_arrow.png
-   - assets/icons/ic_home/ic_home.png
-   - assets/icons/ic_home/ic_home_active.png
-   - assets/icons/ic_schedule/ic_schedule.png
-   - assets/icons/ic_schedule/ic_schedule_active.png
-   - assets/icons/ic_settings/ic_settings.png
-   - assets/icons/ic_settings/ic_settings_active.png
-   - assets/icons/ic_close.png
-   - assets/icons/ic_add_white.png
-   - assets/icons/ic_task.png
-   - assets/icons/ic_event.png
-   - assets/icons/ic_event_black.png
-   - assets/icons/ic_list_black.png
-   - assets/icons/ic_time_black.png
+   - assets/icons/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

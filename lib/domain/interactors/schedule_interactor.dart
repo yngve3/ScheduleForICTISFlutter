@@ -24,6 +24,7 @@ class ScheduleInteractor {
   }
 
   WeekSchedule generateWeekSchedule(WeekScheduleDB weekScheduleDB) {
+
     List<DaySchedule> daySchedules = [];
     for (final dayScheduleDB in weekScheduleDB.daySchedules) {
       List<DayScheduleItem> couples = [];

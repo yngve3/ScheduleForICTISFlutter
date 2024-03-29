@@ -7,8 +7,7 @@ import 'package:schedule_for_ictis_flutter/main.dart';
 
 import '../../objectbox.g.dart';
 
-class SearchResultEmptyException implements Exception {}
-class SearchRequestFailure implements Exception {}
+class SearchRequestFailureException implements Exception {}
 
 class FavoriteSchedulesRepository {
 
@@ -18,9 +17,11 @@ class FavoriteSchedulesRepository {
     _favoriteSchedulesBox = objectBox.store.box<ScheduleSubject>();
   }
 
-  // api запрос [baseURL/?query=:query] может вернуть три варианта json:
+  // api запрос [baseURL/?query=:query] может вернуть четыре варианта json:
   // {"status": "error", "message": "no args provided"}
   // - когда передается пустая строка
+  // {"result": "no_entries"}
+  // - когда ничего не найдено
   // {"table": {"name": "КТбо4-10", "group": "135.html", ...}
   // - когда результат поиска один элемент, возвращается его расписание.
   // {"choices": [{"name": "КТбо4-1", "group": "126.html", ...}, ...]}
@@ -31,19 +32,13 @@ class FavoriteSchedulesRepository {
 
     final Map<String, dynamic> json = jsonDecode(response.body);
 
-    if (json.containsKey("status")) return const [];
-    if (json.containsKey("result")) return const [];
-
-    if (json.containsKey("table")) {
-      return [ScheduleSubject.fromJson(json["table"])];
-    }
-
-    if (json.containsKey("choices")) {
-      List<dynamic> searchResults = json["choices"];
-      return searchResults.map((e) => ScheduleSubject.fromJson(e)).toList();
-    }
-
-    throw SearchRequestFailure();
+    return switch(json) {
+      {"status": String _} => _handleRequestError(),
+      {"result": String _} => _handleEmptySearch(),
+      {"table": Object _} => _handleOneResultSearch(json),
+      {"choices": List _} => _handleManyResultsSearch(json),
+      _ => throw SearchRequestFailureException()
+    };
   }
 
   Stream<List<ScheduleSubject>> getFromDBAll() {
@@ -63,18 +58,28 @@ class FavoriteSchedulesRepository {
     _favoriteSchedulesBox.removeManyAsync(ids);
   }
 
-  // Stream<ScheduleSubject?> getSelectedFavoriteSchedule() {
-  //   QueryBuilder<ScheduleSubject> query = _favoriteSchedulesBox.query(
-  //       ScheduleSubject_.isChosen.equals(true)
-  //   );
-  //
-  //   return query.watch(triggerImmediately: true).map((query) => query.findFirst());
-  // }
-
   ScheduleSubject? getSelectedFavoriteSchedule() {
     QueryBuilder<ScheduleSubject> query = _favoriteSchedulesBox.query(
         ScheduleSubject_.isChosen.equals(true)
     );
     return query.build().findFirst();
+  }
+
+
+  Future<List<ScheduleSubject>> _handleRequestError() async {
+    return const [];
+  }
+
+  Future<List<ScheduleSubject>> _handleEmptySearch() async {
+    return const [];
+  }
+
+  Future<List<ScheduleSubject>> _handleOneResultSearch(Map<String, dynamic> json) async {
+    return [ScheduleSubject.fromJson(json["table"])];
+  }
+
+  Future<List<ScheduleSubject>> _handleManyResultsSearch(Map<String, dynamic> json) async {
+    List<dynamic> searchResults = json["choices"];
+    return searchResults.map((e) => ScheduleSubject.fromJson(e)).toList();
   }
 }

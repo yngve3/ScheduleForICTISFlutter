@@ -7,14 +7,14 @@ import 'cubit/schedule_cubit.dart';
 import 'cubit/schedule_state.dart';
 
 class WeekScheduleWidget extends StatefulWidget {
-  WeekScheduleWidget({
+  const WeekScheduleWidget({
     super.key,
     required this.selectedDay,
     required this.weekSchedule
   });
 
-  DateTime selectedDay;
-  WeekSchedule weekSchedule;
+  final DateTime selectedDay;
+  final WeekSchedule weekSchedule;
 
   @override
   State<StatefulWidget> createState() => _WeekSchedule();
@@ -27,7 +27,7 @@ class _WeekSchedule extends State<WeekScheduleWidget> {
   @override
   void initState() {
     _controller = PageController(
-        initialPage: widget.selectedDay.weekday - 1
+      initialPage: widget.selectedDay.weekday - 1,
     );
     super.initState();
   }
@@ -36,7 +36,6 @@ class _WeekSchedule extends State<WeekScheduleWidget> {
 
   @override
   Widget build(BuildContext context) {
-
     return Expanded(
         child: BlocListener<ScheduleCubit, ScheduleState> (
           // Когда пользователь меняет дату на календаре, меняется состояние,
@@ -65,7 +64,11 @@ class _WeekSchedule extends State<WeekScheduleWidget> {
 
                 context.read<ScheduleCubit>().nextOrPreviousDay(pageNum + 1);
               },
-              children: widget.weekSchedule.daySchedules.map((e) => DayScheduleWidget(daySchedule: e)).toList()
+              children: widget.weekSchedule.daySchedules.map((e) =>
+                  DayScheduleWidget(
+                      daySchedule: e
+                  )
+              ).toList()
           ),
         )
     );

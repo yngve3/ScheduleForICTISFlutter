@@ -7,6 +7,8 @@ class WeekSchedule {
   WeekSchedule({required this.weekNum, required this.daySchedules});
 
   factory WeekSchedule.empty() {
-    return WeekSchedule(weekNum: 1, daySchedules: const []);
+    return WeekSchedule(
+        weekNum: 1,
+        daySchedules: List<DaySchedule>.filled(7, DaySchedule.empty()));
   }
 }

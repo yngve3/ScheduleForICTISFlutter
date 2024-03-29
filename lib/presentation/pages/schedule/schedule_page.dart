@@ -19,10 +19,7 @@ class SchedulePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: BlocProvider(
-        create: (context) => ScheduleCubit(),
-        child: const Schedule(),
-      ),
+      body: const Schedule(),
       floatingActionButtonLocation: ExpandableFab.location,
       floatingActionButton: ExpandableFab(
         distance: 70,
@@ -80,6 +77,7 @@ class _Schedule extends State<Schedule> {
 
     return BlocBuilder<ScheduleCubit, ScheduleState>(
         builder: (context, state) {
+          print(state.selectedDay.weekday);
           return Column(
             children: [
               DateHeader(date: state.selectedDay, studyWeek: state.weekSchedule.weekNum),

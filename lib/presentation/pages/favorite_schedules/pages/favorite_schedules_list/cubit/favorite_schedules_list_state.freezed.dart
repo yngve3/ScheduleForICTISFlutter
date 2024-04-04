@@ -18,6 +18,7 @@ final _privateConstructorUsedError = UnsupportedError(
 mixin _$FavoriteSchedulesListState {
   List<ScheduleSubject> get favoriteSchedules =>
       throw _privateConstructorUsedError;
+  List<ScheduleSubject> get favoriteVPKs => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $FavoriteSchedulesListStateCopyWith<FavoriteSchedulesListState>
@@ -31,7 +32,9 @@ abstract class $FavoriteSchedulesListStateCopyWith<$Res> {
       _$FavoriteSchedulesListStateCopyWithImpl<$Res,
           FavoriteSchedulesListState>;
   @useResult
-  $Res call({List<ScheduleSubject> favoriteSchedules});
+  $Res call(
+      {List<ScheduleSubject> favoriteSchedules,
+      List<ScheduleSubject> favoriteVPKs});
 }
 
 /// @nodoc
@@ -49,11 +52,16 @@ class _$FavoriteSchedulesListStateCopyWithImpl<$Res,
   @override
   $Res call({
     Object? favoriteSchedules = null,
+    Object? favoriteVPKs = null,
   }) {
     return _then(_value.copyWith(
       favoriteSchedules: null == favoriteSchedules
           ? _value.favoriteSchedules
           : favoriteSchedules // ignore: cast_nullable_to_non_nullable
+              as List<ScheduleSubject>,
+      favoriteVPKs: null == favoriteVPKs
+          ? _value.favoriteVPKs
+          : favoriteVPKs // ignore: cast_nullable_to_non_nullable
               as List<ScheduleSubject>,
     ) as $Val);
   }
@@ -68,7 +76,9 @@ abstract class _$$FavoriteSchedulesListStateImplCopyWith<$Res>
       __$$FavoriteSchedulesListStateImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({List<ScheduleSubject> favoriteSchedules});
+  $Res call(
+      {List<ScheduleSubject> favoriteSchedules,
+      List<ScheduleSubject> favoriteVPKs});
 }
 
 /// @nodoc
@@ -85,11 +95,16 @@ class __$$FavoriteSchedulesListStateImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? favoriteSchedules = null,
+    Object? favoriteVPKs = null,
   }) {
     return _then(_$FavoriteSchedulesListStateImpl(
       favoriteSchedules: null == favoriteSchedules
           ? _value._favoriteSchedules
           : favoriteSchedules // ignore: cast_nullable_to_non_nullable
+              as List<ScheduleSubject>,
+      favoriteVPKs: null == favoriteVPKs
+          ? _value._favoriteVPKs
+          : favoriteVPKs // ignore: cast_nullable_to_non_nullable
               as List<ScheduleSubject>,
     ));
   }
@@ -97,13 +112,17 @@ class __$$FavoriteSchedulesListStateImplCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$FavoriteSchedulesListStateImpl implements _FavoriteSchedulesListState {
-  const _$FavoriteSchedulesListStateImpl(
-      {required final List<ScheduleSubject> favoriteSchedules})
-      : _favoriteSchedules = favoriteSchedules;
+class _$FavoriteSchedulesListStateImpl extends _FavoriteSchedulesListState {
+  _$FavoriteSchedulesListStateImpl(
+      {final List<ScheduleSubject> favoriteSchedules = const [],
+      final List<ScheduleSubject> favoriteVPKs = const []})
+      : _favoriteSchedules = favoriteSchedules,
+        _favoriteVPKs = favoriteVPKs,
+        super._();
 
   final List<ScheduleSubject> _favoriteSchedules;
   @override
+  @JsonKey()
   List<ScheduleSubject> get favoriteSchedules {
     if (_favoriteSchedules is EqualUnmodifiableListView)
       return _favoriteSchedules;
@@ -111,9 +130,18 @@ class _$FavoriteSchedulesListStateImpl implements _FavoriteSchedulesListState {
     return EqualUnmodifiableListView(_favoriteSchedules);
   }
 
+  final List<ScheduleSubject> _favoriteVPKs;
+  @override
+  @JsonKey()
+  List<ScheduleSubject> get favoriteVPKs {
+    if (_favoriteVPKs is EqualUnmodifiableListView) return _favoriteVPKs;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_favoriteVPKs);
+  }
+
   @override
   String toString() {
-    return 'FavoriteSchedulesListState(favoriteSchedules: $favoriteSchedules)';
+    return 'FavoriteSchedulesListState(favoriteSchedules: $favoriteSchedules, favoriteVPKs: $favoriteVPKs)';
   }
 
   @override
@@ -122,12 +150,16 @@ class _$FavoriteSchedulesListStateImpl implements _FavoriteSchedulesListState {
         (other.runtimeType == runtimeType &&
             other is _$FavoriteSchedulesListStateImpl &&
             const DeepCollectionEquality()
-                .equals(other._favoriteSchedules, _favoriteSchedules));
+                .equals(other._favoriteSchedules, _favoriteSchedules) &&
+            const DeepCollectionEquality()
+                .equals(other._favoriteVPKs, _favoriteVPKs));
   }
 
   @override
   int get hashCode => Object.hash(
-      runtimeType, const DeepCollectionEquality().hash(_favoriteSchedules));
+      runtimeType,
+      const DeepCollectionEquality().hash(_favoriteSchedules),
+      const DeepCollectionEquality().hash(_favoriteVPKs));
 
   @JsonKey(ignore: true)
   @override
@@ -137,14 +169,17 @@ class _$FavoriteSchedulesListStateImpl implements _FavoriteSchedulesListState {
           _$FavoriteSchedulesListStateImpl>(this, _$identity);
 }
 
-abstract class _FavoriteSchedulesListState
-    implements FavoriteSchedulesListState {
-  const factory _FavoriteSchedulesListState(
-          {required final List<ScheduleSubject> favoriteSchedules}) =
+abstract class _FavoriteSchedulesListState extends FavoriteSchedulesListState {
+  factory _FavoriteSchedulesListState(
+          {final List<ScheduleSubject> favoriteSchedules,
+          final List<ScheduleSubject> favoriteVPKs}) =
       _$FavoriteSchedulesListStateImpl;
+  _FavoriteSchedulesListState._() : super._();
 
   @override
   List<ScheduleSubject> get favoriteSchedules;
+  @override
+  List<ScheduleSubject> get favoriteVPKs;
   @override
   @JsonKey(ignore: true)
   _$$FavoriteSchedulesListStateImplCopyWith<_$FavoriteSchedulesListStateImpl>

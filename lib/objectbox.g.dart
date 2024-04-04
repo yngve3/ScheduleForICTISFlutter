@@ -19,7 +19,6 @@ import 'data/models/couple_db.dart';
 import 'data/models/day_schedule_db.dart';
 import 'data/models/event_db.dart';
 import 'data/models/week_schedule_db.dart';
-import 'domain/models/current_week/current_week.dart';
 import 'domain/models/schedule_subject/schedule_subject.dart';
 import 'domain/models/week_number.dart';
 
@@ -141,7 +140,7 @@ final _entities = <obx_int.ModelEntity>[
   obx_int.ModelEntity(
       id: const obx_int.IdUid(12, 2407632993041309587),
       name: 'ScheduleSubject',
-      lastPropertyId: const obx_int.IdUid(4, 2055389319938891387),
+      lastPropertyId: const obx_int.IdUid(5, 5340708925378251933),
       flags: 0,
       properties: <obx_int.ModelProperty>[
         obx_int.ModelProperty(
@@ -162,6 +161,11 @@ final _entities = <obx_int.ModelEntity>[
         obx_int.ModelProperty(
             id: const obx_int.IdUid(4, 2055389319938891387),
             name: 'isChosen',
+            type: 1,
+            flags: 0),
+        obx_int.ModelProperty(
+            id: const obx_int.IdUid(5, 5340708925378251933),
+            name: 'isVPK',
             type: 1,
             flags: 0)
       ],
@@ -211,25 +215,6 @@ final _entities = <obx_int.ModelEntity>[
         obx_int.ModelProperty(
             id: const obx_int.IdUid(7, 2140713880612862238),
             name: 'weekNum',
-            type: 6,
-            flags: 0)
-      ],
-      relations: <obx_int.ModelRelation>[],
-      backlinks: <obx_int.ModelBacklink>[]),
-  obx_int.ModelEntity(
-      id: const obx_int.IdUid(14, 2460264848318751972),
-      name: 'CurrentWeek',
-      lastPropertyId: const obx_int.IdUid(2, 2414596226964128475),
-      flags: 0,
-      properties: <obx_int.ModelProperty>[
-        obx_int.ModelProperty(
-            id: const obx_int.IdUid(1, 1757377980583035597),
-            name: 'weekNum',
-            type: 6,
-            flags: 129),
-        obx_int.ModelProperty(
-            id: const obx_int.IdUid(2, 2414596226964128475),
-            name: 'studyWeekNum',
             type: 6,
             flags: 0)
       ],
@@ -303,7 +288,8 @@ obx_int.ModelDefinition getObjectBoxModel() {
         6365253965074262032,
         2803109517062443162,
         2107067233892169345,
-        914042337563340598
+        914042337563340598,
+        2460264848318751972
       ],
       retiredIndexUids: const [1606607200252430453],
       retiredPropertyUids: const [
@@ -339,7 +325,9 @@ obx_int.ModelDefinition getObjectBoxModel() {
         4946166731877366772,
         665913462344297158,
         6983693999060459476,
-        8905720686228930495
+        8905720686228930495,
+        1757377980583035597,
+        2414596226964128475
       ],
       retiredRelationUids: const [],
       modelVersion: 5,
@@ -494,11 +482,12 @@ obx_int.ModelDefinition getObjectBoxModel() {
         objectToFB: (ScheduleSubject object, fb.Builder fbb) {
           final idOffset = fbb.writeString(object.id);
           final nameOffset = fbb.writeString(object.name);
-          fbb.startTable(5);
+          fbb.startTable(6);
           fbb.addInt64(0, object.dbId ?? 0);
           fbb.addOffset(1, idOffset);
           fbb.addOffset(2, nameOffset);
           fbb.addBool(3, object.isChosen);
+          fbb.addBool(4, object.isVPK);
           fbb.finish(fbb.endTable());
           return object.dbId ?? 0;
         },
@@ -513,11 +502,14 @@ obx_int.ModelDefinition getObjectBoxModel() {
               .vTableGet(buffer, rootOffset, 8, '');
           final isChosenParam =
               const fb.BoolReader().vTableGet(buffer, rootOffset, 10, false);
+          final isVPKParam =
+              const fb.BoolReader().vTableGet(buffer, rootOffset, 12, false);
           final object = ScheduleSubject(
               dbId: dbIdParam,
               id: idParam,
               name: nameParam,
-              isChosen: isChosenParam);
+              isChosen: isChosenParam,
+              isVPK: isVPKParam);
           obx_int.InternalToManyAccess.setRelInfo<ScheduleSubject>(
               object.weekSchedules,
               store,
@@ -576,35 +568,8 @@ obx_int.ModelDefinition getObjectBoxModel() {
 
           return object;
         }),
-    CurrentWeek: obx_int.EntityDefinition<CurrentWeek>(
-        model: _entities[5],
-        toOneRelations: (CurrentWeek object) => [],
-        toManyRelations: (CurrentWeek object) => {},
-        getId: (CurrentWeek object) => object.weekNum,
-        setId: (CurrentWeek object, int id) {
-          object.weekNum = id;
-        },
-        objectToFB: (CurrentWeek object, fb.Builder fbb) {
-          fbb.startTable(3);
-          fbb.addInt64(0, object.weekNum);
-          fbb.addInt64(1, object.studyWeekNum);
-          fbb.finish(fbb.endTable());
-          return object.weekNum;
-        },
-        objectFromFB: (obx.Store store, ByteData fbData) {
-          final buffer = fb.BufferContext(fbData);
-          final rootOffset = buffer.derefObject(0);
-          final weekNumParam =
-              const fb.Int64Reader().vTableGet(buffer, rootOffset, 4, 0);
-          final studyWeekNumParam =
-              const fb.Int64Reader().vTableGet(buffer, rootOffset, 6, 0);
-          final object = CurrentWeek(
-              weekNum: weekNumParam, studyWeekNum: studyWeekNumParam);
-
-          return object;
-        }),
     WeekNumber: obx_int.EntityDefinition<WeekNumber>(
-        model: _entities[6],
+        model: _entities[5],
         toOneRelations: (WeekNumber object) => [],
         toManyRelations: (WeekNumber object) => {},
         getId: (WeekNumber object) => object.calendarWeekNumber,
@@ -629,7 +594,7 @@ obx_int.ModelDefinition getObjectBoxModel() {
           final buffer = fb.BufferContext(fbData);
           final rootOffset = buffer.derefObject(0);
           final studyWeekNumberParam =
-              const fb.Int64Reader().vTableGet(buffer, rootOffset, 4, 0);
+              const fb.Int64Reader().vTableGetNullable(buffer, rootOffset, 4);
           final calendarWeekNumberParam =
               const fb.Int64Reader().vTableGet(buffer, rootOffset, 6, 0);
           final object = WeekNumber(
@@ -737,6 +702,10 @@ class ScheduleSubject_ {
   static final isChosen =
       obx.QueryBooleanProperty<ScheduleSubject>(_entities[3].properties[3]);
 
+  /// see [ScheduleSubject.isVPK]
+  static final isVPK =
+      obx.QueryBooleanProperty<ScheduleSubject>(_entities[3].properties[4]);
+
   /// see [ScheduleSubject.weekSchedules]
   static final weekSchedules =
       obx.QueryBacklinkToMany<WeekScheduleDB, ScheduleSubject>(
@@ -774,24 +743,13 @@ class EventDB_ {
       obx.QueryIntegerProperty<EventDB>(_entities[4].properties[6]);
 }
 
-/// [CurrentWeek] entity fields to define ObjectBox queries.
-class CurrentWeek_ {
-  /// see [CurrentWeek.weekNum]
-  static final weekNum =
-      obx.QueryIntegerProperty<CurrentWeek>(_entities[5].properties[0]);
-
-  /// see [CurrentWeek.studyWeekNum]
-  static final studyWeekNum =
-      obx.QueryIntegerProperty<CurrentWeek>(_entities[5].properties[1]);
-}
-
 /// [WeekNumber] entity fields to define ObjectBox queries.
 class WeekNumber_ {
   /// see [WeekNumber.studyWeekNumber]
   static final studyWeekNumber =
-      obx.QueryIntegerProperty<WeekNumber>(_entities[6].properties[0]);
+      obx.QueryIntegerProperty<WeekNumber>(_entities[5].properties[0]);
 
   /// see [WeekNumber.calendarWeekNumber]
   static final calendarWeekNumber =
-      obx.QueryIntegerProperty<WeekNumber>(_entities[6].properties[1]);
+      obx.QueryIntegerProperty<WeekNumber>(_entities[5].properties[1]);
 }

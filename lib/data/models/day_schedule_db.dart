@@ -1,4 +1,5 @@
 import 'package:schedule_for_ictis_flutter/data/models/week_schedule_db.dart';
+import 'package:collection/collection.dart';
 
 import 'package:objectbox/objectbox.dart';
 import 'couple_db.dart';
@@ -9,6 +10,11 @@ class DayScheduleDB {
   @Backlink('daySchedule')
   final couples = ToMany<CoupleDB>();
   final weekSchedule = ToOne<WeekScheduleDB>();
+
+  bool get isVPK {
+    final coupleDB = couples.firstWhereOrNull((element) => element.isVPKPlaceHolder);
+    return coupleDB != null;
+  }
 
   DayScheduleDB();
 

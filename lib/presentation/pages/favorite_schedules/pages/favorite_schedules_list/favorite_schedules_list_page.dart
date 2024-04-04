@@ -38,6 +38,8 @@ class FavoriteSchedulesListPage extends StatelessWidget {
                   child: Column(
                     children: [
                       FavoriteSchedulesList(favoriteSchedules: state.favoriteSchedules),
+                      const Divider(),
+                      FavoriteSchedulesList(favoriteSchedules: state.favoriteVPKs),
                       const SizedBox(height: 15),
                       FilledButton(
                         onPressed: () {

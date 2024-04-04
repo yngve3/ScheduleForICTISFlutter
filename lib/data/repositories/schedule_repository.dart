@@ -19,6 +19,12 @@ class ScheduleRepository {
     _scheduleBox = objectBox.store.box<WeekScheduleDB>();
   }
 
+  Future<void> loadWeekSchedules(List<ScheduleSubject> scheduleSubjects, WeekNumber? weekNumber) async {
+    for (final scheduleSubject in scheduleSubjects) {
+      loadWeekSchedule(scheduleSubject, weekNumber);
+    }
+  }
+
   Future<void> loadWeekSchedule(ScheduleSubject scheduleSubject, WeekNumber? weekNumber) async {
     final id = scheduleSubject.id;
     final requestURL =
@@ -45,9 +51,22 @@ class ScheduleRepository {
     }
   }
 
+  Future<List<WeekScheduleDB>> getWeekSchedules(List<ScheduleSubject> scheduleSubjects, int calendarWeekNumber) async {
+    List<WeekScheduleDB> list = [];
+    for (final scheduleSubject in scheduleSubjects) {
+      final weekSchedule = await getWeekSchedule(scheduleSubject, calendarWeekNumber);
+      if (weekSchedule != null) list.add(weekSchedule);
+    }
+
+    return list;
+  }
+
   Future<WeekScheduleDB?> getWeekSchedule(ScheduleSubject scheduleSubject, int calendarWeekNumber) =>
     _scheduleBox
-        .query(WeekScheduleDB_.calendarWeekNumber.equals(calendarWeekNumber))
+        .query(
+          WeekScheduleDB_.calendarWeekNumber.equals(calendarWeekNumber)
+          .and(WeekScheduleDB_.scheduleSubject.equals(scheduleSubject.dbId!))
+        )
         .build()
         .findFirstAsync();
 

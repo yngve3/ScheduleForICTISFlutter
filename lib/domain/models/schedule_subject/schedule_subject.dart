@@ -10,11 +10,15 @@ class ScheduleSubject {
   @Backlink("scheduleSubject")
   final weekSchedules = ToMany<WeekScheduleDB>();
 
+  final bool isVPK;
+  bool get isNotVPK => !isVPK;
+
   ScheduleSubject({
     this.dbId = 0,
     required this.id,
     required this.name,
-    required this.isChosen
+    required this.isChosen,
+    this.isVPK = false
   });
 
   factory ScheduleSubject.fromJson(Map<String, dynamic> json) =>
@@ -23,18 +27,21 @@ class ScheduleSubject {
         id: json['group'] as String,
         name: json['name'] as String,
         isChosen: json['isChosen'] as bool? ?? false,
+        isVPK: (json['name'] as String).contains("ВПК")
       );
 
   ScheduleSubject copyWith({
     int? dbId,
     String? id,
     String? name,
-    bool? isChosen
+    bool? isChosen,
+    bool? isVPK
   }) =>
       ScheduleSubject(
         dbId: dbId ?? this.dbId,
         id: id ?? this.id,
         name: name ?? this.name,
-        isChosen: isChosen ?? this.isChosen
+        isChosen: isChosen ?? this.isChosen,
+        isVPK: isVPK ?? this.isVPK
       );
 }

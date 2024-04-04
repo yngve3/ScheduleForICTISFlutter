@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../domain/models/schedule_subject/schedule_subject.dart';
 
-typedef ScheduleItemTappedCallback = Function(ScheduleSubject scheduleSubject);
+typedef ScheduleSubjectTappedCallback = Function(ScheduleSubject scheduleSubject);
 
 class ScheduleSubjectWidget extends StatelessWidget {
   const ScheduleSubjectWidget({
@@ -14,7 +14,7 @@ class ScheduleSubjectWidget extends StatelessWidget {
 
   final ScheduleSubject scheduleSubject;
   final double padding;
-  final ScheduleItemTappedCallback callback;
+  final ScheduleSubjectTappedCallback callback;
 
   TextStyle? _getTextStyle(BuildContext context) {
     if (!scheduleSubject.isChosen) {

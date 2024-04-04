@@ -15,6 +15,13 @@ class CoupleDB {
   final int coupleNum;
   final ToOne<DayScheduleDB> daySchedule = ToOne<DayScheduleDB>();
 
+  bool get isOnline => audiences.contains("LMS");
+  bool get isVUC => discipline.contains("ВУЦ");
+
+  bool get isNotVPKPlaceHolder => !discipline.contains("ВПК");
+  bool get isVPKPlaceHolder => discipline.contains("ВПК");
+
+  bool get isEmpty => discipline.isEmpty;
   bool get isNotEmpty => discipline.isNotEmpty;
 
   CoupleDB({

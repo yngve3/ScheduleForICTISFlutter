@@ -39,7 +39,7 @@ class Couple extends DayScheduleItem {
   }
 
   bool get isOnline => audiences.contains("LMS");
-  bool get isVPK => discipline.contains("ВПК");
+  bool get isNotVPKPlaceHolder => !discipline.contains("ВПК");
   bool get isVUC => discipline.contains("ВУЦ");
   bool get isEmpty => discipline.isEmpty;
 }

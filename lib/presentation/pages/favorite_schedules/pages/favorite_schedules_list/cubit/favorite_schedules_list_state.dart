@@ -6,8 +6,19 @@ part 'favorite_schedules_list_state.freezed.dart';
 
 @freezed
 class FavoriteSchedulesListState with _$FavoriteSchedulesListState {
-  const factory FavoriteSchedulesListState({
-    required List<ScheduleSubject> favoriteSchedules
+  FavoriteSchedulesListState._();
+  factory FavoriteSchedulesListState({
+    @Default([]) List<ScheduleSubject> favoriteSchedules,
+    @Default([]) List<ScheduleSubject> favoriteVPKs
   }) = _FavoriteSchedulesListState;
 
+  byScheduleSubject(List<ScheduleSubject> subjects) {
+    if (subjects.isEmpty) return FavoriteSchedulesListState();
+
+    if (subjects[0].isVPK) {
+      return copyWith(favoriteVPKs: subjects);
+    } else {
+      return copyWith(favoriteSchedules: subjects);
+    }
+  }
 }

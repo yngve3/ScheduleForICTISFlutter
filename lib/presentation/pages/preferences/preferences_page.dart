@@ -39,11 +39,6 @@ class PreferencesList extends StatelessWidget {
           subtitle: "Настройка быстрого доступа к расписаниям",
           onItemTapped: () => context.go(Routes.favoriteSchedules.path)
         ),
-        PreferenceItem(
-          title: "ВПК",
-          subtitle: "Выбранное ВПК будет отображаться вместе с основным расписанием",
-          onItemTapped: () {},
-        )
       ],
     );
   }

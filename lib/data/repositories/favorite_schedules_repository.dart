@@ -58,12 +58,11 @@ class FavoriteSchedulesRepository {
     _favoriteSchedulesBox.removeManyAsync(ids);
   }
 
-  ScheduleSubject? getSelectedFavoriteSchedule() {
-    QueryBuilder<ScheduleSubject> query = _favoriteSchedulesBox.query(
-        ScheduleSubject_.isChosen.equals(true)
-    );
-    return query.build().findFirst();
-  }
+  Future<ScheduleSubject?> getSelectedFavoriteSchedules(bool isVPK) =>
+      _favoriteSchedulesBox
+          .query(ScheduleSubject_.isChosen.equals(true).and(ScheduleSubject_.isVPK.equals(isVPK)))
+          .build()
+          .findFirstAsync();
 
 
   Future<List<ScheduleSubject>> _handleRequestError() async {

@@ -8,7 +8,7 @@ import '../../../../../../data/repositories/favorite_schedules_repository.dart';
 import 'favorite_schedules_list_state.dart';
 
 class FavoriteSchedulesListCubit extends Cubit<FavoriteSchedulesListState> {
-  FavoriteSchedulesListCubit(this.repository) : super(const FavoriteSchedulesListState(favoriteSchedules: []));
+  FavoriteSchedulesListCubit(this.repository) : super(FavoriteSchedulesListState());
 
   final FavoriteSchedulesRepository repository;
   List<int> deletionIdsList = [];
@@ -17,34 +17,37 @@ class FavoriteSchedulesListCubit extends Cubit<FavoriteSchedulesListState> {
 
   void getFavoriteSchedules() {
     subscription = repository.getFromDBAll().listen((favoriteSchedules) {
-      emit(FavoriteSchedulesListState(favoriteSchedules: favoriteSchedules));
+      final mainSchedules = favoriteSchedules.where((element) => element.isNotVPK).toList();
+      final vpk = favoriteSchedules.where((element) => element.isVPK).toList();
+      emit(FavoriteSchedulesListState(
+        favoriteSchedules: mainSchedules,
+        favoriteVPKs: vpk,
+      ));
     });
   }
 
-  @override
-  Future<void> close() {
-    subscription.cancel();
-    return super.close();
-  }
+  List<ScheduleSubject> _getList(ScheduleSubject scheduleSubject) =>
+      scheduleSubject.isVPK
+          ? [...state.favoriteVPKs]
+          : [...state.favoriteSchedules];
 
   void select(ScheduleSubject scheduleSubject) {
-    final List<ScheduleSubject> list = [...state.favoriteSchedules];
-
+    final list = _getList(scheduleSubject);
     _unselectSelected(list);
 
     list[list.indexOf(scheduleSubject)] = scheduleSubject.copyWith(isChosen: true);
-    emit(FavoriteSchedulesListState(favoriteSchedules: list));
+    emit(state.byScheduleSubject(list));
   }
 
   void delete(ScheduleSubject scheduleSubject) {
-    final List<ScheduleSubject> list = [...state.favoriteSchedules];
+    final list = _getList(scheduleSubject);
     list.remove(scheduleSubject);
     deletionIdsList.add(scheduleSubject.dbId!);
-    emit(FavoriteSchedulesListState(favoriteSchedules: list));
+    emit(state.byScheduleSubject(list));
   }
 
   void saveChanges() {
-    repository.saveToDBMany(state.favoriteSchedules);
+    repository.saveToDBMany([...state.favoriteVPKs, ...state.favoriteSchedules]);
     repository.deleteFromDBMany(deletionIdsList);
   }
 
@@ -58,4 +61,10 @@ class FavoriteSchedulesListCubit extends Cubit<FavoriteSchedulesListState> {
 
   ScheduleSubject? _findSelectedOrNull(List<ScheduleSubject> list) =>
     list.firstWhereOrNull((element) => element.isChosen);
+
+  @override
+  Future<void> close() {
+    subscription.cancel();
+    return super.close();
+  }
 }

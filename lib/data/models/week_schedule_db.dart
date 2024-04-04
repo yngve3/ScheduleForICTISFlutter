@@ -1,4 +1,5 @@
 import 'package:schedule_for_ictis_flutter/presentation/extensions/date_time_ext.dart';
+import 'package:collection/collection.dart';
 
 import '../../domain/models/schedule_subject/schedule_subject.dart';
 import 'package:objectbox/objectbox.dart';
@@ -15,6 +16,11 @@ class WeekScheduleDB {
 
   @Backlink('weekSchedule')
   final daySchedules = ToMany<DayScheduleDB>();
+
+  bool get isVPK {
+    final dayScheduleDB = daySchedules.firstWhereOrNull((element) => element.isVPK);
+    return dayScheduleDB != null;
+  }
 
   WeekScheduleDB({
     required this.weekNumPlusSubjectID,

@@ -1,19 +1,22 @@
-import 'package:flutter/material.dart';
 import 'package:objectbox/objectbox.dart';
 
 @Entity()
 class EventDB {
-  final TimeOfDay timeStart;
-  final TimeOfDay timeEnd;
+  @Id() int id = 0;
+  final String timeStart;
+  final String timeEnd;
   final String title;
   final String description;
+  @Property(type: PropertyType.date)
   final DateTime date;
+  final int weekNum;
 
   EventDB({
     required this.timeStart,
     required this.timeEnd,
     required this.title,
     required this.description,
-    required this.date
+    required this.date,
+    required this.weekNum
   });
 }

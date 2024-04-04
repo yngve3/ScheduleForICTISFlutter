@@ -9,14 +9,22 @@ class DateHeader extends StatelessWidget {
   });
 
   final DateTime date;
-  final int studyWeek;
+  final int? studyWeek;
+
+  String _getSubtitle() {
+    if (studyWeek != null) {
+      return "Учебная неделя №$studyWeek";
+    } else {
+      return "Учебная группа не выбрана";
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: ListTile(
         title: DateText(date: date, style: Theme.of(context).textTheme.headlineLarge),
-        subtitle: Text("Учебная неделя №$studyWeek"),
+        subtitle: Text(_getSubtitle()),
       ),
     );
   }

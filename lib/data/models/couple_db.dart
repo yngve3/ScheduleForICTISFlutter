@@ -12,12 +12,16 @@ class CoupleDB {
   CoupleType? type;
   final String discipline;
   final String lecturers;
+  final int coupleNum;
   final ToOne<DayScheduleDB> daySchedule = ToOne<DayScheduleDB>();
+
+  bool get isNotEmpty => discipline.isNotEmpty;
 
   CoupleDB({
     required this.audiences,
     required this.discipline,
     required this.lecturers,
+    required this.coupleNum
   });
 
   // Enum базой данных не поддерживается, поэтому нужно конвертировать
@@ -37,7 +41,7 @@ class CoupleDB {
     }
   }
 
-  factory CoupleDB.fromString(String coupleStr) {
+  factory CoupleDB.fromString(String coupleStr, {required int coupleNum}) {
     String input = coupleStr;
     final typeRegExp = RegExp(r"пр\.|лаб\.|лек\.|экз\.");
     final type = typeRegExp.firstMatch(input)?[0] ?? "";
@@ -55,6 +59,7 @@ class CoupleDB {
       audiences: audiences,
       discipline: input,
       lecturers: lecturers,
+      coupleNum: coupleNum
     );
 
     coupleDB.type = CoupleType.fromString(type);

@@ -5,7 +5,7 @@
   "entities": [
     {
       "id": "6:5480714166435319607",
-      "lastPropertyId": "6:8995788885646466761",
+      "lastPropertyId": "7:3785246543164776287",
       "name": "CoupleDB",
       "properties": [
         {
@@ -41,6 +41,11 @@
           "id": "6:8995788885646466761",
           "name": "dbType",
           "type": 9
+        },
+        {
+          "id": "7:3785246543164776287",
+          "name": "coupleNum",
+          "type": 6
         }
       ],
       "relations": []
@@ -69,15 +74,9 @@
     },
     {
       "id": "11:1447675370798152411",
-      "lastPropertyId": "2:3493144564660923167",
+      "lastPropertyId": "7:7137908083769626596",
       "name": "WeekScheduleDB",
       "properties": [
-        {
-          "id": "1:6983693999060459476",
-          "name": "weekNum",
-          "type": 6,
-          "flags": 1
-        },
         {
           "id": "2:3493144564660923167",
           "name": "scheduleSubjectId",
@@ -85,6 +84,29 @@
           "flags": 520,
           "indexId": "10:8029166871133877756",
           "relationTarget": "ScheduleSubject"
+        },
+        {
+          "id": "3:5619886490530783704",
+          "name": "id",
+          "type": 6,
+          "flags": 1
+        },
+        {
+          "id": "4:2271529022776843605",
+          "name": "weekNumPlusSubjectID",
+          "type": 9,
+          "flags": 34848,
+          "indexId": "11:8451372903540954017"
+        },
+        {
+          "id": "6:5685450538537441623",
+          "name": "calendarWeekNumber",
+          "type": 6
+        },
+        {
+          "id": "7:7137908083769626596",
+          "name": "studyWeekNumber",
+          "type": 6
         }
       ],
       "relations": []
@@ -117,10 +139,92 @@
         }
       ],
       "relations": []
+    },
+    {
+      "id": "13:5408297173790329811",
+      "lastPropertyId": "7:2140713880612862238",
+      "name": "EventDB",
+      "properties": [
+        {
+          "id": "1:994092958168848233",
+          "name": "id",
+          "type": 6,
+          "flags": 1
+        },
+        {
+          "id": "2:1500936715972334083",
+          "name": "title",
+          "type": 9
+        },
+        {
+          "id": "3:8506989828847087467",
+          "name": "description",
+          "type": 9
+        },
+        {
+          "id": "4:328405976758079175",
+          "name": "date",
+          "type": 10
+        },
+        {
+          "id": "5:1760040761526889768",
+          "name": "timeStart",
+          "type": 9
+        },
+        {
+          "id": "6:4075190789421474376",
+          "name": "timeEnd",
+          "type": 9
+        },
+        {
+          "id": "7:2140713880612862238",
+          "name": "weekNum",
+          "type": 6
+        }
+      ],
+      "relations": []
+    },
+    {
+      "id": "14:2460264848318751972",
+      "lastPropertyId": "2:2414596226964128475",
+      "name": "CurrentWeek",
+      "properties": [
+        {
+          "id": "1:1757377980583035597",
+          "name": "weekNum",
+          "type": 6,
+          "flags": 129
+        },
+        {
+          "id": "2:2414596226964128475",
+          "name": "studyWeekNum",
+          "type": 6
+        }
+      ],
+      "relations": []
+    },
+    {
+      "id": "15:3529840884396796264",
+      "lastPropertyId": "2:5169322805903344335",
+      "name": "WeekNumber",
+      "properties": [
+        {
+          "id": "1:8606615907388497622",
+          "name": "studyWeekNumber",
+          "type": 6
+        },
+        {
+          "id": "2:5169322805903344335",
+          "name": "calendarWeekNumber",
+          "type": 6,
+          "flags": 129
+        }
+      ],
+      "relations": []
     }
   ],
-  "lastEntityId": "12:2407632993041309587",
-  "lastIndexId": "10:8029166871133877756",
+  "lastEntityId": "15:3529840884396796264",
+  "lastIndexId": "12:1606607200252430453",
   "lastRelationId": "0:0",
   "lastSequenceId": "0:0",
   "modelVersion": 5,
@@ -135,7 +239,9 @@
     2107067233892169345,
     914042337563340598
   ],
-  "retiredIndexUids": [],
+  "retiredIndexUids": [
+    1606607200252430453
+  ],
   "retiredPropertyUids": [
     8531280715951716256,
     5343336231592800032,
@@ -167,7 +273,9 @@
     2687273874596452908,
     1002905684170273399,
     4946166731877366772,
-    665913462344297158
+    665913462344297158,
+    6983693999060459476,
+    8905720686228930495
   ],
   "retiredRelationUids": [],
   "version": 1

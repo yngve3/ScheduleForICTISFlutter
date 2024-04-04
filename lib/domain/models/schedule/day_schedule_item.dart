@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
 import '../../../data/models/couple_db.dart';
+import '../../../data/models/event_db.dart';
+import '../../../presentation/extensions/time_of_day_ext.dart';
 import '../couple/couple_type.dart';
 
 abstract class DayScheduleItem {
@@ -22,16 +24,17 @@ class Couple extends DayScheduleItem {
     required this.discipline,
     required this.lecturers
   }): super(
-      TimeFromCoupleNum.timeStart(coupleNum)!,
-      TimeFromCoupleNum.timeEnd(coupleNum)!
+      TimeOfDayExtension.timeStart(coupleNum)!,
+      TimeOfDayExtension.timeEnd(coupleNum)!
   );
 
-  factory Couple.fromCoupleDB(CoupleDB coupleDB, int coupleNum) {
-    return Couple(coupleNum,
-        audiences: coupleDB.audiences,
-        type: coupleDB.type!,
-        discipline: coupleDB.discipline,
-        lecturers: coupleDB.lecturers
+  factory Couple.fromCoupleDB(CoupleDB coupleDB) {
+    return Couple(
+      coupleDB.coupleNum,
+      audiences: coupleDB.audiences,
+      type: coupleDB.type ?? CoupleType.none,
+      discipline: coupleDB.discipline,
+      lecturers: coupleDB.lecturers,
     );
   }
 
@@ -49,32 +52,13 @@ class Event extends DayScheduleItem {
     required this.title,
     required this.description
   });
-}
 
-extension TimeFromCoupleNum on TimeOfDay {
-  static TimeOfDay? timeStart(int coupleNum) {
-    switch (coupleNum) {
-      case 1: return const TimeOfDay(hour: 8,  minute: 0);
-      case 2: return const TimeOfDay(hour: 9,  minute: 50);
-      case 3: return const TimeOfDay(hour: 11, minute: 55);
-      case 4: return const TimeOfDay(hour: 13, minute: 45);
-      case 5: return const TimeOfDay(hour: 15, minute: 50);
-      case 6: return const TimeOfDay(hour: 17, minute: 40);
-      case 7: return const TimeOfDay(hour: 19, minute: 30);
-    }
-    return null;
-  }
-
-  static TimeOfDay? timeEnd(int coupleNum) {
-    switch (coupleNum) {
-      case 1: return const TimeOfDay(hour: 9,  minute: 35);
-      case 2: return const TimeOfDay(hour: 11, minute: 25);
-      case 3: return const TimeOfDay(hour: 13, minute: 30);
-      case 4: return const TimeOfDay(hour: 15, minute: 20);
-      case 5: return const TimeOfDay(hour: 17, minute: 25);
-      case 6: return const TimeOfDay(hour: 19, minute: 15);
-      case 7: return const TimeOfDay(hour: 21, minute: 05);
-    }
-    return null;
+  factory Event.fromEventDB(EventDB eventDB) {
+    return Event(
+      TimeOfDayExtension.parse(eventDB.timeStart),
+      TimeOfDayExtension.parse(eventDB.timeEnd),
+      title: eventDB.title,
+      description: eventDB.description,
+    );
   }
 }

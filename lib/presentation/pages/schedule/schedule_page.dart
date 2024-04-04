@@ -77,10 +77,12 @@ class _Schedule extends State<Schedule> {
 
     return BlocBuilder<ScheduleCubit, ScheduleState>(
         builder: (context, state) {
-          print(state.selectedDay.weekday);
           return Column(
             children: [
-              DateHeader(date: state.selectedDay, studyWeek: state.weekSchedule.weekNum),
+              DateHeader(
+                  date: state.selectedDay,
+                  studyWeek: state.weekSchedule.weekNumber.studyWeekNumber
+              ),
               const SizedBox(height: 10),
               TableCalendar(
                 weekendDays: const [DateTime.sunday],

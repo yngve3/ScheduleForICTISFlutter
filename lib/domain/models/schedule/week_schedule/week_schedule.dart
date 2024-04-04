@@ -1,14 +1,16 @@
+import 'package:schedule_for_ictis_flutter/domain/models/week_number.dart';
+
 import '../day_schedule/day_schedule.dart';
 
 class WeekSchedule {
-  final int weekNum;
+  final WeekNumber weekNumber;
   final List<DaySchedule> daySchedules;
 
-  WeekSchedule({required this.weekNum, required this.daySchedules});
+  WeekSchedule({required this.weekNumber, required this.daySchedules});
 
   factory WeekSchedule.empty() {
     return WeekSchedule(
-        weekNum: 1,
+        weekNumber: WeekNumber.empty(),
         daySchedules: List<DaySchedule>.filled(7, DaySchedule.empty()));
   }
 }

@@ -14,9 +14,13 @@ class DayScheduleDB {
 
   factory DayScheduleDB.fromJson(List<dynamic> json) {
     final daySchedule = DayScheduleDB();
-    daySchedule.couples.addAll(
-        json.skip(1).map((e) => CoupleDB.fromString(e)).toList()
-    );
+
+    List<CoupleDB> couplesDB = [];
+    for (int coupleNum = 1; coupleNum < json.length; coupleNum++) {
+      couplesDB.add(CoupleDB.fromString(json[coupleNum], coupleNum: coupleNum));
+    }
+
+    daySchedule.couples.addAll(couplesDB);
 
     return daySchedule;
   }

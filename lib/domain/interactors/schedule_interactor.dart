@@ -1,8 +1,16 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
+import 'package:schedule_for_ictis_flutter/data/models/event_db.dart';
+import 'package:schedule_for_ictis_flutter/data/models/week_schedule_db.dart';
+import 'package:schedule_for_ictis_flutter/data/repositories/current_week_repository.dart';
+import 'package:schedule_for_ictis_flutter/data/repositories/events_repository.dart';
 import 'package:schedule_for_ictis_flutter/data/repositories/favorite_schedules_repository.dart';
 import 'package:schedule_for_ictis_flutter/data/repositories/schedule_repository.dart';
+import 'package:schedule_for_ictis_flutter/domain/models/week_number.dart';
+import 'package:schedule_for_ictis_flutter/presentation/extensions/date_time_ext.dart';
+import 'package:schedule_for_ictis_flutter/presentation/extensions/time_of_day_ext.dart';
 
-import '../../data/models/week_schedule_db.dart';
 import '../models/schedule/day_schedule/day_schedule.dart';
 import '../models/schedule/day_schedule_item.dart';
 import '../models/schedule/week_schedule/week_schedule.dart';
@@ -10,49 +18,70 @@ import '../models/schedule/week_schedule/week_schedule.dart';
 class ScheduleInteractor {
   final ScheduleRepository scheduleRepository = ScheduleRepository();
   final FavoriteSchedulesRepository favoriteSchedulesRepository = FavoriteSchedulesRepository();
+  final EventsRepository eventsRepository = EventsRepository();
+  final CurrentWeekRepository currentWeekRepository = CurrentWeekRepository();
 
 
-  Future<WeekSchedule> getWeekSchedule({int? weekNum}) async {
+  Future<Stream<WeekSchedule>> getWeekSchedule({WeekNumber? weekNumber}) async {
     final scheduleSubject = favoriteSchedulesRepository.getSelectedFavoriteSchedule();
+    final calendarWeekNumber = weekNumber?.calendarWeekNumber ?? DateTime.now().weekNumber;
+    final eventsDBStream = eventsRepository.getEventsByWeekNum(calendarWeekNumber);
+    WeekScheduleDB? weekScheduleDB;
 
     if (scheduleSubject != null) {
-      final schedule = await scheduleRepository.getWeekSchedule(scheduleSubject, weekNum: weekNum);
-      return generateWeekSchedule(schedule);
+      await scheduleRepository.loadWeekSchedule(scheduleSubject, weekNumber);
+      weekScheduleDB = await scheduleRepository.getWeekSchedule(scheduleSubject, calendarWeekNumber);
     }
 
-    return WeekSchedule.empty();
+    return eventsDBStream.map((eventsDB) => create(eventsDB, weekScheduleDB));
   }
 
-  WeekSchedule generateWeekSchedule(WeekScheduleDB weekScheduleDB) {
-
+  WeekSchedule create(List<EventDB> eventsDB, WeekScheduleDB? weekScheduleDB) {
     List<DaySchedule> daySchedules = [];
-    for (final dayScheduleDB in weekScheduleDB.daySchedules) {
-      List<DayScheduleItem> couples = [];
-      for (int i = 0; i < dayScheduleDB.couples.length; i++) {
-        final coupleDB = dayScheduleDB.couples[i];
-        final couple = Couple.fromCoupleDB(coupleDB, i + 1);
-        if (!couple.isEmpty) couples.add(couple);
+    final daySchedulesDB = weekScheduleDB?.daySchedules;
+    for (int weekday = 1; weekday <= 7; weekday++) {
+      final List<DayScheduleItem> items = [];
+      items.addAll(eventsDB
+          .where((element) => element.date.weekday == weekday)
+          .map((e) => Event.fromEventDB(e))
+          .toList()
+      );
+
+      if (weekday != 7 && weekScheduleDB != null) {
+        items.addAll(daySchedulesDB![weekday - 1]
+            .couples
+            .where((element) => element.isNotEmpty)
+            .map((element) => Couple.fromCoupleDB(element))
+            .toList()
+        );
       }
-
-      couples.add(Event(const TimeOfDay(hour: 11, minute: 1), const TimeOfDay(hour: 2, minute: 2), title: "fk", description: "lsakdjf"));
-
-      couples.sort((a, b) => a.timeStart.compareTo(b.timeStart));
-
-      daySchedules.add(DaySchedule(items: couples));
+      daySchedules.add(DaySchedule(items: items));
     }
 
-    daySchedules.add(DaySchedule(items: [Event(const TimeOfDay(hour: 1, minute: 1), const TimeOfDay(hour: 2, minute: 2), title: "fk", description: "lsakdjf")]));
+    final weekNumber = WeekNumber(
+        studyWeekNumber: weekScheduleDB?.studyWeekNumber,
+        calendarWeekNumber: weekScheduleDB?.calendarWeekNumber ?? DateTime.now().weekNumber
+    );
 
-    return WeekSchedule(weekNum: weekScheduleDB.weekNum, daySchedules: daySchedules);
+    return WeekSchedule(weekNumber: weekNumber, daySchedules: daySchedules);
   }
-}
 
-extension on TimeOfDay {
-  int compareTo(TimeOfDay other) {
-    if (hour < other.hour) return -1;
-    if (hour > other.hour) return 1;
-    if (minute < other.minute) return -1;
-    if (minute > other.minute) return 1;
-    return 0;
+  void addEvent({
+    required TimeOfDay timeStart,
+    required TimeOfDay timeEnd,
+    required String title,
+    required String description,
+    required DateTime date
+  }) {
+    eventsRepository.addEvent(
+        EventDB(
+          title: title,
+          description: description,
+          date: date,
+          timeEnd: timeEnd.string,
+          timeStart: timeStart.string,
+          weekNum: date.weekNumber,
+        )
+    );
   }
 }

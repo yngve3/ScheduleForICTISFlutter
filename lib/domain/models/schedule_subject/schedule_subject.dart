@@ -1,4 +1,5 @@
 import 'package:objectbox/objectbox.dart';
+import 'package:schedule_for_ictis_flutter/data/models/week_schedule_db.dart';
 
 @Entity()
 class ScheduleSubject {
@@ -6,6 +7,8 @@ class ScheduleSubject {
   final String id;
   final String name;
   final bool isChosen;
+  @Backlink("scheduleSubject")
+  final weekSchedules = ToMany<WeekScheduleDB>();
 
   ScheduleSubject({
     this.dbId = 0,

@@ -46,7 +46,7 @@ dependencies:
   objectbox: ^2.5.1
   objectbox_flutter_libs: any
   flutter_expandable_fab: ^2.0.0
-
+  async: ^2.11.0
 
 dev_dependencies:
   flutter_test:

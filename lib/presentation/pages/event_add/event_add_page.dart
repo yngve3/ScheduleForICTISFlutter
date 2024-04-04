@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:schedule_for_ictis_flutter/presentation/extensions/context_ext.dart';
 import 'package:schedule_for_ictis_flutter/presentation/pages/event_add/cubit/event_add_cubit.dart';
 import 'package:schedule_for_ictis_flutter/presentation/pages/event_add/cubit/event_add_state.dart';
@@ -60,7 +61,7 @@ class EventAdd extends StatelessWidget {
           FilledButton(
             onPressed:
               state.isSaveButtonEnabled
-                  ? () => cubit.saveEvent()
+                  ? () {cubit.saveEvent(); context.pop();}
                   : null,
             child: const Text("Создать"),
           ),

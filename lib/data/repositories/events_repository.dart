@@ -1,14 +1,21 @@
-import '../../domain/models/schedule/day_schedule_item.dart';
+import 'package:schedule_for_ictis_flutter/data/models/event_db.dart';
+import 'package:schedule_for_ictis_flutter/main.dart';
+
 import '../../objectbox.g.dart';
 
 class EventsRepository {
-  late final Box<Event> _eventsBox;
+  late final Box<EventDB> _eventsBox;
 
-  Future<List<Event>> getEvents() {
-    return _eventsBox.getAllAsync();
+  EventsRepository() {
+    _eventsBox = objectBox.store.box<EventDB>();
   }
 
-  void addEvent(Event event) {
+  Stream<List<EventDB>> getEventsByWeekNum(int calendarWeekNumber) {
+    final query = _eventsBox.query(EventDB_.weekNum.equals(calendarWeekNumber));
+    return query.watch(triggerImmediately: true).map((event) => event.find());
+  }
+
+  void addEvent(EventDB event) {
     _eventsBox.putAsync(event);
   }
 }

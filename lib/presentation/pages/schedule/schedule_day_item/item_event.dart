@@ -33,7 +33,7 @@ class ItemEvent implements ScheduleDayItem {
               color: context.customColors.background
           )),
           const SizedBox(height: 5),
-          Text("Таганрог, площадь восстания", style: context.textTheme.bodyLarge?.copyWith(
+          Text(event.location ?? "", style: context.textTheme.bodyLarge?.copyWith(
               fontWeight: FontWeight.w400,
               color: context.customColors.card
           ))

@@ -28,6 +28,10 @@ class $AssetsIconsGen {
   /// File path: assets/icons/ic_list.png
   AssetGenImage get icList => const AssetGenImage('assets/icons/ic_list.png');
 
+  /// File path: assets/icons/ic_location.png
+  AssetGenImage get icLocation =>
+      const AssetGenImage('assets/icons/ic_location.png');
+
   /// File path: assets/icons/ic_schedule.png
   AssetGenImage get icSchedule =>
       const AssetGenImage('assets/icons/ic_schedule.png');
@@ -49,6 +53,7 @@ class $AssetsIconsGen {
         icEvent,
         icHome,
         icList,
+        icLocation,
         icSchedule,
         icSettings,
         icTask,

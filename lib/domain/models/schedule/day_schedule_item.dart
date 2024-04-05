@@ -46,11 +46,13 @@ class Couple extends DayScheduleItem {
 
 class Event extends DayScheduleItem {
   final String title;
-  final String description;
+  final String? description;
+  final String? location;
 
   Event(super.timeStart, super.timeEnd, {
     required this.title,
-    required this.description
+    this.description,
+    this.location
   });
 
   factory Event.fromEventDB(EventDB eventDB) {
@@ -59,6 +61,7 @@ class Event extends DayScheduleItem {
       TimeOfDayExtension.parse(eventDB.timeEnd),
       title: eventDB.title,
       description: eventDB.description,
+      location: eventDB.location
     );
   }
 }

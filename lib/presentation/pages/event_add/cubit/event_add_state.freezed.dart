@@ -22,6 +22,7 @@ mixin _$EventAddState {
   TimeOfDay? get timeEnd => throw _privateConstructorUsedError;
   DateTime? get date => throw _privateConstructorUsedError;
   bool get isSaveButtonEnabled => throw _privateConstructorUsedError;
+  String get location => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $EventAddStateCopyWith<EventAddState> get copyWith =>
@@ -40,7 +41,8 @@ abstract class $EventAddStateCopyWith<$Res> {
       TimeOfDay? timeStart,
       TimeOfDay? timeEnd,
       DateTime? date,
-      bool isSaveButtonEnabled});
+      bool isSaveButtonEnabled,
+      String location});
 }
 
 /// @nodoc
@@ -62,6 +64,7 @@ class _$EventAddStateCopyWithImpl<$Res, $Val extends EventAddState>
     Object? timeEnd = freezed,
     Object? date = freezed,
     Object? isSaveButtonEnabled = null,
+    Object? location = null,
   }) {
     return _then(_value.copyWith(
       title: null == title
@@ -88,6 +91,10 @@ class _$EventAddStateCopyWithImpl<$Res, $Val extends EventAddState>
           ? _value.isSaveButtonEnabled
           : isSaveButtonEnabled // ignore: cast_nullable_to_non_nullable
               as bool,
+      location: null == location
+          ? _value.location
+          : location // ignore: cast_nullable_to_non_nullable
+              as String,
     ) as $Val);
   }
 }
@@ -106,7 +113,8 @@ abstract class _$$EventAddStateImplCopyWith<$Res>
       TimeOfDay? timeStart,
       TimeOfDay? timeEnd,
       DateTime? date,
-      bool isSaveButtonEnabled});
+      bool isSaveButtonEnabled,
+      String location});
 }
 
 /// @nodoc
@@ -126,6 +134,7 @@ class __$$EventAddStateImplCopyWithImpl<$Res>
     Object? timeEnd = freezed,
     Object? date = freezed,
     Object? isSaveButtonEnabled = null,
+    Object? location = null,
   }) {
     return _then(_$EventAddStateImpl(
       title: null == title
@@ -152,6 +161,10 @@ class __$$EventAddStateImplCopyWithImpl<$Res>
           ? _value.isSaveButtonEnabled
           : isSaveButtonEnabled // ignore: cast_nullable_to_non_nullable
               as bool,
+      location: null == location
+          ? _value.location
+          : location // ignore: cast_nullable_to_non_nullable
+              as String,
     ));
   }
 }
@@ -165,7 +178,8 @@ class _$EventAddStateImpl implements _EventAddState {
       this.timeStart = null,
       this.timeEnd = null,
       this.date = null,
-      this.isSaveButtonEnabled = false});
+      this.isSaveButtonEnabled = false,
+      this.location = ""});
 
   @override
   @JsonKey()
@@ -185,10 +199,13 @@ class _$EventAddStateImpl implements _EventAddState {
   @override
   @JsonKey()
   final bool isSaveButtonEnabled;
+  @override
+  @JsonKey()
+  final String location;
 
   @override
   String toString() {
-    return 'EventAddState(title: $title, description: $description, timeStart: $timeStart, timeEnd: $timeEnd, date: $date, isSaveButtonEnabled: $isSaveButtonEnabled)';
+    return 'EventAddState(title: $title, description: $description, timeStart: $timeStart, timeEnd: $timeEnd, date: $date, isSaveButtonEnabled: $isSaveButtonEnabled, location: $location)';
   }
 
   @override
@@ -204,12 +221,14 @@ class _$EventAddStateImpl implements _EventAddState {
             (identical(other.timeEnd, timeEnd) || other.timeEnd == timeEnd) &&
             (identical(other.date, date) || other.date == date) &&
             (identical(other.isSaveButtonEnabled, isSaveButtonEnabled) ||
-                other.isSaveButtonEnabled == isSaveButtonEnabled));
+                other.isSaveButtonEnabled == isSaveButtonEnabled) &&
+            (identical(other.location, location) ||
+                other.location == location));
   }
 
   @override
   int get hashCode => Object.hash(runtimeType, title, description, timeStart,
-      timeEnd, date, isSaveButtonEnabled);
+      timeEnd, date, isSaveButtonEnabled, location);
 
   @JsonKey(ignore: true)
   @override
@@ -225,7 +244,8 @@ abstract class _EventAddState implements EventAddState {
       final TimeOfDay? timeStart,
       final TimeOfDay? timeEnd,
       final DateTime? date,
-      final bool isSaveButtonEnabled}) = _$EventAddStateImpl;
+      final bool isSaveButtonEnabled,
+      final String location}) = _$EventAddStateImpl;
 
   @override
   String get title;
@@ -239,6 +259,8 @@ abstract class _EventAddState implements EventAddState {
   DateTime? get date;
   @override
   bool get isSaveButtonEnabled;
+  @override
+  String get location;
   @override
   @JsonKey(ignore: true)
   _$$EventAddStateImplCopyWith<_$EventAddStateImpl> get copyWith =>

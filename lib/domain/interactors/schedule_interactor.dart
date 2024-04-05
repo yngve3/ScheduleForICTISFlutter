@@ -46,15 +46,16 @@ class ScheduleInteractor {
       }
     }
 
-    return eventsDBStream.map((eventsDB) => _create(eventsDB, weekSchedulesDB));
+    return eventsDBStream.map((eventsDB) => _createWeekSchedule(eventsDB, weekSchedulesDB));
   }
 
-  WeekSchedule _create(List<EventDB> eventsDB, List<WeekScheduleDB> weekSchedulesDB) {
+  WeekSchedule _createWeekSchedule(List<EventDB> eventsDB, List<WeekScheduleDB> weekSchedulesDB) {
     List<DaySchedule> daySchedules = [];
     for (int weekday = 1; weekday <= 7; weekday++) {
       final List<DayScheduleItem> items = [];
       _addEvents(weekday, items, eventsDB);
-      _addStudySchedule(weekday, items, weekSchedulesDB);
+      _addStudySchedules(weekday, items, weekSchedulesDB);
+      items.sort((a, b) => a.timeStart.compareTo(b.timeStart));
       daySchedules.add(DaySchedule(items: items));
     }
 
@@ -84,7 +85,7 @@ class ScheduleInteractor {
     );
   }
 
-  void _addStudySchedule(int weekday, List<DayScheduleItem> items, List<WeekScheduleDB> weekSchedulesDB) {
+  void _addStudySchedules(int weekday, List<DayScheduleItem> items, List<WeekScheduleDB> weekSchedulesDB) {
     if (weekday != 7 && weekSchedulesDB.isNotEmpty) {
       for (final weekScheduleDB in weekSchedulesDB) {
         items.addAll(weekScheduleDB.daySchedules[weekday - 1]
@@ -95,24 +96,5 @@ class ScheduleInteractor {
         );
       }
     }
-  }
-
-  void addEvent({
-    required TimeOfDay timeStart,
-    required TimeOfDay timeEnd,
-    required String title,
-    required String description,
-    required DateTime date
-  }) {
-    eventsRepository.addEvent(
-        EventDB(
-          title: title,
-          description: description,
-          date: date,
-          timeEnd: timeEnd.string,
-          timeStart: timeStart.string,
-          weekNum: date.weekNumber,
-        )
-    );
   }
 }

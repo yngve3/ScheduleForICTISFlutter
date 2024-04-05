@@ -55,6 +55,13 @@ class EventAdd extends StatelessWidget {
                   date: state.date,
                   onDateChosen: (date) => cubit.dateChanged(date),
                 ),
+                InputProperty(
+                    hint: "Локация",
+                    icon: Assets.icons.icLocation.image(),
+                    onChanged: (value) {
+                      cubit.locationChanged(value);
+                    }
+                ),
               ],
             ),
           ),

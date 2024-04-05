@@ -179,7 +179,7 @@ final _entities = <obx_int.ModelEntity>[
   obx_int.ModelEntity(
       id: const obx_int.IdUid(13, 5408297173790329811),
       name: 'EventDB',
-      lastPropertyId: const obx_int.IdUid(7, 2140713880612862238),
+      lastPropertyId: const obx_int.IdUid(8, 1668606529899355858),
       flags: 0,
       properties: <obx_int.ModelProperty>[
         obx_int.ModelProperty(
@@ -216,6 +216,11 @@ final _entities = <obx_int.ModelEntity>[
             id: const obx_int.IdUid(7, 2140713880612862238),
             name: 'weekNum',
             type: 6,
+            flags: 0),
+        obx_int.ModelProperty(
+            id: const obx_int.IdUid(8, 1668606529899355858),
+            name: 'location',
+            type: 9,
             flags: 0)
       ],
       relations: <obx_int.ModelRelation>[],
@@ -527,10 +532,15 @@ obx_int.ModelDefinition getObjectBoxModel() {
         },
         objectToFB: (EventDB object, fb.Builder fbb) {
           final titleOffset = fbb.writeString(object.title);
-          final descriptionOffset = fbb.writeString(object.description);
+          final descriptionOffset = object.description == null
+              ? null
+              : fbb.writeString(object.description!);
           final timeStartOffset = fbb.writeString(object.timeStart);
           final timeEndOffset = fbb.writeString(object.timeEnd);
-          fbb.startTable(8);
+          final locationOffset = object.location == null
+              ? null
+              : fbb.writeString(object.location!);
+          fbb.startTable(9);
           fbb.addInt64(0, object.id);
           fbb.addOffset(1, titleOffset);
           fbb.addOffset(2, descriptionOffset);
@@ -538,6 +548,7 @@ obx_int.ModelDefinition getObjectBoxModel() {
           fbb.addOffset(4, timeStartOffset);
           fbb.addOffset(5, timeEndOffset);
           fbb.addInt64(6, object.weekNum);
+          fbb.addOffset(7, locationOffset);
           fbb.finish(fbb.endTable());
           return object.id;
         },
@@ -550,20 +561,23 @@ obx_int.ModelDefinition getObjectBoxModel() {
               .vTableGet(buffer, rootOffset, 14, '');
           final titleParam = const fb.StringReader(asciiOptimization: true)
               .vTableGet(buffer, rootOffset, 6, '');
-          final descriptionParam =
-              const fb.StringReader(asciiOptimization: true)
-                  .vTableGet(buffer, rootOffset, 8, '');
           final dateParam = DateTime.fromMillisecondsSinceEpoch(
               const fb.Int64Reader().vTableGet(buffer, rootOffset, 10, 0));
           final weekNumParam =
               const fb.Int64Reader().vTableGet(buffer, rootOffset, 16, 0);
+          final locationParam = const fb.StringReader(asciiOptimization: true)
+              .vTableGetNullable(buffer, rootOffset, 18);
+          final descriptionParam =
+              const fb.StringReader(asciiOptimization: true)
+                  .vTableGetNullable(buffer, rootOffset, 8);
           final object = EventDB(
               timeStart: timeStartParam,
               timeEnd: timeEndParam,
               title: titleParam,
-              description: descriptionParam,
               date: dateParam,
-              weekNum: weekNumParam)
+              weekNum: weekNumParam,
+              location: locationParam,
+              description: descriptionParam)
             ..id = const fb.Int64Reader().vTableGet(buffer, rootOffset, 4, 0);
 
           return object;
@@ -741,6 +755,10 @@ class EventDB_ {
   /// see [EventDB.weekNum]
   static final weekNum =
       obx.QueryIntegerProperty<EventDB>(_entities[4].properties[6]);
+
+  /// see [EventDB.location]
+  static final location =
+      obx.QueryStringProperty<EventDB>(_entities[4].properties[7]);
 }
 
 /// [WeekNumber] entity fields to define ObjectBox queries.

@@ -11,6 +11,7 @@ class EventAddState with _$EventAddState {
     @Default(null) TimeOfDay? timeStart,
     @Default(null) TimeOfDay? timeEnd,
     @Default(null) DateTime? date,
-    @Default(false) bool isSaveButtonEnabled
+    @Default(false) bool isSaveButtonEnabled,
+    @Default("") String location
   }) = _EventAddState;
 }

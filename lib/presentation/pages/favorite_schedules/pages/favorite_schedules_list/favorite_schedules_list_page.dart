@@ -37,9 +37,17 @@ class FavoriteSchedulesListPage extends StatelessWidget {
                   padding: const EdgeInsets.only(bottom: 15, right: 15, left: 15),
                   child: Column(
                     children: [
-                      FavoriteSchedulesList(favoriteSchedules: state.favoriteSchedules),
-                      const Divider(),
-                      FavoriteSchedulesList(favoriteSchedules: state.favoriteVPKs),
+                      Expanded(
+                          child: SingleChildScrollView(
+                            child: Column(
+                              children: [
+                                FavoriteSchedulesList(favoriteSchedules: state.favoriteSchedules),
+                                const Divider(),
+                                FavoriteSchedulesList(favoriteSchedules: state.favoriteVPKs),
+                              ],
+                            ),
+                          )
+                      ),
                       const SizedBox(height: 15),
                       FilledButton(
                         onPressed: () {
@@ -67,23 +75,22 @@ class FavoriteSchedulesList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Expanded(
-        child: ListView(
-          children: favoriteSchedules.map((element) =>
-              Dismissible(
-                  key: Key(element.dbId.toString()),
-                  onDismissed: (DismissDirection direction) {
-                    context.read<FavoriteSchedulesListCubit>().delete(element);
-                  },
-                  child: ScheduleSubjectWidget(
-                      scheduleSubject: element,
-                      callback: (scheduleSubject) {
-                        context.read<FavoriteSchedulesListCubit>().select(scheduleSubject);
-                      }
-                  )
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: favoriteSchedules.map((element) =>
+          Dismissible(
+              key: Key(element.dbId.toString()),
+              onDismissed: (DismissDirection direction) {
+                context.read<FavoriteSchedulesListCubit>().delete(element);
+              },
+              child: ScheduleSubjectWidget(
+                  scheduleSubject: element,
+                  callback: (scheduleSubject) {
+                    context.read<FavoriteSchedulesListCubit>().select(scheduleSubject);
+                  }
               )
-          ).toList(),
-        )
+          ),
+      ).toList(),
     );
   }
 }

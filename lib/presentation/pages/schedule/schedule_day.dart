@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:schedule_for_ictis_flutter/presentation/pages/schedule/couples_item.dart';
+import 'package:schedule_for_ictis_flutter/presentation/pages/schedule/schedule_day_item/item_couple.dart';
+import 'package:schedule_for_ictis_flutter/presentation/pages/schedule/schedule_day_item/item_event.dart';
+import 'package:schedule_for_ictis_flutter/presentation/pages/schedule/schedule_day_item/item_unknown.dart';
 
 import '../../../domain/models/schedule/day_schedule/day_schedule.dart';
 import '../../../domain/models/schedule/day_schedule_item.dart';
@@ -25,12 +27,12 @@ class _DaySchedule extends State<DayScheduleWidget> with AutomaticKeepAliveClien
       padding: const EdgeInsets.only(left: 15, right: 15, bottom: 15),
       children: widget.daySchedule.items.map((element) {
         if (element is Couple) {
-          return CouplesItem(couple: element).buildWidget(context);
+          return ItemCouple(couple: element).buildWidget(context);
         } else if (element is Event) {
-          return EventItem(event: element).buildWidget(context);
+          return ItemEvent(event: element).buildWidget(context);
         }
 
-        return UnknownItem().buildWidget(context);
+        return ItemUnknown().buildWidget(context);
       }).toList()
     );
   }

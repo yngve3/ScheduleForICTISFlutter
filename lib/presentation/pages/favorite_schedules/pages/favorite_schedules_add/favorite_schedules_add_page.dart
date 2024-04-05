@@ -32,7 +32,7 @@ class FavoriteSchedulesAddPage extends StatelessWidget {
               child: Column(
                 children: [
                   SearchField(
-                    label: "Введите группу, преподавателя или аудиторию",
+                    label: "Введите группу, впк, преподавателя или аудиторию",
                     onSubmit: (value) => context.read<ScheduleSearchCubit>().search(value),
                   ),
                   SearchFoundList(

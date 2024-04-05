@@ -29,7 +29,8 @@ class SearchFoundList extends StatelessWidget {
                   scheduleSubject: e,
                   callback: (element) {
                     onTapped(element);
-                  }
+                  },
+                  padding: 15,
               )
               ).toList(),
             ),

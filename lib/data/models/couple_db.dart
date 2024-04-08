@@ -62,10 +62,14 @@ class CoupleDB {
     final lecturers = lecturersRegExp.allMatches(input).map((e) => e.group(0)).join(", ").trim();
     input = input.replaceAll(lecturersRegExp, "");
 
+    final groupsRegExp = RegExp(r"КТ[бмас][озв][1-9]-[1-9]|ВПК [1-9]-[1-9](.[1-9])?");
+    final groups = groupsRegExp.allMatches(input).map((e) => e.group(0)).join(", ").trim();
+    input = input.replaceAll(groupsRegExp, "");
+
     final CoupleDB coupleDB = CoupleDB(
       audiences: audiences,
       discipline: input,
-      lecturers: lecturers,
+      lecturers: "$lecturers,$groups",
       coupleNum: coupleNum
     );
 

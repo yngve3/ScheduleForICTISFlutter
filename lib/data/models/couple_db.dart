@@ -58,18 +58,23 @@ class CoupleDB {
     final audiences = audiencesRegExp.allMatches(input).map((e) => e.group(0)).join(", ").trim();
     input = input.replaceAll(audiencesRegExp, "");
 
-    final lecturersRegExp = RegExp(r"([1-9] п/г)? [А-Я][а-я]* [А-Я]. [A-Я].");
+    final lecturersRegExp = RegExp(r"(\d\d? п/г)? [А-Я][а-я]* [А-Я]. [A-Я].");
     final lecturers = lecturersRegExp.allMatches(input).map((e) => e.group(0)).join(", ").trim();
     input = input.replaceAll(lecturersRegExp, "");
 
-    final groupsRegExp = RegExp(r"КТ[бмас][озв][1-9]-[1-9]|ВПК [1-9]-[1-9](.[1-9])?");
-    final groups = groupsRegExp.allMatches(input).map((e) => e.group(0)).join(", ").trim();
+    final groupsRegExp = RegExp(
+        r"КТ[бмас][озв]\d-\d\d?,?"
+        r"|ВПК \d\d?-\d\d?(.\d)?,?"
+        r"|\d{2}[А-ЯЁа-яё]{2}-\d{2}\.\d{2}\.\d{2}\.\d{2}-[а-о]\d,?"
+        r"|Группа\d"
+    );
+    final groups = groupsRegExp.allMatches(input).map((e) => e.group(0)).join(" ").trim();
     input = input.replaceAll(groupsRegExp, "");
 
     final CoupleDB coupleDB = CoupleDB(
-      audiences: audiences,
-      discipline: input,
-      lecturers: "$lecturers,$groups",
+      audiences: audiences.trim(),
+      discipline: input.trim(),
+      lecturers: lecturers.isNotEmpty ? lecturers : groups,
       coupleNum: coupleNum
     );
 

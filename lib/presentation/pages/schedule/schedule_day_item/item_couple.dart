@@ -27,7 +27,7 @@ class ItemCouple implements ScheduleDayItem {
           Row(
             children: [
               Text(couple.audiences, style: context.textTheme.bodyLarge),
-              const SizedBox(width: 8),
+              SizedBox(width: couple.audiences.isNotEmpty ? 8 : 0),
               Icon(Icons.circle, color: _getCircleColor(context)),
               const SizedBox(width: 8),
               Text(

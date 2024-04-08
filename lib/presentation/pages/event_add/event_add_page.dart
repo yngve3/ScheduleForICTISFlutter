@@ -6,6 +6,7 @@ import 'package:schedule_for_ictis_flutter/presentation/pages/event_add/cubit/ev
 import 'package:schedule_for_ictis_flutter/presentation/pages/event_add/cubit/event_add_state.dart';
 import 'package:schedule_for_ictis_flutter/presentation/widgets/app_bar.dart';
 
+import '../../../domain/models/schedule/day_schedule_item.dart';
 import '../../../gen/assets.gen.dart';
 import '../../widgets/property/properties/date_property.dart';
 import '../../widgets/property/properties/input_property.dart';
@@ -16,16 +17,24 @@ class EventAddPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final event = GoRouterState.of(context).extra as Event?;
     return Scaffold(
       appBar: MyAppBar(appBar: AppBar(), title: "Мероприятие"),
       body: BlocProvider(
-          create: (context) => EventAddCubit(), child: const EventAdd()),
+          create: (context) => EventAddCubit()..loadEvent(event),
+          child: EventAdd(isEdit: event != null)
+      ),
     );
   }
 }
 
 class EventAdd extends StatelessWidget {
-  const EventAdd({super.key});
+  const EventAdd({
+    super.key,
+    this.isEdit = false
+  });
+
+  final bool isEdit;
 
   @override
   Widget build(BuildContext context) {
@@ -39,9 +48,11 @@ class EventAdd extends StatelessWidget {
               children: [
                 InputProperty(
                     hint: "Название",
+                    value: state.title,
                     onChanged: (value) => cubit.titleChanged(value)),
                 InputProperty(
                     hint: "Описание",
+                    value: state.description,
                     isMultiLines: true,
                     icon: Assets.icons.icList.image(color: context.customColors.text1),
                     onChanged: (value) => cubit.descriptionChanged(value)),
@@ -57,6 +68,7 @@ class EventAdd extends StatelessWidget {
                 ),
                 InputProperty(
                     hint: "Локация",
+                    value: state.location,
                     icon: Assets.icons.icLocation.image(),
                     onChanged: (value) {
                       cubit.locationChanged(value);
@@ -70,7 +82,7 @@ class EventAdd extends StatelessWidget {
               state.isSaveButtonEnabled
                   ? () {cubit.saveEvent(); context.pop();}
                   : null,
-            child: const Text("Создать"),
+            child: Text(isEdit ? "Сохранить" : "Создать"),
           ),
         ]),
       ),

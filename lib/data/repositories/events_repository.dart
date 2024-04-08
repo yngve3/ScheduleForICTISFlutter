@@ -18,4 +18,8 @@ class EventsRepository {
   void addEvent(EventDB event) {
     _eventsBox.putAsync(event);
   }
+
+  void deleteEvent(int id) {
+    _eventsBox.removeAsync(id);
+  }
 }

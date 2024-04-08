@@ -10,8 +10,10 @@ class InputProperty extends StatelessWidget {
     required this.onChanged,
     this.isMultiLines = false,
     this.icon,
+    this.value = ""
   });
 
+  final String value;
   final bool isMultiLines;
   final String hint;
   final OnTextChangedCallback onChanged;
@@ -26,6 +28,7 @@ class InputProperty extends StatelessWidget {
             hint: hint,
             onChanged: onChanged,
             isMultiLines: isMultiLines,
+            value: value,
           ),
         ]
     );

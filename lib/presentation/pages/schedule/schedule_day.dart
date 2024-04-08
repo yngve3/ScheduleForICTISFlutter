@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:schedule_for_ictis_flutter/presentation/pages/schedule/schedule_day_item/item_choose_vpk.dart';
 import 'package:schedule_for_ictis_flutter/presentation/pages/schedule/schedule_day_item/item_couple.dart';
 import 'package:schedule_for_ictis_flutter/presentation/pages/schedule/schedule_day_item/item_event.dart';
 import 'package:schedule_for_ictis_flutter/presentation/pages/schedule/schedule_day_item/item_unknown.dart';
@@ -25,18 +26,27 @@ class _DaySchedule extends State<DayScheduleWidget> with AutomaticKeepAliveClien
     return ListView(
       shrinkWrap: true,
       padding: const EdgeInsets.only(left: 15, right: 15, bottom: 15),
-      children: widget.daySchedule.items.map((element) {
-        if (element is Couple) {
-          return ItemCouple(couple: element).buildWidget(context);
-        } else if (element is Event) {
-          return ItemEvent(event: element).buildWidget(context);
-        }
-
-        return ItemUnknown().buildWidget(context);
-      }).toList()
+      children: _createItems(context)
     );
   }
 
   @override
   bool get wantKeepAlive => true;
+
+  List<Widget> _createItems(BuildContext context) {
+    List<Widget> items = [];
+    if (widget.daySchedule.isVPK) {
+      items.add(ItemChooseVPK().buildWidget(context));
+    }
+
+    items.addAll(widget.daySchedule.items.map((element) {
+      return switch (element) {
+        Couple _=> ItemCouple(couple: element).buildWidget(context),
+        Event _=> ItemEvent(event: element).buildWidget(context),
+        _=> ItemUnknown().buildWidget(context)
+      };
+    }));
+
+    return items;
+  }
 }

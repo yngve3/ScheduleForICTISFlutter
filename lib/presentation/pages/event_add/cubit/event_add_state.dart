@@ -6,6 +6,7 @@ part 'event_add_state.freezed.dart';
 @freezed
 class EventAddState with _$EventAddState {
   factory EventAddState({
+    int? id,
     @Default("") String title,
     @Default("") String description,
     @Default(null) TimeOfDay? timeStart,

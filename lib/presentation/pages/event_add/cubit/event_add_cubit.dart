@@ -5,6 +5,7 @@ import 'package:schedule_for_ictis_flutter/presentation/extensions/date_time_ext
 import 'package:schedule_for_ictis_flutter/presentation/extensions/time_of_day_ext.dart';
 
 import '../../../../data/models/event_db.dart';
+import '../../../../domain/models/schedule/day_schedule_item.dart';
 import 'event_add_state.dart';
 
 class EventAddCubit extends Cubit<EventAddState> {
@@ -13,14 +14,36 @@ class EventAddCubit extends Cubit<EventAddState> {
 
   void saveEvent() {
     repository.addEvent(EventDB(
-        timeStart: state.timeStart!.string,
-        timeEnd: state.timeEnd!.string,
-        title: state.title,
-        description: state.description,
-        date: state.date!,
-        weekNum: state.date!.weekNumber,
-        location: state.location
+      id: state.id ?? 0,
+      timeStart: state.timeStart!.string,
+      timeEnd: state.timeEnd!.string,
+      title: state.title,
+      description: _getText(state.description),
+      date: state.date!,
+      weekNum: state.date!.weekNumber,
+      location: _getText(state.location),
     ));
+  }
+
+  void loadEvent(Event? event) {
+    if (event == null) return;
+
+    emit(EventAddState(
+      id: event.id,
+      title: event.title,
+      description: event.description ?? "",
+      timeStart: event.timeStart,
+      timeEnd: event.timeEnd,
+      location: event.location ?? "",
+      date: event.date,
+      isSaveButtonEnabled: true
+    ));
+  }
+  
+  String? _getText(String? string) {
+    if (string != null && string.isEmpty) return null;
+
+    return string;
   }
 
   void titleChanged(String value) {

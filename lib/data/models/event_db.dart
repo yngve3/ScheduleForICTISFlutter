@@ -2,7 +2,7 @@ import 'package:objectbox/objectbox.dart';
 
 @Entity()
 class EventDB {
-  @Id() int id = 0;
+  @Id() int id;
   final String timeStart;
   final String timeEnd;
   final String title;
@@ -13,6 +13,7 @@ class EventDB {
   final String? location;
 
   EventDB({
+    this.id = 0,
     required this.timeStart,
     required this.timeEnd,
     required this.title,

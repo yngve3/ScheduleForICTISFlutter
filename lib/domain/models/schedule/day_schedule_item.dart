@@ -48,9 +48,13 @@ class Event extends DayScheduleItem {
   final String title;
   final String? description;
   final String? location;
+  final DateTime date;
+  final int id;
 
   Event(super.timeStart, super.timeEnd, {
     required this.title,
+    required this.date,
+    required this.id,
     this.description,
     this.location
   });
@@ -61,7 +65,9 @@ class Event extends DayScheduleItem {
       TimeOfDayExtension.parse(eventDB.timeEnd),
       title: eventDB.title,
       description: eventDB.description,
-      location: eventDB.location
+      location: eventDB.location,
+      date: eventDB.date,
+      id: eventDB.id
     );
   }
 }

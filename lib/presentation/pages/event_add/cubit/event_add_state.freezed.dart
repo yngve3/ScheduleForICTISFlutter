@@ -16,6 +16,7 @@ final _privateConstructorUsedError = UnsupportedError(
 
 /// @nodoc
 mixin _$EventAddState {
+  int? get id => throw _privateConstructorUsedError;
   String get title => throw _privateConstructorUsedError;
   String get description => throw _privateConstructorUsedError;
   TimeOfDay? get timeStart => throw _privateConstructorUsedError;
@@ -36,7 +37,8 @@ abstract class $EventAddStateCopyWith<$Res> {
       _$EventAddStateCopyWithImpl<$Res, EventAddState>;
   @useResult
   $Res call(
-      {String title,
+      {int? id,
+      String title,
       String description,
       TimeOfDay? timeStart,
       TimeOfDay? timeEnd,
@@ -58,6 +60,7 @@ class _$EventAddStateCopyWithImpl<$Res, $Val extends EventAddState>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
+    Object? id = freezed,
     Object? title = null,
     Object? description = null,
     Object? timeStart = freezed,
@@ -67,6 +70,10 @@ class _$EventAddStateCopyWithImpl<$Res, $Val extends EventAddState>
     Object? location = null,
   }) {
     return _then(_value.copyWith(
+      id: freezed == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as int?,
       title: null == title
           ? _value.title
           : title // ignore: cast_nullable_to_non_nullable
@@ -108,7 +115,8 @@ abstract class _$$EventAddStateImplCopyWith<$Res>
   @override
   @useResult
   $Res call(
-      {String title,
+      {int? id,
+      String title,
       String description,
       TimeOfDay? timeStart,
       TimeOfDay? timeEnd,
@@ -128,6 +136,7 @@ class __$$EventAddStateImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
+    Object? id = freezed,
     Object? title = null,
     Object? description = null,
     Object? timeStart = freezed,
@@ -137,6 +146,10 @@ class __$$EventAddStateImplCopyWithImpl<$Res>
     Object? location = null,
   }) {
     return _then(_$EventAddStateImpl(
+      id: freezed == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as int?,
       title: null == title
           ? _value.title
           : title // ignore: cast_nullable_to_non_nullable
@@ -173,7 +186,8 @@ class __$$EventAddStateImplCopyWithImpl<$Res>
 
 class _$EventAddStateImpl implements _EventAddState {
   _$EventAddStateImpl(
-      {this.title = "",
+      {this.id,
+      this.title = "",
       this.description = "",
       this.timeStart = null,
       this.timeEnd = null,
@@ -181,6 +195,8 @@ class _$EventAddStateImpl implements _EventAddState {
       this.isSaveButtonEnabled = false,
       this.location = ""});
 
+  @override
+  final int? id;
   @override
   @JsonKey()
   final String title;
@@ -205,7 +221,7 @@ class _$EventAddStateImpl implements _EventAddState {
 
   @override
   String toString() {
-    return 'EventAddState(title: $title, description: $description, timeStart: $timeStart, timeEnd: $timeEnd, date: $date, isSaveButtonEnabled: $isSaveButtonEnabled, location: $location)';
+    return 'EventAddState(id: $id, title: $title, description: $description, timeStart: $timeStart, timeEnd: $timeEnd, date: $date, isSaveButtonEnabled: $isSaveButtonEnabled, location: $location)';
   }
 
   @override
@@ -213,6 +229,7 @@ class _$EventAddStateImpl implements _EventAddState {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$EventAddStateImpl &&
+            (identical(other.id, id) || other.id == id) &&
             (identical(other.title, title) || other.title == title) &&
             (identical(other.description, description) ||
                 other.description == description) &&
@@ -227,8 +244,8 @@ class _$EventAddStateImpl implements _EventAddState {
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, title, description, timeStart,
-      timeEnd, date, isSaveButtonEnabled, location);
+  int get hashCode => Object.hash(runtimeType, id, title, description,
+      timeStart, timeEnd, date, isSaveButtonEnabled, location);
 
   @JsonKey(ignore: true)
   @override
@@ -239,7 +256,8 @@ class _$EventAddStateImpl implements _EventAddState {
 
 abstract class _EventAddState implements EventAddState {
   factory _EventAddState(
-      {final String title,
+      {final int? id,
+      final String title,
       final String description,
       final TimeOfDay? timeStart,
       final TimeOfDay? timeEnd,
@@ -247,6 +265,8 @@ abstract class _EventAddState implements EventAddState {
       final bool isSaveButtonEnabled,
       final String location}) = _$EventAddStateImpl;
 
+  @override
+  int? get id;
   @override
   String get title;
   @override

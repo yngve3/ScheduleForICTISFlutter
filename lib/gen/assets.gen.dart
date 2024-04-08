@@ -19,6 +19,13 @@ class $AssetsIconsGen {
   AssetGenImage get icBackArrow =>
       const AssetGenImage('assets/icons/ic_back_arrow.png');
 
+  /// File path: assets/icons/ic_delete.png
+  AssetGenImage get icDelete =>
+      const AssetGenImage('assets/icons/ic_delete.png');
+
+  /// File path: assets/icons/ic_edit.png
+  AssetGenImage get icEdit => const AssetGenImage('assets/icons/ic_edit.png');
+
   /// File path: assets/icons/ic_event.png
   AssetGenImage get icEvent => const AssetGenImage('assets/icons/ic_event.png');
 
@@ -50,6 +57,8 @@ class $AssetsIconsGen {
   List<AssetGenImage> get values => [
         icAdd,
         icBackArrow,
+        icDelete,
+        icEdit,
         icEvent,
         icHome,
         icList,

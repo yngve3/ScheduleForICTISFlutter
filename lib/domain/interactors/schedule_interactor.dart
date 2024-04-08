@@ -53,10 +53,12 @@ class ScheduleInteractor {
     List<DaySchedule> daySchedules = [];
     for (int weekday = 1; weekday <= 7; weekday++) {
       final List<DayScheduleItem> items = [];
+
       _addEvents(weekday, items, eventsDB);
-      _addStudySchedules(weekday, items, weekSchedulesDB);
+      final isVPK = _addStudySchedules(weekday, items, weekSchedulesDB);
+
       items.sort((a, b) => a.timeStart.compareTo(b.timeStart));
-      daySchedules.add(DaySchedule(items: items));
+      daySchedules.add(DaySchedule(items: items, isVPK: isVPK));
     }
 
     final weekNumber = _createWeekNumber(weekSchedulesDB);
@@ -85,7 +87,7 @@ class ScheduleInteractor {
     );
   }
 
-  void _addStudySchedules(int weekday, List<DayScheduleItem> items, List<WeekScheduleDB> weekSchedulesDB) {
+  bool _addStudySchedules(int weekday, List<DayScheduleItem> items, List<WeekScheduleDB> weekSchedulesDB) {
     if (weekday != 7 && weekSchedulesDB.isNotEmpty) {
       for (final weekScheduleDB in weekSchedulesDB) {
         items.addAll(weekScheduleDB.daySchedules[weekday - 1]
@@ -95,6 +97,12 @@ class ScheduleInteractor {
             .toList()
         );
       }
+
+      if (weekSchedulesDB.length == 1 && weekSchedulesDB[0].daySchedules[weekday - 1].isVPK) {
+        return true;
+      }
     }
+
+    return false;
   }
 }

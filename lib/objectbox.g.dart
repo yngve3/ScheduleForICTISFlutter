@@ -19,6 +19,7 @@ import 'data/models/couple_db.dart';
 import 'data/models/day_schedule_db.dart';
 import 'data/models/event_db.dart';
 import 'data/models/week_schedule_db.dart';
+import 'domain/models/note/note.dart';
 import 'domain/models/schedule_subject/schedule_subject.dart';
 import 'domain/models/week_number.dart';
 
@@ -28,7 +29,7 @@ final _entities = <obx_int.ModelEntity>[
   obx_int.ModelEntity(
       id: const obx_int.IdUid(6, 5480714166435319607),
       name: 'CoupleDB',
-      lastPropertyId: const obx_int.IdUid(7, 3785246543164776287),
+      lastPropertyId: const obx_int.IdUid(8, 7873484480009240251),
       flags: 0,
       properties: <obx_int.ModelProperty>[
         obx_int.ModelProperty(
@@ -67,14 +68,20 @@ final _entities = <obx_int.ModelEntity>[
             id: const obx_int.IdUid(7, 3785246543164776287),
             name: 'coupleNum',
             type: 6,
-            flags: 0)
+            flags: 0),
+        obx_int.ModelProperty(
+            id: const obx_int.IdUid(8, 7873484480009240251),
+            name: 'idForSearch',
+            type: 9,
+            flags: 34848,
+            indexId: const obx_int.IdUid(13, 5695844585636368914))
       ],
       relations: <obx_int.ModelRelation>[],
       backlinks: <obx_int.ModelBacklink>[]),
   obx_int.ModelEntity(
       id: const obx_int.IdUid(9, 8637567801753414186),
       name: 'DayScheduleDB',
-      lastPropertyId: const obx_int.IdUid(2, 965904485105953696),
+      lastPropertyId: const obx_int.IdUid(4, 5608958517753912348),
       flags: 0,
       properties: <obx_int.ModelProperty>[
         obx_int.ModelProperty(
@@ -88,7 +95,18 @@ final _entities = <obx_int.ModelEntity>[
             type: 11,
             flags: 520,
             indexId: const obx_int.IdUid(8, 4832409830394496983),
-            relationTarget: 'WeekScheduleDB')
+            relationTarget: 'WeekScheduleDB'),
+        obx_int.ModelProperty(
+            id: const obx_int.IdUid(3, 7463470035368337709),
+            name: 'date',
+            type: 10,
+            flags: 0),
+        obx_int.ModelProperty(
+            id: const obx_int.IdUid(4, 5608958517753912348),
+            name: 'idForSearch',
+            type: 9,
+            flags: 34848,
+            indexId: const obx_int.IdUid(14, 4662735310447176423))
       ],
       relations: <obx_int.ModelRelation>[],
       backlinks: <obx_int.ModelBacklink>[
@@ -243,6 +261,35 @@ final _entities = <obx_int.ModelEntity>[
             flags: 129)
       ],
       relations: <obx_int.ModelRelation>[],
+      backlinks: <obx_int.ModelBacklink>[]),
+  obx_int.ModelEntity(
+      id: const obx_int.IdUid(16, 735719639961690522),
+      name: 'Note',
+      lastPropertyId: const obx_int.IdUid(4, 8692498959326071911),
+      flags: 0,
+      properties: <obx_int.ModelProperty>[
+        obx_int.ModelProperty(
+            id: const obx_int.IdUid(1, 3057419167839562730),
+            name: 'id',
+            type: 6,
+            flags: 1),
+        obx_int.ModelProperty(
+            id: const obx_int.IdUid(2, 7964189422232866656),
+            name: 'text',
+            type: 9,
+            flags: 0),
+        obx_int.ModelProperty(
+            id: const obx_int.IdUid(3, 6181180344952142219),
+            name: 'date',
+            type: 10,
+            flags: 0),
+        obx_int.ModelProperty(
+            id: const obx_int.IdUid(4, 8692498959326071911),
+            name: 'coupleID',
+            type: 9,
+            flags: 0)
+      ],
+      relations: <obx_int.ModelRelation>[],
       backlinks: <obx_int.ModelBacklink>[])
 ];
 
@@ -281,8 +328,8 @@ Future<obx.Store> openStore(
 obx_int.ModelDefinition getObjectBoxModel() {
   final model = obx_int.ModelInfo(
       entities: _entities,
-      lastEntityId: const obx_int.IdUid(15, 3529840884396796264),
-      lastIndexId: const obx_int.IdUid(12, 1606607200252430453),
+      lastEntityId: const obx_int.IdUid(16, 735719639961690522),
+      lastIndexId: const obx_int.IdUid(14, 4662735310447176423),
       lastRelationId: const obx_int.IdUid(0, 0),
       lastSequenceId: const obx_int.IdUid(0, 0),
       retiredEntityUids: const [
@@ -354,7 +401,8 @@ obx_int.ModelDefinition getObjectBoxModel() {
           final lecturersOffset = fbb.writeString(object.lecturers);
           final dbTypeOffset =
               object.dbType == null ? null : fbb.writeString(object.dbType!);
-          fbb.startTable(8);
+          final idForSearchOffset = fbb.writeString(object.idForSearch);
+          fbb.startTable(9);
           fbb.addInt64(0, object.id);
           fbb.addOffset(1, audiencesOffset);
           fbb.addOffset(2, disciplineOffset);
@@ -362,6 +410,7 @@ obx_int.ModelDefinition getObjectBoxModel() {
           fbb.addInt64(4, object.daySchedule.targetId);
           fbb.addOffset(5, dbTypeOffset);
           fbb.addInt64(6, object.coupleNum);
+          fbb.addOffset(7, idForSearchOffset);
           fbb.finish(fbb.endTable());
           return object.id;
         },
@@ -376,11 +425,15 @@ obx_int.ModelDefinition getObjectBoxModel() {
               .vTableGet(buffer, rootOffset, 10, '');
           final coupleNumParam =
               const fb.Int64Reader().vTableGet(buffer, rootOffset, 16, 0);
+          final idForSearchParam =
+              const fb.StringReader(asciiOptimization: true)
+                  .vTableGet(buffer, rootOffset, 18, '');
           final object = CoupleDB(
               audiences: audiencesParam,
               discipline: disciplineParam,
               lecturers: lecturersParam,
-              coupleNum: coupleNumParam)
+              coupleNum: coupleNumParam,
+              idForSearch: idForSearchParam)
             ..id = const fb.Int64Reader().vTableGet(buffer, rootOffset, 4, 0)
             ..dbType = const fb.StringReader(asciiOptimization: true)
                 .vTableGetNullable(buffer, rootOffset, 14);
@@ -401,17 +454,25 @@ obx_int.ModelDefinition getObjectBoxModel() {
           object.id = id;
         },
         objectToFB: (DayScheduleDB object, fb.Builder fbb) {
-          fbb.startTable(3);
+          final idForSearchOffset = fbb.writeString(object.idForSearch);
+          fbb.startTable(5);
           fbb.addInt64(0, object.id);
           fbb.addInt64(1, object.weekSchedule.targetId);
+          fbb.addInt64(2, object.date.millisecondsSinceEpoch);
+          fbb.addOffset(3, idForSearchOffset);
           fbb.finish(fbb.endTable());
           return object.id;
         },
         objectFromFB: (obx.Store store, ByteData fbData) {
           final buffer = fb.BufferContext(fbData);
           final rootOffset = buffer.derefObject(0);
-
-          final object = DayScheduleDB()
+          final dateParam = DateTime.fromMillisecondsSinceEpoch(
+              const fb.Int64Reader().vTableGet(buffer, rootOffset, 8, 0));
+          final idForSearchParam =
+              const fb.StringReader(asciiOptimization: true)
+                  .vTableGet(buffer, rootOffset, 10, '');
+          final object = DayScheduleDB(
+              date: dateParam, idForSearch: idForSearchParam)
             ..id = const fb.Int64Reader().vTableGet(buffer, rootOffset, 4, 0);
           object.weekSchedule.targetId =
               const fb.Int64Reader().vTableGet(buffer, rootOffset, 6, 0);
@@ -555,6 +616,8 @@ obx_int.ModelDefinition getObjectBoxModel() {
         objectFromFB: (obx.Store store, ByteData fbData) {
           final buffer = fb.BufferContext(fbData);
           final rootOffset = buffer.derefObject(0);
+          final idParam =
+              const fb.Int64Reader().vTableGet(buffer, rootOffset, 4, 0);
           final timeStartParam = const fb.StringReader(asciiOptimization: true)
               .vTableGet(buffer, rootOffset, 12, '');
           final timeEndParam = const fb.StringReader(asciiOptimization: true)
@@ -571,14 +634,14 @@ obx_int.ModelDefinition getObjectBoxModel() {
               const fb.StringReader(asciiOptimization: true)
                   .vTableGetNullable(buffer, rootOffset, 8);
           final object = EventDB(
+              id: idParam,
               timeStart: timeStartParam,
               timeEnd: timeEndParam,
               title: titleParam,
               date: dateParam,
               weekNum: weekNumParam,
               location: locationParam,
-              description: descriptionParam)
-            ..id = const fb.Int64Reader().vTableGet(buffer, rootOffset, 4, 0);
+              description: descriptionParam);
 
           return object;
         }),
@@ -616,6 +679,40 @@ obx_int.ModelDefinition getObjectBoxModel() {
               calendarWeekNumber: calendarWeekNumberParam);
 
           return object;
+        }),
+    Note: obx_int.EntityDefinition<Note>(
+        model: _entities[6],
+        toOneRelations: (Note object) => [],
+        toManyRelations: (Note object) => {},
+        getId: (Note object) => object.id,
+        setId: (Note object, int id) {
+          object.id = id;
+        },
+        objectToFB: (Note object, fb.Builder fbb) {
+          final textOffset = fbb.writeString(object.text);
+          final coupleIDOffset = fbb.writeString(object.coupleID);
+          fbb.startTable(5);
+          fbb.addInt64(0, object.id);
+          fbb.addOffset(1, textOffset);
+          fbb.addInt64(2, object.date.millisecondsSinceEpoch);
+          fbb.addOffset(3, coupleIDOffset);
+          fbb.finish(fbb.endTable());
+          return object.id;
+        },
+        objectFromFB: (obx.Store store, ByteData fbData) {
+          final buffer = fb.BufferContext(fbData);
+          final rootOffset = buffer.derefObject(0);
+          final textParam = const fb.StringReader(asciiOptimization: true)
+              .vTableGet(buffer, rootOffset, 6, '');
+          final dateParam = DateTime.fromMillisecondsSinceEpoch(
+              const fb.Int64Reader().vTableGet(buffer, rootOffset, 8, 0));
+          final coupleIDParam = const fb.StringReader(asciiOptimization: true)
+              .vTableGet(buffer, rootOffset, 10, '');
+          final object = Note(
+              text: textParam, date: dateParam, coupleID: coupleIDParam)
+            ..id = const fb.Int64Reader().vTableGet(buffer, rootOffset, 4, 0);
+
+          return object;
         })
   };
 
@@ -651,6 +748,10 @@ class CoupleDB_ {
   /// see [CoupleDB.coupleNum]
   static final coupleNum =
       obx.QueryIntegerProperty<CoupleDB>(_entities[0].properties[6]);
+
+  /// see [CoupleDB.idForSearch]
+  static final idForSearch =
+      obx.QueryStringProperty<CoupleDB>(_entities[0].properties[7]);
 }
 
 /// [DayScheduleDB] entity fields to define ObjectBox queries.
@@ -663,6 +764,14 @@ class DayScheduleDB_ {
   static final weekSchedule =
       obx.QueryRelationToOne<DayScheduleDB, WeekScheduleDB>(
           _entities[1].properties[1]);
+
+  /// see [DayScheduleDB.date]
+  static final date =
+      obx.QueryDateProperty<DayScheduleDB>(_entities[1].properties[2]);
+
+  /// see [DayScheduleDB.idForSearch]
+  static final idForSearch =
+      obx.QueryStringProperty<DayScheduleDB>(_entities[1].properties[3]);
 
   /// see [DayScheduleDB.couples]
   static final couples =
@@ -770,4 +879,20 @@ class WeekNumber_ {
   /// see [WeekNumber.calendarWeekNumber]
   static final calendarWeekNumber =
       obx.QueryIntegerProperty<WeekNumber>(_entities[5].properties[1]);
+}
+
+/// [Note] entity fields to define ObjectBox queries.
+class Note_ {
+  /// see [Note.id]
+  static final id = obx.QueryIntegerProperty<Note>(_entities[6].properties[0]);
+
+  /// see [Note.text]
+  static final text = obx.QueryStringProperty<Note>(_entities[6].properties[1]);
+
+  /// see [Note.date]
+  static final date = obx.QueryDateProperty<Note>(_entities[6].properties[2]);
+
+  /// see [Note.coupleID]
+  static final coupleID =
+      obx.QueryStringProperty<Note>(_entities[6].properties[3]);
 }

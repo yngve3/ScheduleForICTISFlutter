@@ -1,4 +1,5 @@
 import 'package:objectbox/objectbox.dart';
+import 'package:schedule_for_ictis_flutter/data/models/week_schedule_db.dart';
 
 import '../../objectbox.g.dart';
 import 'day_schedule_db.dart';
@@ -15,6 +16,8 @@ class CoupleDB {
   final int coupleNum;
   final ToOne<DayScheduleDB> daySchedule = ToOne<DayScheduleDB>();
 
+  @Index() @Unique(onConflict: ConflictStrategy.replace) final String idForSearch;
+
   bool get isOnline => audiences.contains("LMS");
   bool get isVUC => discipline.contains("ВУЦ");
 
@@ -28,7 +31,8 @@ class CoupleDB {
     required this.audiences,
     required this.discipline,
     required this.lecturers,
-    required this.coupleNum
+    required this.coupleNum,
+    required this.idForSearch
   });
 
   // Enum базой данных не поддерживается, поэтому нужно конвертировать
@@ -48,7 +52,7 @@ class CoupleDB {
     }
   }
 
-  factory CoupleDB.fromString(String coupleStr, {required int coupleNum}) {
+  factory CoupleDB.fromString(String coupleStr, {required int coupleNum, required String idOfDay}) {
     String input = coupleStr;
     final typeRegExp = RegExp(r"пр\.|лаб\.|лек\.|экз\.");
     final type = typeRegExp.firstMatch(input)?[0] ?? "";
@@ -75,7 +79,8 @@ class CoupleDB {
       audiences: audiences.trim(),
       discipline: input.trim(),
       lecturers: lecturers.isNotEmpty ? lecturers : groups,
-      coupleNum: coupleNum
+      coupleNum: coupleNum,
+      idForSearch: IdGenerator.createByIdAndNum(idOfDay, coupleNum)
     );
 
     coupleDB.type = CoupleType.fromString(type);

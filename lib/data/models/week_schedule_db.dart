@@ -53,8 +53,9 @@ class WeekScheduleDB {
 
     final List<dynamic> table = json['table'];
 
+    int i = 3;
     weekSchedule.daySchedules.addAll(
-        table.skip(2).map((e) => DayScheduleDB.fromJson(e)).toList()
+        table.skip(2).map((e) => DayScheduleDB.fromJson(e, IdGenerator.createByIdAndNum(id, i++))).toList()
     );
 
     weekNumber = weekNumber ?? WeekNumber(
@@ -75,6 +76,10 @@ class IdGenerator {
         .replaceFirst("m", "");
 
     return "$subjectID:$weekNum";
+  }
+
+  static String createByIdAndNum(String id, int num) {
+    return "$id:$num";
   }
 
   static (String, int) parse(String id) {

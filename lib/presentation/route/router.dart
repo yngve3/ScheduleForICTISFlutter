@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:schedule_for_ictis_flutter/presentation/pages/event_add/event_add_page.dart';
+import 'package:schedule_for_ictis_flutter/presentation/pages/notes/note_add/note_add_page.dart';
 import 'package:schedule_for_ictis_flutter/presentation/route/routes.dart';
 
 import '../pages/favorite_schedules/pages/favorite_schedules_add/favorite_schedules_add_page.dart';
 import '../pages/favorite_schedules/pages/favorite_schedules_list/favorite_schedules_list_page.dart';
 import '../pages/main_page/main_page.dart';
+import '../pages/notes/couple_notes_list/couple_notes_list.dart';
 import '../pages/preferences/preferences_page.dart';
 
 import '../pages/schedule/schedule_page.dart';
@@ -42,7 +44,24 @@ abstract class AppRouter {
                           child: EventAddPage()
                       );
                     },
-                    routes: const []
+                    routes: const [],
+
+                  ),
+                  GoRoute(
+                    path: Routes.coupleNotesList.lastPathComponent,
+                    builder: (BuildContext context, GoRouterState state) {
+                      return const CoupleNotesListPage();
+                    },
+                    routes: [
+                      GoRoute(
+                        path: Routes.addNote.lastPathComponent,
+                        pageBuilder: (BuildContext context, GoRouterState state) {
+                          return const NoTransitionPage(
+                              child: NoteAddPage()
+                          );
+                        },
+                      )
+                    ]
                   )
                 ],
               ),

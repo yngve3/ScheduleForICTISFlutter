@@ -74,5 +74,4 @@ class ScheduleRepository {
   void insertWeekSchedule(WeekScheduleDB weekSchedule) {
     _scheduleBox.put(weekSchedule);
   }
-
 }

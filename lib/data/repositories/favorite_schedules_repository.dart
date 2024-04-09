@@ -58,7 +58,7 @@ class FavoriteSchedulesRepository {
     _favoriteSchedulesBox.removeManyAsync(ids);
   }
 
-  Future<ScheduleSubject?> getSelectedFavoriteSchedules(bool isVPK) =>
+  Future<ScheduleSubject?> getSelectedFavoriteSchedules({bool isVPK = false}) =>
       _favoriteSchedulesBox
           .query(ScheduleSubject_.isChosen.equals(true).and(ScheduleSubject_.isVPK.equals(isVPK)))
           .build()

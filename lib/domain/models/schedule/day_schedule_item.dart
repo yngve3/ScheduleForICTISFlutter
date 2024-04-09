@@ -17,12 +17,16 @@ class Couple extends DayScheduleItem {
   final CoupleType type;
   final String discipline;
   final String lecturers;
+  final DateTime date;
+  final String id;
 
   Couple(int coupleNum, {
     required this.audiences,
     required this.type,
     required this.discipline,
-    required this.lecturers
+    required this.lecturers,
+    required this.date,
+    required this.id
   }): super(
       TimeOfDayExtension.timeStart(coupleNum)!,
       TimeOfDayExtension.timeEnd(coupleNum)!
@@ -35,6 +39,8 @@ class Couple extends DayScheduleItem {
       type: coupleDB.type ?? CoupleType.none,
       discipline: coupleDB.discipline,
       lecturers: coupleDB.lecturers,
+      date: coupleDB.daySchedule.target!.date,
+      id: coupleDB.idForSearch
     );
   }
 

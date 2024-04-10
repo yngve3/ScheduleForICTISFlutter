@@ -265,7 +265,7 @@ final _entities = <obx_int.ModelEntity>[
   obx_int.ModelEntity(
       id: const obx_int.IdUid(16, 735719639961690522),
       name: 'Note',
-      lastPropertyId: const obx_int.IdUid(4, 8692498959326071911),
+      lastPropertyId: const obx_int.IdUid(6, 4414436526303478413),
       flags: 0,
       properties: <obx_int.ModelProperty>[
         obx_int.ModelProperty(
@@ -274,11 +274,6 @@ final _entities = <obx_int.ModelEntity>[
             type: 6,
             flags: 1),
         obx_int.ModelProperty(
-            id: const obx_int.IdUid(2, 7964189422232866656),
-            name: 'text',
-            type: 9,
-            flags: 0),
-        obx_int.ModelProperty(
             id: const obx_int.IdUid(3, 6181180344952142219),
             name: 'date',
             type: 10,
@@ -286,6 +281,16 @@ final _entities = <obx_int.ModelEntity>[
         obx_int.ModelProperty(
             id: const obx_int.IdUid(4, 8692498959326071911),
             name: 'coupleID',
+            type: 9,
+            flags: 0),
+        obx_int.ModelProperty(
+            id: const obx_int.IdUid(5, 8343189923104370040),
+            name: 'title',
+            type: 9,
+            flags: 0),
+        obx_int.ModelProperty(
+            id: const obx_int.IdUid(6, 4414436526303478413),
+            name: 'description',
             type: 9,
             flags: 0)
       ],
@@ -379,7 +384,8 @@ obx_int.ModelDefinition getObjectBoxModel() {
         6983693999060459476,
         8905720686228930495,
         1757377980583035597,
-        2414596226964128475
+        2414596226964128475,
+        7964189422232866656
       ],
       retiredRelationUids: const [],
       modelVersion: 5,
@@ -689,27 +695,37 @@ obx_int.ModelDefinition getObjectBoxModel() {
           object.id = id;
         },
         objectToFB: (Note object, fb.Builder fbb) {
-          final textOffset = fbb.writeString(object.text);
           final coupleIDOffset = fbb.writeString(object.coupleID);
-          fbb.startTable(5);
+          final titleOffset = fbb.writeString(object.title);
+          final descriptionOffset = object.description == null
+              ? null
+              : fbb.writeString(object.description!);
+          fbb.startTable(7);
           fbb.addInt64(0, object.id);
-          fbb.addOffset(1, textOffset);
           fbb.addInt64(2, object.date.millisecondsSinceEpoch);
           fbb.addOffset(3, coupleIDOffset);
+          fbb.addOffset(4, titleOffset);
+          fbb.addOffset(5, descriptionOffset);
           fbb.finish(fbb.endTable());
           return object.id;
         },
         objectFromFB: (obx.Store store, ByteData fbData) {
           final buffer = fb.BufferContext(fbData);
           final rootOffset = buffer.derefObject(0);
-          final textParam = const fb.StringReader(asciiOptimization: true)
-              .vTableGet(buffer, rootOffset, 6, '');
+          final titleParam = const fb.StringReader(asciiOptimization: true)
+              .vTableGet(buffer, rootOffset, 12, '');
           final dateParam = DateTime.fromMillisecondsSinceEpoch(
               const fb.Int64Reader().vTableGet(buffer, rootOffset, 8, 0));
           final coupleIDParam = const fb.StringReader(asciiOptimization: true)
               .vTableGet(buffer, rootOffset, 10, '');
+          final descriptionParam =
+              const fb.StringReader(asciiOptimization: true)
+                  .vTableGetNullable(buffer, rootOffset, 14);
           final object = Note(
-              text: textParam, date: dateParam, coupleID: coupleIDParam)
+              title: titleParam,
+              date: dateParam,
+              coupleID: coupleIDParam,
+              description: descriptionParam)
             ..id = const fb.Int64Reader().vTableGet(buffer, rootOffset, 4, 0);
 
           return object;
@@ -886,13 +902,18 @@ class Note_ {
   /// see [Note.id]
   static final id = obx.QueryIntegerProperty<Note>(_entities[6].properties[0]);
 
-  /// see [Note.text]
-  static final text = obx.QueryStringProperty<Note>(_entities[6].properties[1]);
-
   /// see [Note.date]
-  static final date = obx.QueryDateProperty<Note>(_entities[6].properties[2]);
+  static final date = obx.QueryDateProperty<Note>(_entities[6].properties[1]);
 
   /// see [Note.coupleID]
   static final coupleID =
+      obx.QueryStringProperty<Note>(_entities[6].properties[2]);
+
+  /// see [Note.title]
+  static final title =
       obx.QueryStringProperty<Note>(_entities[6].properties[3]);
+
+  /// see [Note.description]
+  static final description =
+      obx.QueryStringProperty<Note>(_entities[6].properties[4]);
 }

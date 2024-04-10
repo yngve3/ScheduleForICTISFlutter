@@ -11,26 +11,22 @@ import '../../../../domain/models/schedule/day_schedule_item.dart';
 import '../../../../gen/assets.gen.dart';
 import 'cubit/note_add_state.dart';
 
-class NoteAddPageData {
-  final Couple? couple;
-  final Note? note;
-
-  const NoteAddPageData({
-    required this.couple,
-    required this.note
-  });
-}
-
 class NoteAddPage extends StatelessWidget {
-  const NoteAddPage({super.key});
+  const NoteAddPage({
+    super.key,
+    this.coupleID,
+    this.noteID
+  });
+
+  final String? coupleID;
+  final int? noteID;
 
   @override
   Widget build(BuildContext context) {
-    final data = GoRouterState.of(context).extra as NoteAddPageData;
     return BlocProvider(
       create: (context) => NoteAddCubit()
-        ..loadFromCouple(data.couple)
-        ..loadFromNote(data.note),
+        ..loadFromCouple(coupleID)
+        ..loadFromNote(noteID),
       child: BlocBuilder<NoteAddCubit, NoteAddState>(
         builder: (context, state) {
           final cubit = BlocProvider.of<NoteAddCubit>(context);
@@ -55,12 +51,14 @@ class NoteAddPage extends StatelessWidget {
                         InputProperty(
                           hint: "Заголовок",
                           onChanged: (value) => cubit.titleChanged(value),
+                          value: state.title,
                         ),
                         InputProperty(
                           hint: "Описание",
                           onChanged: (value) => cubit.descriptionChanged(value),
                           isMultiLines: true,
                           icon: Assets.icons.icList.image(),
+                          value: state.description ?? "",
                         )
                       ],
                     ),

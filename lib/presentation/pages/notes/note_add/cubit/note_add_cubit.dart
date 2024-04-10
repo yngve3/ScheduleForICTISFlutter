@@ -1,26 +1,26 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:schedule_for_ictis_flutter/data/repositories/notes_repository.dart';
+import 'package:schedule_for_ictis_flutter/domain/interactors/notes_interactor.dart';
 
-import '../../../../../domain/models/note/note.dart';
-import '../../../../../domain/models/schedule/day_schedule_item.dart';
 import 'note_add_state.dart';
 
 class NoteAddCubit extends Cubit<NoteAddState> {
   NoteAddCubit() : super(const NoteAddState());
 
-  final NotesRepository _repository = NotesRepository();
+  final NotesInteractor _interactor = NotesInteractor();
 
   void addNote() {
-    _repository.addNote(Note(
-      text: state.title,
+    _interactor.addNote(
+      title: state.title,
       date: state.date ?? DateTime.now(),
       coupleID: state.coupleID
-    ));
+    );
   }
 
-  void loadFromCouple(Couple? couple) {
+  void loadFromCouple(String? coupleID) async {
+    if (coupleID == null) return;
+    final couple = await _interactor.getCoupleByID(coupleID);
     if (couple == null) return;
-
+    
     emit(NoteAddState(
       coupleID: couple.id,
       date: couple.date,
@@ -28,8 +28,15 @@ class NoteAddCubit extends Cubit<NoteAddState> {
     ));
   }
 
-  void loadFromNote(Note? note) {
+  void loadFromNote(int? noteID) async {
+    if (noteID == null) return;
+    final note = await _interactor.getNoteByID(noteID);
     if (note == null) return;
+    
+    emit(state.copyWith(
+      title: note.title,
+      description: note.description
+    ));
   }
 
   void titleChanged(String value) {
@@ -42,13 +49,6 @@ class NoteAddCubit extends Cubit<NoteAddState> {
   void descriptionChanged(String value) {
     emit(state.copyWith(
         description: value,
-        isButtonSaveEnabled: _isFieldsNotEmpty()
-    ));
-  }
-
-  void dateChanged(DateTime date) {
-    emit(state.copyWith(
-        date: date,
         isButtonSaveEnabled: _isFieldsNotEmpty()
     ));
   }

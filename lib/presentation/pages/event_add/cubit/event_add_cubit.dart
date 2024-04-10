@@ -1,31 +1,28 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:schedule_for_ictis_flutter/data/repositories/events_repository.dart';
-import 'package:schedule_for_ictis_flutter/presentation/extensions/date_time_ext.dart';
-import 'package:schedule_for_ictis_flutter/presentation/extensions/time_of_day_ext.dart';
+import 'package:schedule_for_ictis_flutter/domain/interactors/events_interactor.dart';
 
-import '../../../../data/models/event_db.dart';
-import '../../../../domain/models/schedule/day_schedule_item.dart';
 import 'event_add_state.dart';
 
 class EventAddCubit extends Cubit<EventAddState> {
   EventAddCubit(): super(EventAddState());
-  EventsRepository repository = EventsRepository();
+  final EventsInteractor _interactor = EventsInteractor();
 
   void saveEvent() {
-    repository.addEvent(EventDB(
-      id: state.id ?? 0,
-      timeStart: state.timeStart!.string,
-      timeEnd: state.timeEnd!.string,
+    _interactor.addEvent(
+      id: state.id,
+      timeStart: state.timeStart!,
+      timeEnd: state.timeEnd!,
       title: state.title,
-      description: _getText(state.description),
+      description: state.description,
       date: state.date!,
-      weekNum: state.date!.weekNumber,
-      location: _getText(state.location),
-    ));
+      location: state.location,
+    );
   }
 
-  void loadEvent(Event? event) {
+  void loadStateFromEvent(int? eventID) async {
+    if (eventID == null) return;
+    final event = await _interactor.getEventById(eventID);
     if (event == null) return;
 
     emit(EventAddState(
@@ -38,12 +35,6 @@ class EventAddCubit extends Cubit<EventAddState> {
       date: event.date,
       isSaveButtonEnabled: true
     ));
-  }
-  
-  String? _getText(String? string) {
-    if (string != null && string.isEmpty) return null;
-
-    return string;
   }
 
   void titleChanged(String value) {

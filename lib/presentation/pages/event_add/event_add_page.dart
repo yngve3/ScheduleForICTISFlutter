@@ -13,28 +13,30 @@ import '../../widgets/property/properties/input_property.dart';
 import '../../widgets/property/properties/time_property.dart';
 
 class EventAddPage extends StatelessWidget {
-  const EventAddPage({super.key});
+  const EventAddPage({
+    super.key,
+    required this.eventID
+  });
+
+  final int? eventID;
 
   @override
   Widget build(BuildContext context) {
-    final event = GoRouterState.of(context).extra as Event?;
     return Scaffold(
-      appBar: MyAppBar(appBar: AppBar(), title: "Мероприятие"),
+      appBar: MyAppBar(
+        appBar: AppBar(),
+        title: "Мероприятие",
+      ),
       body: BlocProvider(
-          create: (context) => EventAddCubit()..loadEvent(event),
-          child: EventAdd(isEdit: event != null)
+          create: (context) => EventAddCubit()..loadStateFromEvent(eventID),
+          child: const EventAdd()
       ),
     );
   }
 }
 
 class EventAdd extends StatelessWidget {
-  const EventAdd({
-    super.key,
-    this.isEdit = false
-  });
-
-  final bool isEdit;
+  const EventAdd({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -82,7 +84,7 @@ class EventAdd extends StatelessWidget {
               state.isSaveButtonEnabled
                   ? () {cubit.saveEvent(); context.pop();}
                   : null,
-            child: Text(isEdit ? "Сохранить" : "Создать"),
+            child: Text(state.id != null ? "Сохранить" : "Создать"),
           ),
         ]),
       ),

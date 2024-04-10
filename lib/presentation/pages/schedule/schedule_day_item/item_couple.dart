@@ -18,7 +18,7 @@ class ItemCouple implements ScheduleDayItem {
   @override
   Widget buildWidget(BuildContext context) {
     return InkWell(
-      onTap: () => context.go(Routes.coupleNotesList.path, extra: couple),
+      onTap: () => context.go(Routes.coupleNotesList.path({"couple_id": couple.id})),
       child: CardWithTimeOnLeft(
         timeStart: couple.timeStart,
         timeEnd: couple.timeEnd,

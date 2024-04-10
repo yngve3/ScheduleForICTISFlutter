@@ -15,6 +15,10 @@ class EventsRepository {
     return query.watch(triggerImmediately: true).map((event) => event.find());
   }
 
+  Future<EventDB?> getEventById(int id) {
+    return _eventsBox.getAsync(id);
+  }
+
   void addEvent(EventDB event) {
     _eventsBox.putAsync(event);
   }

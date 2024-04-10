@@ -26,12 +26,13 @@ class _InputTileState extends State<InputTile> {
 
   @override
   void initState() {
-    _controller = TextEditingController(text: widget.value);
+    _controller = TextEditingController();
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
+    _controller.text = widget.value;
     return TextField(
       controller: _controller,
       cursorColor: Colors.black,

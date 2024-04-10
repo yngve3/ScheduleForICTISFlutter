@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:schedule_for_ictis_flutter/presentation/pages/event_add/event_add_page.dart';
+import 'package:schedule_for_ictis_flutter/presentation/pages/event_info/event_info_page.dart';
 import 'package:schedule_for_ictis_flutter/presentation/pages/notes/note_add/note_add_page.dart';
+import 'package:schedule_for_ictis_flutter/presentation/pages/notes/note_info/note_info_page.dart';
 import 'package:schedule_for_ictis_flutter/presentation/route/routes.dart';
 
 import '../pages/favorite_schedules/pages/favorite_schedules_add/favorite_schedules_add_page.dart';
@@ -38,31 +40,58 @@ abstract class AppRouter {
                 },
                 routes: [
                   GoRoute(
-                    path: Routes.addEvent.lastPathComponent,
+                    path: Routes.addEvent.twoLastPathComponents,
                     pageBuilder: (BuildContext context, GoRouterState state) {
-                      return const NoTransitionPage(
-                          child: EventAddPage()
+                      return NoTransitionPage(
+                          child: EventAddPage(
+                              eventID: state.extra as int?
+                          )
                       );
                     },
                     routes: const [],
-
                   ),
                   GoRoute(
-                    path: Routes.coupleNotesList.lastPathComponent,
-                    builder: (BuildContext context, GoRouterState state) {
-                      return const CoupleNotesListPage();
-                    },
-                    routes: [
-                      GoRoute(
-                        path: Routes.addNote.lastPathComponent,
-                        pageBuilder: (BuildContext context, GoRouterState state) {
-                          return const NoTransitionPage(
-                              child: NoteAddPage()
-                          );
-                        },
-                      )
-                    ]
-                  )
+                      path: Routes.eventInfo.twoLastPathComponents,
+                      pageBuilder: (BuildContext context, GoRouterState state) {
+                        return NoTransitionPage(
+                            child: EventInfoPage(
+                                eventID: int.parse(state.pathParameters["event_id"] ?? "")
+                            )
+                        );
+                      },
+                      routes: const []
+                  ),
+                  GoRoute(
+                      path: Routes.coupleNotesList.twoLastPathComponents,
+                      pageBuilder: (BuildContext context, GoRouterState state) {
+                        return NoTransitionPage(
+                            child: CoupleNotesListPage(
+                                coupleID: state.pathParameters["couple_id"] ?? ""
+                            )
+                        );
+                      },
+                      routes: [
+                        GoRoute(
+                            path: Routes.addNote.twoLastPathComponents,
+                            pageBuilder: (BuildContext context, GoRouterState state) {
+                              return NoTransitionPage(
+                                  child: NoteAddPage(
+                                    coupleID: state.pathParameters["couple_id"] ?? "",
+                                    noteID: state.extra as int?,
+                                  )
+                              );
+                            }
+                        ),
+                        GoRoute(
+                            path: Routes.noteInfo.twoLastPathComponents,
+                            pageBuilder: (BuildContext context, GoRouterState state) {
+                              return const NoTransitionPage(
+                                  child: NoteInfoPage()
+                              );
+                            }
+                        )
+                      ]
+                  ),
                 ],
               ),
               GoRoute(

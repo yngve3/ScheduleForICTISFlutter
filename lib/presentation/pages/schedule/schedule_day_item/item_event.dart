@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:schedule_for_ictis_flutter/presentation/extensions/context_ext.dart';
 import 'package:schedule_for_ictis_flutter/presentation/pages/event_info/event_info_page.dart';
 import 'package:schedule_for_ictis_flutter/presentation/pages/schedule/schedule_day_item/schedule_day_item.dart';
 
 import '../../../../domain/models/schedule/day_schedule_item.dart';
+import '../../../route/routes.dart';
 import '../../../widgets/card_with_time_on_left.dart';
 
 class ItemEvent implements ScheduleDayItem {
@@ -16,14 +18,7 @@ class ItemEvent implements ScheduleDayItem {
   @override
   Widget buildWidget(BuildContext context) {
     return InkWell(
-      onTap: () {showDialog(
-          context: context,
-          builder: (BuildContext context) {
-            return Dialog.fullscreen(
-              child: EventInfoPage(event: event),
-            );
-          }
-      );},
+      onTap: () => context.go(Routes.eventInfo.path({"event_id": event.id})),
       child: CardWithTimeOnLeft(
         timeStart: event.timeStart,
         timeEnd: event.timeEnd,

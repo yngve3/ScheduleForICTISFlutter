@@ -13,13 +13,17 @@ import '../../../route/routes.dart';
 import 'cubit/couple_notes_list_state.dart';
 
 class CoupleNotesListPage extends StatelessWidget {
-  const CoupleNotesListPage({super.key});
+  const CoupleNotesListPage({
+    super.key,
+    this.coupleID
+  });
+
+  final String? coupleID;
 
   @override
   Widget build(BuildContext context) {
-    final couple = GoRouterState.of(context).extra as Couple?;
     return BlocProvider(
-      create: (context) => CoupleNotesListCubit()..loadState(couple),
+      create: (context) => CoupleNotesListCubit()..loadState(coupleID),
       child: BlocBuilder<CoupleNotesListCubit, CoupleNotesListState>(
         builder: (context, state) {
           return Scaffold(
@@ -43,7 +47,7 @@ class CoupleNotesListPage extends StatelessWidget {
                   ),
                   NotesList(notes: state.notes),
                   FilledButton(
-                    onPressed: () => context.go(Routes.addNote.path, extra: NoteAddPageData(couple: state.couple, note: null)),
+                    onPressed: () => context.go(Routes.addNote.path({"couple_id": coupleID})),
                     child: const Text("Добавить задание"),
                   )
                 ],
@@ -67,7 +71,7 @@ class NotesListItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      child: Text(note.text, style: context.textTheme.bodyLarge),
+      child: Text(note.title, style: context.textTheme.bodyLarge),
     );
   }
 }

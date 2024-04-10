@@ -1,17 +1,17 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:schedule_for_ictis_flutter/data/repositories/notes_repository.dart';
+import 'package:schedule_for_ictis_flutter/domain/interactors/notes_interactor.dart';
 
-import '../../../../../domain/models/schedule/day_schedule_item.dart';
 import 'couple_notes_list_state.dart';
 
 class CoupleNotesListCubit extends Cubit<CoupleNotesListState> {
   CoupleNotesListCubit() : super(const CoupleNotesListState());
 
-  final NotesRepository _repository = NotesRepository();
+  final NotesInteractor _notesInteractor = NotesInteractor();
 
-  void loadState(Couple? couple) async {
-    if (couple == null) return;
-    final notes = await _repository.getNotesByCouple(couple);
+  void loadState(String? coupleID) async {
+    if (coupleID == null) return;
+    final couple = await _notesInteractor.getCoupleByID(coupleID);
+    final notes = await _notesInteractor.getNotesByCoupleID(coupleID);
     emit(CoupleNotesListState(
       couple: couple,
       notes: notes

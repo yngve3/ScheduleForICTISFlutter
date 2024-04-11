@@ -1,4 +1,5 @@
 import '../../domain/models/note/note.dart';
+import '../../domain/models/note_file/note_file.dart';
 import '../../domain/models/schedule/day_schedule_item.dart';
 import '../../main.dart';
 import '../../objectbox.g.dart';

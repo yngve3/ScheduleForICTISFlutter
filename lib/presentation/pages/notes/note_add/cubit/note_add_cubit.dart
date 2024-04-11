@@ -1,6 +1,8 @@
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:schedule_for_ictis_flutter/domain/interactors/notes_interactor.dart';
 
+import '../../../../../domain/models/note_file/note_file.dart';
 import 'note_add_state.dart';
 
 class NoteAddCubit extends Cubit<NoteAddState> {
@@ -14,8 +16,15 @@ class NoteAddCubit extends Cubit<NoteAddState> {
       title: state.title,
       date: state.date ?? DateTime.now(),
       coupleID: state.coupleID,
-      description: state.description
+      description: state.description,
+      files: state.files
     );
+  }
+
+  void addFile(PlatformFile file) {
+    final files = [...state.files];
+    files.add(NoteFile.fromPlatformFile(file));
+    emit(state.copyWith(files: files));
   }
 
   void loadFromCouple(String? coupleID) async {
@@ -38,7 +47,8 @@ class NoteAddCubit extends Cubit<NoteAddState> {
     emit(state.copyWith(
       title: note.title,
       description: note.description,
-      noteID: note.id
+      noteID: note.id,
+      files: note.attachedFiles
     ));
   }
 

@@ -15,6 +15,13 @@ class $AssetsIconsGen {
   /// File path: assets/icons/ic_add.png
   AssetGenImage get icAdd => const AssetGenImage('assets/icons/ic_add.png');
 
+  /// File path: assets/icons/ic_alert.png
+  AssetGenImage get icAlert => const AssetGenImage('assets/icons/ic_alert.png');
+
+  /// File path: assets/icons/ic_attach.png
+  AssetGenImage get icAttach =>
+      const AssetGenImage('assets/icons/ic_attach.png');
+
   /// File path: assets/icons/ic_back_arrow.png
   AssetGenImage get icBackArrow =>
       const AssetGenImage('assets/icons/ic_back_arrow.png');
@@ -28,6 +35,25 @@ class $AssetsIconsGen {
 
   /// File path: assets/icons/ic_event.png
   AssetGenImage get icEvent => const AssetGenImage('assets/icons/ic_event.png');
+
+  /// File path: assets/icons/ic_file.png
+  AssetGenImage get icFile => const AssetGenImage('assets/icons/ic_file.png');
+
+  /// File path: assets/icons/ic_file_code.png
+  AssetGenImage get icFileCode =>
+      const AssetGenImage('assets/icons/ic_file_code.png');
+
+  /// File path: assets/icons/ic_file_img.png
+  AssetGenImage get icFileImg =>
+      const AssetGenImage('assets/icons/ic_file_img.png');
+
+  /// File path: assets/icons/ic_file_pdf.png
+  AssetGenImage get icFilePdf =>
+      const AssetGenImage('assets/icons/ic_file_pdf.png');
+
+  /// File path: assets/icons/ic_file_word.png
+  AssetGenImage get icFileWord =>
+      const AssetGenImage('assets/icons/ic_file_word.png');
 
   /// File path: assets/icons/ic_home.png
   AssetGenImage get icHome => const AssetGenImage('assets/icons/ic_home.png');
@@ -56,10 +82,17 @@ class $AssetsIconsGen {
   /// List of all assets
   List<AssetGenImage> get values => [
         icAdd,
+        icAlert,
+        icAttach,
         icBackArrow,
         icDelete,
         icEdit,
         icEvent,
+        icFile,
+        icFileCode,
+        icFileImg,
+        icFilePdf,
+        icFileWord,
         icHome,
         icList,
         icLocation,

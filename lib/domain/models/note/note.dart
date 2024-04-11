@@ -1,4 +1,5 @@
 import 'package:objectbox/objectbox.dart';
+import 'package:schedule_for_ictis_flutter/domain/models/note_file/note_file.dart';
 
 @Entity()
 class Note {
@@ -8,6 +9,9 @@ class Note {
   @Property(type: PropertyType.date)
   final DateTime date;
   final String coupleID;
+
+  @Backlink("note")
+  final ToMany<NoteFile> attachedFiles = ToMany<NoteFile>();
 
   Note({
     required this.id,

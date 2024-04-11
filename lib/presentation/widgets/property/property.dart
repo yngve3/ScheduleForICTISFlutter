@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 class Property extends StatelessWidget {
   const Property({
     super.key,
-    required this.children,
+    this.children = const [],
     this.icon,
   });
 

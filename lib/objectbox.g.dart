@@ -20,6 +20,7 @@ import 'data/models/day_schedule_db.dart';
 import 'data/models/event_db.dart';
 import 'data/models/week_schedule_db.dart';
 import 'domain/models/note/note.dart';
+import 'domain/models/note_file/note_file.dart';
 import 'domain/models/schedule_subject/schedule_subject.dart';
 import 'domain/models/week_number.dart';
 
@@ -295,6 +296,45 @@ final _entities = <obx_int.ModelEntity>[
             flags: 0)
       ],
       relations: <obx_int.ModelRelation>[],
+      backlinks: <obx_int.ModelBacklink>[
+        obx_int.ModelBacklink(
+            name: 'attachedFiles', srcEntity: 'NoteFile', srcField: 'note')
+      ]),
+  obx_int.ModelEntity(
+      id: const obx_int.IdUid(17, 6581195835741669404),
+      name: 'NoteFile',
+      lastPropertyId: const obx_int.IdUid(6, 7979301773689421163),
+      flags: 0,
+      properties: <obx_int.ModelProperty>[
+        obx_int.ModelProperty(
+            id: const obx_int.IdUid(1, 7079046791683737382),
+            name: 'id',
+            type: 6,
+            flags: 1),
+        obx_int.ModelProperty(
+            id: const obx_int.IdUid(2, 928716017269495514),
+            name: 'path',
+            type: 9,
+            flags: 0),
+        obx_int.ModelProperty(
+            id: const obx_int.IdUid(4, 2892024408225256198),
+            name: 'name',
+            type: 9,
+            flags: 0),
+        obx_int.ModelProperty(
+            id: const obx_int.IdUid(5, 4148322711258658747),
+            name: 'noteId',
+            type: 11,
+            flags: 520,
+            indexId: const obx_int.IdUid(15, 564889761863671504),
+            relationTarget: 'Note'),
+        obx_int.ModelProperty(
+            id: const obx_int.IdUid(6, 7979301773689421163),
+            name: 'dbType',
+            type: 6,
+            flags: 0)
+      ],
+      relations: <obx_int.ModelRelation>[],
       backlinks: <obx_int.ModelBacklink>[])
 ];
 
@@ -333,8 +373,8 @@ Future<obx.Store> openStore(
 obx_int.ModelDefinition getObjectBoxModel() {
   final model = obx_int.ModelInfo(
       entities: _entities,
-      lastEntityId: const obx_int.IdUid(16, 735719639961690522),
-      lastIndexId: const obx_int.IdUid(14, 4662735310447176423),
+      lastEntityId: const obx_int.IdUid(17, 6581195835741669404),
+      lastIndexId: const obx_int.IdUid(15, 564889761863671504),
       lastRelationId: const obx_int.IdUid(0, 0),
       lastSequenceId: const obx_int.IdUid(0, 0),
       retiredEntityUids: const [
@@ -385,7 +425,8 @@ obx_int.ModelDefinition getObjectBoxModel() {
         8905720686228930495,
         1757377980583035597,
         2414596226964128475,
-        7964189422232866656
+        7964189422232866656,
+        8524115835594038515
       ],
       retiredRelationUids: const [],
       modelVersion: 5,
@@ -689,7 +730,11 @@ obx_int.ModelDefinition getObjectBoxModel() {
     Note: obx_int.EntityDefinition<Note>(
         model: _entities[6],
         toOneRelations: (Note object) => [],
-        toManyRelations: (Note object) => {},
+        toManyRelations: (Note object) => {
+              obx_int.RelInfo<NoteFile>.toOneBacklink(
+                      5, object.id, (NoteFile srcObject) => srcObject.note):
+                  object.attachedFiles
+            },
         getId: (Note object) => object.id,
         setId: (Note object, int id) {
           object.id = id;
@@ -729,7 +774,47 @@ obx_int.ModelDefinition getObjectBoxModel() {
               date: dateParam,
               coupleID: coupleIDParam,
               description: descriptionParam);
-
+          obx_int.InternalToManyAccess.setRelInfo<Note>(
+              object.attachedFiles,
+              store,
+              obx_int.RelInfo<NoteFile>.toOneBacklink(
+                  5, object.id, (NoteFile srcObject) => srcObject.note));
+          return object;
+        }),
+    NoteFile: obx_int.EntityDefinition<NoteFile>(
+        model: _entities[7],
+        toOneRelations: (NoteFile object) => [object.note],
+        toManyRelations: (NoteFile object) => {},
+        getId: (NoteFile object) => object.id,
+        setId: (NoteFile object, int id) {
+          object.id = id;
+        },
+        objectToFB: (NoteFile object, fb.Builder fbb) {
+          final pathOffset = fbb.writeString(object.path);
+          final nameOffset = fbb.writeString(object.name);
+          fbb.startTable(7);
+          fbb.addInt64(0, object.id);
+          fbb.addOffset(1, pathOffset);
+          fbb.addOffset(3, nameOffset);
+          fbb.addInt64(4, object.note.targetId);
+          fbb.addInt64(5, object.dbType);
+          fbb.finish(fbb.endTable());
+          return object.id;
+        },
+        objectFromFB: (obx.Store store, ByteData fbData) {
+          final buffer = fb.BufferContext(fbData);
+          final rootOffset = buffer.derefObject(0);
+          final pathParam = const fb.StringReader(asciiOptimization: true)
+              .vTableGet(buffer, rootOffset, 6, '');
+          final nameParam = const fb.StringReader(asciiOptimization: true)
+              .vTableGet(buffer, rootOffset, 10, '');
+          final object = NoteFile(path: pathParam, name: nameParam)
+            ..id = const fb.Int64Reader().vTableGet(buffer, rootOffset, 4, 0)
+            ..dbType = const fb.Int64Reader()
+                .vTableGetNullable(buffer, rootOffset, 14);
+          object.note.targetId =
+              const fb.Int64Reader().vTableGet(buffer, rootOffset, 12, 0);
+          object.note.attach(store);
           return object;
         })
   };
@@ -918,4 +1003,31 @@ class Note_ {
   /// see [Note.description]
   static final description =
       obx.QueryStringProperty<Note>(_entities[6].properties[4]);
+
+  /// see [Note.attachedFiles]
+  static final attachedFiles =
+      obx.QueryBacklinkToMany<NoteFile, Note>(NoteFile_.note);
+}
+
+/// [NoteFile] entity fields to define ObjectBox queries.
+class NoteFile_ {
+  /// see [NoteFile.id]
+  static final id =
+      obx.QueryIntegerProperty<NoteFile>(_entities[7].properties[0]);
+
+  /// see [NoteFile.path]
+  static final path =
+      obx.QueryStringProperty<NoteFile>(_entities[7].properties[1]);
+
+  /// see [NoteFile.name]
+  static final name =
+      obx.QueryStringProperty<NoteFile>(_entities[7].properties[2]);
+
+  /// see [NoteFile.note]
+  static final note =
+      obx.QueryRelationToOne<NoteFile, Note>(_entities[7].properties[3]);
+
+  /// see [NoteFile.dbType]
+  static final dbType =
+      obx.QueryIntegerProperty<NoteFile>(_entities[7].properties[4]);
 }

@@ -15,7 +15,7 @@ class NotesInteractor {
     return Couple.fromCoupleDB(coupleDB);
   }
 
-  Future<List<Note>> getNotesByCoupleID(String coupleID) {
+  Stream<List<Note>> getNotesByCoupleID(String coupleID) {
     return _notesRepository.getNotesByCoupleID(coupleID);
   }
   
@@ -24,14 +24,18 @@ class NotesInteractor {
   }
   
   void addNote({
+    int? noteID,
     required String title, 
     required DateTime date,
-    required String coupleID
+    required String coupleID,
+    String? description
   }) {
     _notesRepository.addNote(Note(
+      id: noteID ?? 0,
       title: title, 
       date: date, 
       coupleID: coupleID,
+      description: description
     ));
   }
   

@@ -10,9 +10,11 @@ class NoteAddCubit extends Cubit<NoteAddState> {
 
   void addNote() {
     _interactor.addNote(
+      noteID: state.noteID,
       title: state.title,
       date: state.date ?? DateTime.now(),
-      coupleID: state.coupleID
+      coupleID: state.coupleID,
+      description: state.description
     );
   }
 
@@ -35,7 +37,8 @@ class NoteAddCubit extends Cubit<NoteAddState> {
     
     emit(state.copyWith(
       title: note.title,
-      description: note.description
+      description: note.description,
+      noteID: note.id
     ));
   }
 

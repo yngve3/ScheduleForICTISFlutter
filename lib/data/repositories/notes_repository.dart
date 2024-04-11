@@ -10,8 +10,10 @@ class NotesRepository {
     _notesBox = objectBox.store.box<Note>();
   }
 
-  Future<List<Note>> getNotesByCoupleID(String coupleID) {
-    return _notesBox.query(Note_.coupleID.equals(coupleID)).build().findAsync();
+  Stream<List<Note>> getNotesByCoupleID(String coupleID) {
+    return _notesBox.query(Note_.coupleID.equals(coupleID))
+        .watch(triggerImmediately: true)
+        .map((event) => event.find());
   }
 
   Future<Note?> getNote(int noteID) {

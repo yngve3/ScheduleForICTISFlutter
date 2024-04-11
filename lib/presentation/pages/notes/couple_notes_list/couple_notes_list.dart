@@ -29,7 +29,7 @@ class CoupleNotesListPage extends StatelessWidget {
           return Scaffold(
             appBar: MyAppBar(
               appBar: AppBar(),
-              title: 'Задачи',
+              title: 'Задания',
             ),
             body: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 15),
@@ -45,7 +45,8 @@ class CoupleNotesListPage extends StatelessWidget {
                     "Заданий к занятию: ${state.notes.length}",
                     style: context.textTheme.bodyMedium,
                   ),
-                  NotesList(notes: state.notes),
+                  const SizedBox(height: 10),
+                  NotesList(notes: state.notes, coupleID: coupleID ?? ""),
                   FilledButton(
                     onPressed: () => context.go(Routes.addNote.path({"couple_id": coupleID})),
                     child: const Text("Добавить задание"),
@@ -63,15 +64,23 @@ class CoupleNotesListPage extends StatelessWidget {
 class NotesListItem extends StatelessWidget {
   const NotesListItem({
     super.key,
-    required this.note
+    required this.note,
+    required this.coupleID
   });
 
   final Note note;
+  final String coupleID;
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      child: Text(note.title, style: context.textTheme.bodyLarge),
+    return GestureDetector(
+      onTap: () => context.go(Routes.noteInfo.path({"couple_id": coupleID, "note_id": note.id})),
+      child: Card(
+        child: Padding(
+          padding: const EdgeInsets.all(20),
+          child: Text(note.title, style: context.textTheme.bodyLarge),
+        ),
+      ),
     );
   }
 }
@@ -80,17 +89,23 @@ class NotesListItem extends StatelessWidget {
 class NotesList extends StatelessWidget {
   const NotesList({
     super.key,
-    required this.notes
+    required this.notes,
+    required this.coupleID
   });
 
   final List<Note> notes;
+  final String coupleID;
 
   @override
   Widget build(BuildContext context) {
     return Expanded(
       child: SingleChildScrollView(
         child: Column(
-          children: notes.map((element) => NotesListItem(note: element)).toList(),
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: notes.map((element) => NotesListItem(
+            note: element,
+            coupleID: coupleID,
+          )).toList(),
         ),
       ),
     );

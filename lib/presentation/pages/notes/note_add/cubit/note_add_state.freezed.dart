@@ -22,6 +22,7 @@ mixin _$NoteAddState {
   String get discipline => throw _privateConstructorUsedError;
   DateTime? get date => throw _privateConstructorUsedError;
   dynamic get isButtonSaveEnabled => throw _privateConstructorUsedError;
+  int? get noteID => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $NoteAddStateCopyWith<NoteAddState> get copyWith =>
@@ -40,7 +41,8 @@ abstract class $NoteAddStateCopyWith<$Res> {
       String? description,
       String discipline,
       DateTime? date,
-      dynamic isButtonSaveEnabled});
+      dynamic isButtonSaveEnabled,
+      int? noteID});
 }
 
 /// @nodoc
@@ -62,6 +64,7 @@ class _$NoteAddStateCopyWithImpl<$Res, $Val extends NoteAddState>
     Object? discipline = null,
     Object? date = freezed,
     Object? isButtonSaveEnabled = freezed,
+    Object? noteID = freezed,
   }) {
     return _then(_value.copyWith(
       coupleID: null == coupleID
@@ -88,6 +91,10 @@ class _$NoteAddStateCopyWithImpl<$Res, $Val extends NoteAddState>
           ? _value.isButtonSaveEnabled
           : isButtonSaveEnabled // ignore: cast_nullable_to_non_nullable
               as dynamic,
+      noteID: freezed == noteID
+          ? _value.noteID
+          : noteID // ignore: cast_nullable_to_non_nullable
+              as int?,
     ) as $Val);
   }
 }
@@ -106,7 +113,8 @@ abstract class _$$NoteAddStateImplCopyWith<$Res>
       String? description,
       String discipline,
       DateTime? date,
-      dynamic isButtonSaveEnabled});
+      dynamic isButtonSaveEnabled,
+      int? noteID});
 }
 
 /// @nodoc
@@ -126,6 +134,7 @@ class __$$NoteAddStateImplCopyWithImpl<$Res>
     Object? discipline = null,
     Object? date = freezed,
     Object? isButtonSaveEnabled = freezed,
+    Object? noteID = freezed,
   }) {
     return _then(_$NoteAddStateImpl(
       coupleID: null == coupleID
@@ -151,6 +160,10 @@ class __$$NoteAddStateImplCopyWithImpl<$Res>
       isButtonSaveEnabled: freezed == isButtonSaveEnabled
           ? _value.isButtonSaveEnabled!
           : isButtonSaveEnabled,
+      noteID: freezed == noteID
+          ? _value.noteID
+          : noteID // ignore: cast_nullable_to_non_nullable
+              as int?,
     ));
   }
 }
@@ -164,7 +177,8 @@ class _$NoteAddStateImpl implements _NoteAddState {
       this.description,
       this.discipline = "",
       this.date,
-      this.isButtonSaveEnabled = false});
+      this.isButtonSaveEnabled = false,
+      this.noteID});
 
   @override
   @JsonKey()
@@ -182,10 +196,12 @@ class _$NoteAddStateImpl implements _NoteAddState {
   @override
   @JsonKey()
   final dynamic isButtonSaveEnabled;
+  @override
+  final int? noteID;
 
   @override
   String toString() {
-    return 'NoteAddState(coupleID: $coupleID, title: $title, description: $description, discipline: $discipline, date: $date, isButtonSaveEnabled: $isButtonSaveEnabled)';
+    return 'NoteAddState(coupleID: $coupleID, title: $title, description: $description, discipline: $discipline, date: $date, isButtonSaveEnabled: $isButtonSaveEnabled, noteID: $noteID)';
   }
 
   @override
@@ -202,7 +218,8 @@ class _$NoteAddStateImpl implements _NoteAddState {
                 other.discipline == discipline) &&
             (identical(other.date, date) || other.date == date) &&
             const DeepCollectionEquality()
-                .equals(other.isButtonSaveEnabled, isButtonSaveEnabled));
+                .equals(other.isButtonSaveEnabled, isButtonSaveEnabled) &&
+            (identical(other.noteID, noteID) || other.noteID == noteID));
   }
 
   @override
@@ -213,7 +230,8 @@ class _$NoteAddStateImpl implements _NoteAddState {
       description,
       discipline,
       date,
-      const DeepCollectionEquality().hash(isButtonSaveEnabled));
+      const DeepCollectionEquality().hash(isButtonSaveEnabled),
+      noteID);
 
   @JsonKey(ignore: true)
   @override
@@ -229,7 +247,8 @@ abstract class _NoteAddState implements NoteAddState {
       final String? description,
       final String discipline,
       final DateTime? date,
-      final dynamic isButtonSaveEnabled}) = _$NoteAddStateImpl;
+      final dynamic isButtonSaveEnabled,
+      final int? noteID}) = _$NoteAddStateImpl;
 
   @override
   String get coupleID;
@@ -243,6 +262,8 @@ abstract class _NoteAddState implements NoteAddState {
   DateTime? get date;
   @override
   dynamic get isButtonSaveEnabled;
+  @override
+  int? get noteID;
   @override
   @JsonKey(ignore: true)
   _$$NoteAddStateImplCopyWith<_$NoteAddStateImpl> get copyWith =>

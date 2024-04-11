@@ -64,7 +64,10 @@ class NoteAddPage extends StatelessWidget {
                     ),
                   ),
                   FilledButton(
-                    onPressed: () => cubit.addNote(),
+                    onPressed: () {
+                      cubit.addNote();
+                      context.pop();
+                    },
                     child: const Text("Сохранить"),
                   )
                 ],

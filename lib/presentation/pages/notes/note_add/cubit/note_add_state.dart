@@ -10,7 +10,8 @@ class NoteAddState with _$NoteAddState {
     String? description,
     @Default("") String discipline,
     DateTime? date,
-    @Default(false) isButtonSaveEnabled
+    @Default(false) isButtonSaveEnabled,
+    int? noteID
   }) = _NoteAddState;
 
 }

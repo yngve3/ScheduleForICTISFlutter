@@ -85,8 +85,11 @@ abstract class AppRouter {
                         GoRoute(
                             path: Routes.noteInfo.twoLastPathComponents,
                             pageBuilder: (BuildContext context, GoRouterState state) {
-                              return const NoTransitionPage(
-                                  child: NoteInfoPage()
+                              return NoTransitionPage(
+                                  child: NoteInfoPage(
+                                    coupleID: state.pathParameters["couple_id"] ?? "",
+                                    noteID: int.parse(state.pathParameters["note_id"] ?? ""),
+                                  )
                               );
                             }
                         )

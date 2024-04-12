@@ -21,6 +21,7 @@ mixin _$NoteInfoState {
   String? get description => throw _privateConstructorUsedError;
   DateTime? get date => throw _privateConstructorUsedError;
   String get discipline => throw _privateConstructorUsedError;
+  List<NoteFile> get files => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $NoteInfoStateCopyWith<NoteInfoState> get copyWith =>
@@ -38,7 +39,8 @@ abstract class $NoteInfoStateCopyWith<$Res> {
       String title,
       String? description,
       DateTime? date,
-      String discipline});
+      String discipline,
+      List<NoteFile> files});
 }
 
 /// @nodoc
@@ -59,6 +61,7 @@ class _$NoteInfoStateCopyWithImpl<$Res, $Val extends NoteInfoState>
     Object? description = freezed,
     Object? date = freezed,
     Object? discipline = null,
+    Object? files = null,
   }) {
     return _then(_value.copyWith(
       noteID: null == noteID
@@ -81,6 +84,10 @@ class _$NoteInfoStateCopyWithImpl<$Res, $Val extends NoteInfoState>
           ? _value.discipline
           : discipline // ignore: cast_nullable_to_non_nullable
               as String,
+      files: null == files
+          ? _value.files
+          : files // ignore: cast_nullable_to_non_nullable
+              as List<NoteFile>,
     ) as $Val);
   }
 }
@@ -98,7 +105,8 @@ abstract class _$$NoteInfoStateImplCopyWith<$Res>
       String title,
       String? description,
       DateTime? date,
-      String discipline});
+      String discipline,
+      List<NoteFile> files});
 }
 
 /// @nodoc
@@ -117,6 +125,7 @@ class __$$NoteInfoStateImplCopyWithImpl<$Res>
     Object? description = freezed,
     Object? date = freezed,
     Object? discipline = null,
+    Object? files = null,
   }) {
     return _then(_$NoteInfoStateImpl(
       noteID: null == noteID
@@ -139,6 +148,10 @@ class __$$NoteInfoStateImplCopyWithImpl<$Res>
           ? _value.discipline
           : discipline // ignore: cast_nullable_to_non_nullable
               as String,
+      files: null == files
+          ? _value._files
+          : files // ignore: cast_nullable_to_non_nullable
+              as List<NoteFile>,
     ));
   }
 }
@@ -151,7 +164,9 @@ class _$NoteInfoStateImpl implements _NoteInfoState {
       this.title = "",
       this.description,
       this.date,
-      this.discipline = ""});
+      this.discipline = "",
+      final List<NoteFile> files = const []})
+      : _files = files;
 
   @override
   @JsonKey()
@@ -166,10 +181,18 @@ class _$NoteInfoStateImpl implements _NoteInfoState {
   @override
   @JsonKey()
   final String discipline;
+  final List<NoteFile> _files;
+  @override
+  @JsonKey()
+  List<NoteFile> get files {
+    if (_files is EqualUnmodifiableListView) return _files;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_files);
+  }
 
   @override
   String toString() {
-    return 'NoteInfoState(noteID: $noteID, title: $title, description: $description, date: $date, discipline: $discipline)';
+    return 'NoteInfoState(noteID: $noteID, title: $title, description: $description, date: $date, discipline: $discipline, files: $files)';
   }
 
   @override
@@ -183,12 +206,13 @@ class _$NoteInfoStateImpl implements _NoteInfoState {
                 other.description == description) &&
             (identical(other.date, date) || other.date == date) &&
             (identical(other.discipline, discipline) ||
-                other.discipline == discipline));
+                other.discipline == discipline) &&
+            const DeepCollectionEquality().equals(other._files, _files));
   }
 
   @override
-  int get hashCode =>
-      Object.hash(runtimeType, noteID, title, description, date, discipline);
+  int get hashCode => Object.hash(runtimeType, noteID, title, description, date,
+      discipline, const DeepCollectionEquality().hash(_files));
 
   @JsonKey(ignore: true)
   @override
@@ -203,7 +227,8 @@ abstract class _NoteInfoState implements NoteInfoState {
       final String title,
       final String? description,
       final DateTime? date,
-      final String discipline}) = _$NoteInfoStateImpl;
+      final String discipline,
+      final List<NoteFile> files}) = _$NoteInfoStateImpl;
 
   @override
   int get noteID;
@@ -215,6 +240,8 @@ abstract class _NoteInfoState implements NoteInfoState {
   DateTime? get date;
   @override
   String get discipline;
+  @override
+  List<NoteFile> get files;
   @override
   @JsonKey(ignore: true)
   _$$NoteInfoStateImplCopyWith<_$NoteInfoStateImpl> get copyWith =>

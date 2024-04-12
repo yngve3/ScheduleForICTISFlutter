@@ -10,6 +10,8 @@ class Note {
   final DateTime date;
   final String coupleID;
 
+  bool get hasFiles => attachedFiles.isNotEmpty;
+
   @Backlink("note")
   final ToMany<NoteFile> attachedFiles = ToMany<NoteFile>();
 

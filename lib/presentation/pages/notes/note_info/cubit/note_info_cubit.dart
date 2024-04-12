@@ -18,7 +18,8 @@ class NoteInfoCubit extends Cubit<NoteInfoState> {
       title: note.title,
       description: note.description,
       date: couple.date,
-      discipline: couple.discipline
+      discipline: couple.discipline,
+      files: note.attachedFiles
     ));
   }
 

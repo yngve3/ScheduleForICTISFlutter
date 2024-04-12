@@ -7,5 +7,5 @@ CardTheme cardThemeData(ThemeColors colors) => CardTheme(
     margin: const EdgeInsets.only(top: 10),
     shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(10)
-    )
+    ),
 );

@@ -24,6 +24,7 @@ mixin _$NoteAddState {
   dynamic get isButtonSaveEnabled => throw _privateConstructorUsedError;
   int? get noteID => throw _privateConstructorUsedError;
   List<NoteFile> get files => throw _privateConstructorUsedError;
+  List<int> get deletedFilesIds => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $NoteAddStateCopyWith<NoteAddState> get copyWith =>
@@ -44,7 +45,8 @@ abstract class $NoteAddStateCopyWith<$Res> {
       DateTime? date,
       dynamic isButtonSaveEnabled,
       int? noteID,
-      List<NoteFile> files});
+      List<NoteFile> files,
+      List<int> deletedFilesIds});
 }
 
 /// @nodoc
@@ -68,6 +70,7 @@ class _$NoteAddStateCopyWithImpl<$Res, $Val extends NoteAddState>
     Object? isButtonSaveEnabled = freezed,
     Object? noteID = freezed,
     Object? files = null,
+    Object? deletedFilesIds = null,
   }) {
     return _then(_value.copyWith(
       coupleID: null == coupleID
@@ -102,6 +105,10 @@ class _$NoteAddStateCopyWithImpl<$Res, $Val extends NoteAddState>
           ? _value.files
           : files // ignore: cast_nullable_to_non_nullable
               as List<NoteFile>,
+      deletedFilesIds: null == deletedFilesIds
+          ? _value.deletedFilesIds
+          : deletedFilesIds // ignore: cast_nullable_to_non_nullable
+              as List<int>,
     ) as $Val);
   }
 }
@@ -122,7 +129,8 @@ abstract class _$$NoteAddStateImplCopyWith<$Res>
       DateTime? date,
       dynamic isButtonSaveEnabled,
       int? noteID,
-      List<NoteFile> files});
+      List<NoteFile> files,
+      List<int> deletedFilesIds});
 }
 
 /// @nodoc
@@ -144,6 +152,7 @@ class __$$NoteAddStateImplCopyWithImpl<$Res>
     Object? isButtonSaveEnabled = freezed,
     Object? noteID = freezed,
     Object? files = null,
+    Object? deletedFilesIds = null,
   }) {
     return _then(_$NoteAddStateImpl(
       coupleID: null == coupleID
@@ -177,6 +186,10 @@ class __$$NoteAddStateImplCopyWithImpl<$Res>
           ? _value._files
           : files // ignore: cast_nullable_to_non_nullable
               as List<NoteFile>,
+      deletedFilesIds: null == deletedFilesIds
+          ? _value._deletedFilesIds
+          : deletedFilesIds // ignore: cast_nullable_to_non_nullable
+              as List<int>,
     ));
   }
 }
@@ -192,8 +205,10 @@ class _$NoteAddStateImpl implements _NoteAddState {
       this.date,
       this.isButtonSaveEnabled = false,
       this.noteID,
-      final List<NoteFile> files = const []})
-      : _files = files;
+      final List<NoteFile> files = const [],
+      final List<int> deletedFilesIds = const []})
+      : _files = files,
+        _deletedFilesIds = deletedFilesIds;
 
   @override
   @JsonKey()
@@ -222,9 +237,18 @@ class _$NoteAddStateImpl implements _NoteAddState {
     return EqualUnmodifiableListView(_files);
   }
 
+  final List<int> _deletedFilesIds;
+  @override
+  @JsonKey()
+  List<int> get deletedFilesIds {
+    if (_deletedFilesIds is EqualUnmodifiableListView) return _deletedFilesIds;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_deletedFilesIds);
+  }
+
   @override
   String toString() {
-    return 'NoteAddState(coupleID: $coupleID, title: $title, description: $description, discipline: $discipline, date: $date, isButtonSaveEnabled: $isButtonSaveEnabled, noteID: $noteID, files: $files)';
+    return 'NoteAddState(coupleID: $coupleID, title: $title, description: $description, discipline: $discipline, date: $date, isButtonSaveEnabled: $isButtonSaveEnabled, noteID: $noteID, files: $files, deletedFilesIds: $deletedFilesIds)';
   }
 
   @override
@@ -243,7 +267,9 @@ class _$NoteAddStateImpl implements _NoteAddState {
             const DeepCollectionEquality()
                 .equals(other.isButtonSaveEnabled, isButtonSaveEnabled) &&
             (identical(other.noteID, noteID) || other.noteID == noteID) &&
-            const DeepCollectionEquality().equals(other._files, _files));
+            const DeepCollectionEquality().equals(other._files, _files) &&
+            const DeepCollectionEquality()
+                .equals(other._deletedFilesIds, _deletedFilesIds));
   }
 
   @override
@@ -256,7 +282,8 @@ class _$NoteAddStateImpl implements _NoteAddState {
       date,
       const DeepCollectionEquality().hash(isButtonSaveEnabled),
       noteID,
-      const DeepCollectionEquality().hash(_files));
+      const DeepCollectionEquality().hash(_files),
+      const DeepCollectionEquality().hash(_deletedFilesIds));
 
   @JsonKey(ignore: true)
   @override
@@ -274,7 +301,8 @@ abstract class _NoteAddState implements NoteAddState {
       final DateTime? date,
       final dynamic isButtonSaveEnabled,
       final int? noteID,
-      final List<NoteFile> files}) = _$NoteAddStateImpl;
+      final List<NoteFile> files,
+      final List<int> deletedFilesIds}) = _$NoteAddStateImpl;
 
   @override
   String get coupleID;
@@ -292,6 +320,8 @@ abstract class _NoteAddState implements NoteAddState {
   int? get noteID;
   @override
   List<NoteFile> get files;
+  @override
+  List<int> get deletedFilesIds;
   @override
   @JsonKey(ignore: true)
   _$$NoteAddStateImplCopyWith<_$NoteAddStateImpl> get copyWith =>

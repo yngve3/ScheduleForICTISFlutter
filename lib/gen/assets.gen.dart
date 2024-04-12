@@ -65,6 +65,9 @@ class $AssetsIconsGen {
   AssetGenImage get icLocation =>
       const AssetGenImage('assets/icons/ic_location.png');
 
+  /// File path: assets/icons/ic_open.png
+  AssetGenImage get icOpen => const AssetGenImage('assets/icons/ic_open.png');
+
   /// File path: assets/icons/ic_schedule.png
   AssetGenImage get icSchedule =>
       const AssetGenImage('assets/icons/ic_schedule.png');
@@ -72,6 +75,9 @@ class $AssetsIconsGen {
   /// File path: assets/icons/ic_settings.png
   AssetGenImage get icSettings =>
       const AssetGenImage('assets/icons/ic_settings.png');
+
+  /// File path: assets/icons/ic_share.png
+  AssetGenImage get icShare => const AssetGenImage('assets/icons/ic_share.png');
 
   /// File path: assets/icons/ic_task.png
   AssetGenImage get icTask => const AssetGenImage('assets/icons/ic_task.png');
@@ -96,8 +102,10 @@ class $AssetsIconsGen {
         icHome,
         icList,
         icLocation,
+        icOpen,
         icSchedule,
         icSettings,
+        icShare,
         icTask,
         icTime
       ];

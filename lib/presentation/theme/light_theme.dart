@@ -22,17 +22,17 @@ ThemeData lightTheme() {
   );
 
   return ThemeData(
-      brightness: Brightness.light,
-      useMaterial3: true,
-      extensions: [
-        customColors,
-        tableCalendarTheme
-      ],
-      cardTheme: cardTheme,
-      filledButtonTheme: filledButtonTheme,
-      splashColor: Colors.transparent,
-      floatingActionButtonTheme: floatingActionButtonTheme,
-      inputDecorationTheme: inputDecoratorTheme,
-      textTheme: textTheme
+    brightness: Brightness.light,
+    useMaterial3: true,
+    extensions: [
+      customColors,
+      tableCalendarTheme
+    ],
+    cardTheme: cardTheme,
+    filledButtonTheme: filledButtonTheme,
+    splashColor: Colors.transparent,
+    floatingActionButtonTheme: floatingActionButtonTheme,
+    inputDecorationTheme: inputDecoratorTheme,
+    textTheme: textTheme
   );
 }

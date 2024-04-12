@@ -9,6 +9,7 @@ import 'package:schedule_for_ictis_flutter/presentation/widgets/discipline_and_d
 
 import '../../../../domain/models/note/note.dart';
 import '../../../../domain/models/schedule/day_schedule_item.dart';
+import '../../../../gen/assets.gen.dart';
 import '../../../route/routes.dart';
 import 'cubit/couple_notes_list_state.dart';
 
@@ -78,7 +79,18 @@ class NotesListItem extends StatelessWidget {
       child: Card(
         child: Padding(
           padding: const EdgeInsets.all(20),
-          child: Text(note.title, style: context.textTheme.bodyLarge),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(note.title, style: context.textTheme.titleLarge),
+              SizedBox.square(
+                dimension: 25,
+                child: note.hasFiles ? Assets.icons.icAttach.image(
+                      color: context.customColors.accent
+                ) : null,
+              )
+            ],
+          ),
         ),
       ),
     );

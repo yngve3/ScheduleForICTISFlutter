@@ -27,10 +27,8 @@ class NotesInteractor {
     return await _notesRepository.getNote(id);
   }
 
-  void attachFileToNote(PlatformFile file, int? noteID) {
-    final noteFile = NoteFile.fromPlatformFile(file);
-    noteFile.note.targetId = noteID;
-    _noteFilesRepository.addFile(noteFile);
+  void deleteFiles(List<int> ids) {
+    _noteFilesRepository.deleteFiles(ids);
   }
 
   Stream<List<NoteFile>> getNoteFiles(int noteID) {
@@ -43,7 +41,8 @@ class NotesInteractor {
     required DateTime date,
     required String coupleID,
     String? description,
-    List<NoteFile>? files
+    List<NoteFile>? files,
+    List<int>? deletedFilesIds
   }) {
     final note = Note(
         id: noteID ?? 0,
@@ -52,6 +51,8 @@ class NotesInteractor {
         coupleID: coupleID,
         description: description
     );
+
+    deleteFiles(deletedFilesIds ?? []);
     note.attachedFiles.addAll(files ?? []);
     _notesRepository.addNote(note);
   }

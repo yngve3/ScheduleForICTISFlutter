@@ -1,4 +1,3 @@
-import 'package:file_picker/file_picker.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:schedule_for_ictis_flutter/domain/interactors/notes_interactor.dart';
 
@@ -17,14 +16,23 @@ class NoteAddCubit extends Cubit<NoteAddState> {
       date: state.date ?? DateTime.now(),
       coupleID: state.coupleID,
       description: state.description,
-      files: state.files
+      files: state.files,
+      deletedFilesIds: state.deletedFilesIds
     );
   }
 
-  void addFile(PlatformFile file) {
+  void addFile(NoteFile file) {
     final files = [...state.files];
-    files.add(NoteFile.fromPlatformFile(file));
+    files.add(file);
     emit(state.copyWith(files: files));
+  }
+
+  void deleteFile(NoteFile file) {
+    final files = [...state.files];
+    final deletedFilesIds = [...state.deletedFilesIds];
+    files.remove(file);
+    if (state.noteID != null) deletedFilesIds.add(file.id);
+    emit(state.copyWith(files: files, deletedFilesIds: deletedFilesIds));
   }
 
   void loadFromCouple(String? coupleID) async {
@@ -48,7 +56,8 @@ class NoteAddCubit extends Cubit<NoteAddState> {
       title: note.title,
       description: note.description,
       noteID: note.id,
-      files: note.attachedFiles
+      files: note.attachedFiles,
+      isButtonSaveEnabled: true
     ));
   }
 

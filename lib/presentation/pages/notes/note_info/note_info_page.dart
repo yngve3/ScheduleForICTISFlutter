@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:schedule_for_ictis_flutter/presentation/extensions/context_ext.dart';
 import 'package:schedule_for_ictis_flutter/presentation/widgets/app_bar.dart';
 import 'package:schedule_for_ictis_flutter/presentation/widgets/discipline_and_date.dart';
+import 'package:schedule_for_ictis_flutter/presentation/widgets/property/properties/files_property.dart';
 import 'package:schedule_for_ictis_flutter/presentation/widgets/property/properties/text_property.dart';
 
 import '../../../../gen/assets.gen.dart';
@@ -68,7 +69,11 @@ class NoteInfoPage extends StatelessWidget {
                       property: state.description,
                       style: context.textTheme.bodyLarge,
                       icon: Assets.icons.icList.image()
-                    )
+                    ),
+                    state.files.isNotEmpty ? FilesProperty(
+                      files: state.files,
+                      isEditPossible: false,
+                    ) : const SizedBox.shrink()
                   ],
                 )
             ),

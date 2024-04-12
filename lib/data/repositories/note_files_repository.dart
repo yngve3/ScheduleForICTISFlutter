@@ -13,9 +13,10 @@ class NoteFilesRepository {
     _noteFilesBox.putAsync(file);
   }
 
-  void deleteFile(int fileID) {
-    _noteFilesBox.removeAsync(fileID);
+  void deleteFiles(List<int> ids) {
+    _noteFilesBox.removeManyAsync(ids);
   }
+
 
   Stream<List<NoteFile>> getFilesByNoteID(int noteID) {
     return _noteFilesBox.query(NoteFile_.note.equals(noteID))

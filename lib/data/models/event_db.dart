@@ -1,5 +1,7 @@
 import 'package:objectbox/objectbox.dart';
 
+import '../../domain/models/notification/reminder.dart';
+
 @Entity()
 class EventDB {
   @Id() int id;
@@ -11,6 +13,7 @@ class EventDB {
   final DateTime date;
   final int weekNum;
   final String? location;
+  final ToMany<Reminder> reminders = ToMany<Reminder>();
 
   EventDB({
     this.id = 0,

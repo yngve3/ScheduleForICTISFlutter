@@ -5,8 +5,8 @@ import 'package:schedule_for_ictis_flutter/presentation/extensions/context_ext.d
 import 'package:schedule_for_ictis_flutter/presentation/pages/event_add/cubit/event_add_cubit.dart';
 import 'package:schedule_for_ictis_flutter/presentation/pages/event_add/cubit/event_add_state.dart';
 import 'package:schedule_for_ictis_flutter/presentation/widgets/app_bar.dart';
+import 'package:schedule_for_ictis_flutter/presentation/widgets/property/properties/reminder_property.dart';
 
-import '../../../domain/models/schedule/day_schedule_item.dart';
 import '../../../gen/assets.gen.dart';
 import '../../widgets/property/properties/date_property.dart';
 import '../../widgets/property/properties/input_property.dart';

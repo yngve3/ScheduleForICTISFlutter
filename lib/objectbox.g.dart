@@ -21,6 +21,7 @@ import 'data/models/event_db.dart';
 import 'data/models/week_schedule_db.dart';
 import 'domain/models/note/note.dart';
 import 'domain/models/note_file/note_file.dart';
+import 'domain/models/notification/reminder.dart';
 import 'domain/models/schedule_subject/schedule_subject.dart';
 import 'domain/models/week_number.dart';
 
@@ -242,7 +243,12 @@ final _entities = <obx_int.ModelEntity>[
             type: 9,
             flags: 0)
       ],
-      relations: <obx_int.ModelRelation>[],
+      relations: <obx_int.ModelRelation>[
+        obx_int.ModelRelation(
+            id: const obx_int.IdUid(1, 7624436913426914363),
+            name: 'reminders',
+            targetId: const obx_int.IdUid(18, 723268708847700747))
+      ],
       backlinks: <obx_int.ModelBacklink>[]),
   obx_int.ModelEntity(
       id: const obx_int.IdUid(15, 3529840884396796264),
@@ -335,6 +341,40 @@ final _entities = <obx_int.ModelEntity>[
             flags: 0)
       ],
       relations: <obx_int.ModelRelation>[],
+      backlinks: <obx_int.ModelBacklink>[]),
+  obx_int.ModelEntity(
+      id: const obx_int.IdUid(18, 723268708847700747),
+      name: 'Reminder',
+      lastPropertyId: const obx_int.IdUid(5, 2279409324267548940),
+      flags: 0,
+      properties: <obx_int.ModelProperty>[
+        obx_int.ModelProperty(
+            id: const obx_int.IdUid(1, 2444250456273189574),
+            name: 'id',
+            type: 6,
+            flags: 129),
+        obx_int.ModelProperty(
+            id: const obx_int.IdUid(2, 3981874277290770469),
+            name: 'dateTime',
+            type: 10,
+            flags: 0),
+        obx_int.ModelProperty(
+            id: const obx_int.IdUid(3, 4529835760660775438),
+            name: 'title',
+            type: 9,
+            flags: 0),
+        obx_int.ModelProperty(
+            id: const obx_int.IdUid(4, 8586891483261331178),
+            name: 'description',
+            type: 9,
+            flags: 0),
+        obx_int.ModelProperty(
+            id: const obx_int.IdUid(5, 2279409324267548940),
+            name: 'body',
+            type: 9,
+            flags: 0)
+      ],
+      relations: <obx_int.ModelRelation>[],
       backlinks: <obx_int.ModelBacklink>[])
 ];
 
@@ -373,9 +413,9 @@ Future<obx.Store> openStore(
 obx_int.ModelDefinition getObjectBoxModel() {
   final model = obx_int.ModelInfo(
       entities: _entities,
-      lastEntityId: const obx_int.IdUid(17, 6581195835741669404),
+      lastEntityId: const obx_int.IdUid(18, 723268708847700747),
       lastIndexId: const obx_int.IdUid(15, 564889761863671504),
-      lastRelationId: const obx_int.IdUid(0, 0),
+      lastRelationId: const obx_int.IdUid(1, 7624436913426914363),
       lastSequenceId: const obx_int.IdUid(0, 0),
       retiredEntityUids: const [
         1910578607431801677,
@@ -633,7 +673,8 @@ obx_int.ModelDefinition getObjectBoxModel() {
     EventDB: obx_int.EntityDefinition<EventDB>(
         model: _entities[4],
         toOneRelations: (EventDB object) => [],
-        toManyRelations: (EventDB object) => {},
+        toManyRelations: (EventDB object) =>
+            {obx_int.RelInfo<EventDB>.toMany(1, object.id): object.reminders},
         getId: (EventDB object) => object.id,
         setId: (EventDB object, int id) {
           object.id = id;
@@ -689,7 +730,8 @@ obx_int.ModelDefinition getObjectBoxModel() {
               weekNum: weekNumParam,
               location: locationParam,
               description: descriptionParam);
-
+          obx_int.InternalToManyAccess.setRelInfo<EventDB>(object.reminders,
+              store, obx_int.RelInfo<EventDB>.toMany(1, object.id));
           return object;
         }),
     WeekNumber: obx_int.EntityDefinition<WeekNumber>(
@@ -815,6 +857,57 @@ obx_int.ModelDefinition getObjectBoxModel() {
           object.note.targetId =
               const fb.Int64Reader().vTableGet(buffer, rootOffset, 12, 0);
           object.note.attach(store);
+          return object;
+        }),
+    Reminder: obx_int.EntityDefinition<Reminder>(
+        model: _entities[8],
+        toOneRelations: (Reminder object) => [],
+        toManyRelations: (Reminder object) => {},
+        getId: (Reminder object) => object.id,
+        setId: (Reminder object, int id) {
+          if (object.id != id) {
+            throw ArgumentError('Field Reminder.id is read-only '
+                '(final or getter-only) and it was declared to be self-assigned. '
+                'However, the currently inserted object (.id=${object.id}) '
+                "doesn't match the inserted ID (ID $id). "
+                'You must assign an ID before calling [box.put()].');
+          }
+        },
+        objectToFB: (Reminder object, fb.Builder fbb) {
+          final titleOffset = fbb.writeString(object.title);
+          final descriptionOffset = fbb.writeString(object.description);
+          final bodyOffset =
+              object.body == null ? null : fbb.writeString(object.body!);
+          fbb.startTable(6);
+          fbb.addInt64(0, object.id);
+          fbb.addInt64(1, object.dateTime.millisecondsSinceEpoch);
+          fbb.addOffset(2, titleOffset);
+          fbb.addOffset(3, descriptionOffset);
+          fbb.addOffset(4, bodyOffset);
+          fbb.finish(fbb.endTable());
+          return object.id;
+        },
+        objectFromFB: (obx.Store store, ByteData fbData) {
+          final buffer = fb.BufferContext(fbData);
+          final rootOffset = buffer.derefObject(0);
+          final idParam =
+              const fb.Int64Reader().vTableGet(buffer, rootOffset, 4, 0);
+          final dateTimeParam = DateTime.fromMillisecondsSinceEpoch(
+              const fb.Int64Reader().vTableGet(buffer, rootOffset, 6, 0));
+          final titleParam = const fb.StringReader(asciiOptimization: true)
+              .vTableGet(buffer, rootOffset, 8, '');
+          final descriptionParam =
+              const fb.StringReader(asciiOptimization: true)
+                  .vTableGet(buffer, rootOffset, 10, '');
+          final bodyParam = const fb.StringReader(asciiOptimization: true)
+              .vTableGetNullable(buffer, rootOffset, 12);
+          final object = Reminder(
+              id: idParam,
+              dateTime: dateTimeParam,
+              title: titleParam,
+              description: descriptionParam,
+              body: bodyParam);
+
           return object;
         })
   };
@@ -971,6 +1064,10 @@ class EventDB_ {
   /// see [EventDB.location]
   static final location =
       obx.QueryStringProperty<EventDB>(_entities[4].properties[7]);
+
+  /// see [EventDB.reminders]
+  static final reminders =
+      obx.QueryRelationToMany<EventDB, Reminder>(_entities[4].relations[0]);
 }
 
 /// [WeekNumber] entity fields to define ObjectBox queries.
@@ -1030,4 +1127,27 @@ class NoteFile_ {
   /// see [NoteFile.dbType]
   static final dbType =
       obx.QueryIntegerProperty<NoteFile>(_entities[7].properties[4]);
+}
+
+/// [Reminder] entity fields to define ObjectBox queries.
+class Reminder_ {
+  /// see [Reminder.id]
+  static final id =
+      obx.QueryIntegerProperty<Reminder>(_entities[8].properties[0]);
+
+  /// see [Reminder.dateTime]
+  static final dateTime =
+      obx.QueryDateProperty<Reminder>(_entities[8].properties[1]);
+
+  /// see [Reminder.title]
+  static final title =
+      obx.QueryStringProperty<Reminder>(_entities[8].properties[2]);
+
+  /// see [Reminder.description]
+  static final description =
+      obx.QueryStringProperty<Reminder>(_entities[8].properties[3]);
+
+  /// see [Reminder.body]
+  static final body =
+      obx.QueryStringProperty<Reminder>(_entities[8].properties[4]);
 }

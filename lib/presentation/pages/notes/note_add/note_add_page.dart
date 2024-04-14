@@ -5,8 +5,11 @@ import 'package:schedule_for_ictis_flutter/presentation/pages/notes/note_add/cub
 import 'package:schedule_for_ictis_flutter/presentation/widgets/app_bar.dart';
 import 'package:schedule_for_ictis_flutter/presentation/widgets/discipline_and_date.dart';
 import 'package:schedule_for_ictis_flutter/presentation/widgets/property/properties/input_property.dart';
+import 'package:schedule_for_ictis_flutter/presentation/widgets/property/property.dart';
 
+import '../../../../domain/models/notification/reminder.dart';
 import '../../../../gen/assets.gen.dart';
+import '../../../../utils/reminders_helper.dart';
 import '../../../widgets/property/properties/files_property.dart';
 import 'cubit/note_add_state.dart';
 
@@ -84,6 +87,8 @@ class NoteAddPage extends StatelessWidget {
     );
   }
 }
+
+
 
 
 

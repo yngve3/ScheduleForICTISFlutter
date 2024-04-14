@@ -211,7 +211,13 @@
           "type": 9
         }
       ],
-      "relations": []
+      "relations": [
+        {
+          "id": "1:7624436913426914363",
+          "name": "reminders",
+          "targetId": "18:723268708847700747"
+        }
+      ]
     },
     {
       "id": "15:3529840884396796264",
@@ -302,11 +308,45 @@
         }
       ],
       "relations": []
+    },
+    {
+      "id": "18:723268708847700747",
+      "lastPropertyId": "5:2279409324267548940",
+      "name": "Reminder",
+      "properties": [
+        {
+          "id": "1:2444250456273189574",
+          "name": "id",
+          "type": 6,
+          "flags": 129
+        },
+        {
+          "id": "2:3981874277290770469",
+          "name": "dateTime",
+          "type": 10
+        },
+        {
+          "id": "3:4529835760660775438",
+          "name": "title",
+          "type": 9
+        },
+        {
+          "id": "4:8586891483261331178",
+          "name": "description",
+          "type": 9
+        },
+        {
+          "id": "5:2279409324267548940",
+          "name": "body",
+          "type": 9
+        }
+      ],
+      "relations": []
     }
   ],
-  "lastEntityId": "17:6581195835741669404",
+  "lastEntityId": "18:723268708847700747",
   "lastIndexId": "15:564889761863671504",
-  "lastRelationId": "0:0",
+  "lastRelationId": "1:7624436913426914363",
   "lastSequenceId": "0:0",
   "modelVersion": 5,
   "modelVersionParserMinimum": 5,

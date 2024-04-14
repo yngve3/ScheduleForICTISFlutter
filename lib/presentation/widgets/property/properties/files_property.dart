@@ -1,9 +1,7 @@
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import 'package:open_file_plus/open_file_plus.dart';
 import 'package:schedule_for_ictis_flutter/presentation/extensions/context_ext.dart';
-import 'package:share_plus/share_plus.dart';
 
 import '../../../../domain/models/note_file/note_file.dart';
 import '../../../../gen/assets.gen.dart';
@@ -177,9 +175,7 @@ class FileTile extends StatelessWidget {
               label: "Открыть"
           ),
           IconWithTextButton(
-              onTap: () {
-                Share.shareXFiles([XFile(file.path, name: file.name)]);
-              },
+              onTap: () {},
               icon: Assets.icons.icShare.image(),
               label: "Поделиться"
           ),

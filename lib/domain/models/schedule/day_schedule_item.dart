@@ -4,6 +4,7 @@ import '../../../data/models/couple_db.dart';
 import '../../../data/models/event_db.dart';
 import '../../../presentation/extensions/time_of_day_ext.dart';
 import '../couple/couple_type.dart';
+import '../reminder/reminder.dart';
 
 abstract class DayScheduleItem {
   final TimeOfDay timeStart;
@@ -56,13 +57,15 @@ class Event extends DayScheduleItem {
   final String? location;
   final DateTime date;
   final int id;
+  final List<Reminder>? reminders;
 
   Event(super.timeStart, super.timeEnd, {
     required this.title,
     required this.date,
     required this.id,
     this.description,
-    this.location
+    this.location,
+    this.reminders
   });
 
   factory Event.fromEventDB(EventDB eventDB) {
@@ -73,7 +76,8 @@ class Event extends DayScheduleItem {
       description: eventDB.description,
       location: eventDB.location,
       date: eventDB.date,
-      id: eventDB.id
+      id: eventDB.id,
+      reminders: eventDB.reminders
     );
   }
 }

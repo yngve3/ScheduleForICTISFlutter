@@ -1,9 +1,12 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:schedule_for_ictis_flutter/data/repositories/events_repository.dart';
 import 'package:schedule_for_ictis_flutter/presentation/extensions/date_time_ext.dart';
 import 'package:schedule_for_ictis_flutter/presentation/extensions/time_of_day_ext.dart';
 
 import '../../data/models/event_db.dart';
+import '../models/reminder/reminder.dart';
 import '../models/schedule/day_schedule_item.dart';
 
 class EventsInteractor {
@@ -16,9 +19,18 @@ class EventsInteractor {
     required DateTime date,
     required String title,
     String? description,
-    String? location
-  }) {
-    _eventsRepository.addEvent(EventDB(
+    String? location,
+    List<Reminder>? reminders
+  }) async {
+    if (id != null) {
+      EventDB? eventDB = await _eventsRepository.getEventById(id);
+      if (eventDB != null) {
+        eventDB.reminders.clear();
+        _eventsRepository.addEvent(eventDB);
+      }
+    }
+
+    EventDB eventDB = EventDB(
       id: id ?? 0,
       timeStart: timeStart.string,
       timeEnd: timeEnd.string,
@@ -27,7 +39,18 @@ class EventsInteractor {
       date: date,
       weekNum: date.weekNumber,
       location: _getText(location),
-    ));
+    );
+
+    reminders?.forEach((element) => 
+        element.setFields(
+            title: title, 
+            id: Random().nextInt(4000000000).abs(),
+            dateTimeBefore: date
+        )
+    );
+    eventDB.reminders.addAll(reminders ?? []);
+    
+    _eventsRepository.addEvent(eventDB);
   }
 
   Future<Event?> getEventById(int id) async  {

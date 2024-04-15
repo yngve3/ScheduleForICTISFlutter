@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
+import 'package:schedule_for_ictis_flutter/presentation/extensions/context_ext.dart';
 
 import '../../../../domain/models/reminder/reminder.dart';
 import '../../../../gen/assets.gen.dart';
@@ -14,8 +14,8 @@ class RemindersProperty extends StatelessWidget {
   });
 
   final List<Reminder> reminders;
-  final DeleteReminderCallback onDelete;
-  final VoidCallback onAdd;
+  final ReminderCallback onDelete;
+  final ReminderCallback onAdd;
 
   @override
   Widget build(BuildContext context) {
@@ -32,21 +32,62 @@ class RemindersProperty extends StatelessWidget {
         onDelete: onDelete
     )));
 
-    widgets.add(TextButton(
-      onPressed: () => showDialog(
-        context: context,
-        builder: (context) {
+    if (reminders.length < 3) {
+      widgets.add(InkWell(
+        onTap: () => showModalBottomSheet(
+            elevation: 0,
+            context: context,
+            builder: (context) {
+              List<Reminder> remindersForChoose = [
+                Reminder.beforeDateTime(const Duration(minutes: 15)),
+                Reminder.beforeDateTime(const Duration(minutes: 30)),
+                Reminder.beforeDateTime(const Duration(minutes: 5)),
+                Reminder.beforeDateTime(const Duration(minutes: 10)),
+                Reminder.beforeDateTime(const Duration(hours: 1)),
+              ];
 
-        }
-      ),
-      child: Text("Добавить уведомление"),
-    ));
+              return Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 20),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: remindersForChoose.where((element) => !reminders.contains(element)).map((reminder) =>
+                      InkWell(
+                        onTap: () {
+                          onAdd(reminder);
+                          Navigator.pop(context);
+                        },
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 10),
+                          child: Row(
+                            children: [
+                              const Icon(Icons.circle_outlined),
+                              const SizedBox(width: 10),
+                              Text("За ${MinutesToString.getTime(reminder.minutesBefore)}", style: context.textTheme.bodyLarge)
+                            ],
+                          ),
+                        ),
+                      )
+                  ).toList(),
+                ),
+              );
+            }
+        ),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(vertical: 10),
+          child: Text(
+              "Добавить уведомление",
+              style: context.textTheme.bodyLarge?.copyWith(color: context.customColors.text2)
+          ),
+        ),
+      ));
+    }
 
     return widgets;
   }
 }
 
-typedef DeleteReminderCallback = Function(Reminder reminder);
+typedef ReminderCallback = Function(Reminder reminder);
 
 class ReminderTile extends StatelessWidget {
   const ReminderTile({
@@ -56,13 +97,14 @@ class ReminderTile extends StatelessWidget {
   });
 
   final Reminder reminder;
-  final DeleteReminderCallback onDelete;
+  final ReminderCallback onDelete;
 
   @override
   Widget build(BuildContext context) {
     return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        Text(reminder.description),
+        Text("За ${MinutesToString.getTime(reminder.minutesBefore)}", style: context.textTheme.bodyLarge),
         IconButton(
             onPressed: () => onDelete(reminder),
             icon: RotationTransition(
@@ -73,8 +115,10 @@ class ReminderTile extends StatelessWidget {
       ],
     );
   }
+}
 
-  String _getTime(int minutesBefore) {
+class MinutesToString {
+  static String getTime(int minutesBefore) {
     int hours = minutesBefore ~/ 60;
     int minutes = minutesBefore - hours * 60;
     int days = 0;
@@ -90,13 +134,14 @@ class ReminderTile extends StatelessWidget {
       days -= weeks * 7;
     }
 
-    return "${_getString(weeks)} "
-        "${_getString(days)} "
-        "${_getString(hours)} "
-        "${_getString(minutes)}";
+    return "${_getString(weeks)[0]} "
+        "${_getString(days)[1]} "
+        "${_getString(hours)[2]} "
+        "${_getString(minutes)[3]}".trim();
   }
 
-  List<String> _getString(int num) {
+  static List<String> _getString(int num) {
+    if (num == 0) return ["", "", "", ""];
     final List<List<String>> list = [
       ["неделя", "день", "час", "минута"],
       ["недели", "дня", "часа", "минуты"],

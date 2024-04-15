@@ -5,10 +5,8 @@ InputDecorationTheme inputDecorationThemeData(ThemeColors colors, TextTheme text
     labelStyle: textTheme.bodyLarge,
     contentPadding: EdgeInsets.zero,
     filled: true,
-    focusColor: colors.text1,
+    focusColor: colors.background,
+    outlineBorder: null,
     fillColor: colors.card,
-    border: UnderlineInputBorder(
-        borderSide: BorderSide.none,
-        borderRadius: BorderRadius.circular(10)
-    )
+    border: InputBorder.none
 );

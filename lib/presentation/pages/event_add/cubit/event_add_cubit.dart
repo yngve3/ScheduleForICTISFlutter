@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:schedule_for_ictis_flutter/domain/interactors/events_interactor.dart';
 
-import '../../../../domain/models/notification/reminder.dart';
+import '../../../../domain/models/reminder/reminder.dart';
 import 'event_add_state.dart';
 
 class EventAddCubit extends Cubit<EventAddState> {
@@ -18,6 +18,7 @@ class EventAddCubit extends Cubit<EventAddState> {
       description: state.description,
       date: state.date!,
       location: state.location,
+      reminders: state.reminders
     );
   }
 
@@ -34,17 +35,21 @@ class EventAddCubit extends Cubit<EventAddState> {
       timeEnd: event.timeEnd,
       location: event.location ?? "",
       date: event.date,
-      isSaveButtonEnabled: true
+      isSaveButtonEnabled: true,
+      reminders: event.reminders ?? []
     ));
   }
 
-  void addReminder({
-    required String title,
-    required DateTime dateTime,
-    required String description,
-    String? body
-  }) {
+  void addReminder(Reminder reminder) {
+    final reminders = [...state.reminders];
+    reminders.add(reminder);
+    emit(state.copyWith(reminders: reminders));
+  }
 
+  void deleteReminder(Reminder reminder) {
+    final reminders = [...state.reminders];
+    reminders.remove(reminder);
+    emit(state.copyWith(reminders: reminders));
   }
 
   void titleChanged(String value) {

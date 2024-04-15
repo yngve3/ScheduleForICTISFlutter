@@ -13,6 +13,7 @@ class EventDB {
   final DateTime date;
   final int weekNum;
   final String? location;
+  @Backlink("event")
   final ToMany<Reminder> reminders = ToMany<Reminder>();
 
   EventDB({
@@ -25,4 +26,5 @@ class EventDB {
     this.location,
     this.description
   });
+
 }

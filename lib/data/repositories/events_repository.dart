@@ -20,7 +20,7 @@ class EventsRepository {
   }
 
   void addEvent(EventDB event) {
-    _eventsBox.putAsync(event);
+    _eventsBox.put(event);
   }
 
   void deleteEvent(int id) {

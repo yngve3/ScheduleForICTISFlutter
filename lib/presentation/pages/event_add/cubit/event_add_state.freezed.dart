@@ -24,6 +24,7 @@ mixin _$EventAddState {
   DateTime? get date => throw _privateConstructorUsedError;
   bool get isSaveButtonEnabled => throw _privateConstructorUsedError;
   String get location => throw _privateConstructorUsedError;
+  List<Reminder> get reminders => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $EventAddStateCopyWith<EventAddState> get copyWith =>
@@ -44,7 +45,8 @@ abstract class $EventAddStateCopyWith<$Res> {
       TimeOfDay? timeEnd,
       DateTime? date,
       bool isSaveButtonEnabled,
-      String location});
+      String location,
+      List<Reminder> reminders});
 }
 
 /// @nodoc
@@ -68,6 +70,7 @@ class _$EventAddStateCopyWithImpl<$Res, $Val extends EventAddState>
     Object? date = freezed,
     Object? isSaveButtonEnabled = null,
     Object? location = null,
+    Object? reminders = null,
   }) {
     return _then(_value.copyWith(
       id: freezed == id
@@ -102,6 +105,10 @@ class _$EventAddStateCopyWithImpl<$Res, $Val extends EventAddState>
           ? _value.location
           : location // ignore: cast_nullable_to_non_nullable
               as String,
+      reminders: null == reminders
+          ? _value.reminders
+          : reminders // ignore: cast_nullable_to_non_nullable
+              as List<Reminder>,
     ) as $Val);
   }
 }
@@ -122,7 +129,8 @@ abstract class _$$EventAddStateImplCopyWith<$Res>
       TimeOfDay? timeEnd,
       DateTime? date,
       bool isSaveButtonEnabled,
-      String location});
+      String location,
+      List<Reminder> reminders});
 }
 
 /// @nodoc
@@ -144,6 +152,7 @@ class __$$EventAddStateImplCopyWithImpl<$Res>
     Object? date = freezed,
     Object? isSaveButtonEnabled = null,
     Object? location = null,
+    Object? reminders = null,
   }) {
     return _then(_$EventAddStateImpl(
       id: freezed == id
@@ -178,6 +187,10 @@ class __$$EventAddStateImplCopyWithImpl<$Res>
           ? _value.location
           : location // ignore: cast_nullable_to_non_nullable
               as String,
+      reminders: null == reminders
+          ? _value._reminders
+          : reminders // ignore: cast_nullable_to_non_nullable
+              as List<Reminder>,
     ));
   }
 }
@@ -193,7 +206,9 @@ class _$EventAddStateImpl implements _EventAddState {
       this.timeEnd = null,
       this.date = null,
       this.isSaveButtonEnabled = false,
-      this.location = ""});
+      this.location = "",
+      final List<Reminder> reminders = const []})
+      : _reminders = reminders;
 
   @override
   final int? id;
@@ -218,10 +233,18 @@ class _$EventAddStateImpl implements _EventAddState {
   @override
   @JsonKey()
   final String location;
+  final List<Reminder> _reminders;
+  @override
+  @JsonKey()
+  List<Reminder> get reminders {
+    if (_reminders is EqualUnmodifiableListView) return _reminders;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_reminders);
+  }
 
   @override
   String toString() {
-    return 'EventAddState(id: $id, title: $title, description: $description, timeStart: $timeStart, timeEnd: $timeEnd, date: $date, isSaveButtonEnabled: $isSaveButtonEnabled, location: $location)';
+    return 'EventAddState(id: $id, title: $title, description: $description, timeStart: $timeStart, timeEnd: $timeEnd, date: $date, isSaveButtonEnabled: $isSaveButtonEnabled, location: $location, reminders: $reminders)';
   }
 
   @override
@@ -240,12 +263,23 @@ class _$EventAddStateImpl implements _EventAddState {
             (identical(other.isSaveButtonEnabled, isSaveButtonEnabled) ||
                 other.isSaveButtonEnabled == isSaveButtonEnabled) &&
             (identical(other.location, location) ||
-                other.location == location));
+                other.location == location) &&
+            const DeepCollectionEquality()
+                .equals(other._reminders, _reminders));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, id, title, description,
-      timeStart, timeEnd, date, isSaveButtonEnabled, location);
+  int get hashCode => Object.hash(
+      runtimeType,
+      id,
+      title,
+      description,
+      timeStart,
+      timeEnd,
+      date,
+      isSaveButtonEnabled,
+      location,
+      const DeepCollectionEquality().hash(_reminders));
 
   @JsonKey(ignore: true)
   @override
@@ -263,7 +297,8 @@ abstract class _EventAddState implements EventAddState {
       final TimeOfDay? timeEnd,
       final DateTime? date,
       final bool isSaveButtonEnabled,
-      final String location}) = _$EventAddStateImpl;
+      final String location,
+      final List<Reminder> reminders}) = _$EventAddStateImpl;
 
   @override
   int? get id;
@@ -281,6 +316,8 @@ abstract class _EventAddState implements EventAddState {
   bool get isSaveButtonEnabled;
   @override
   String get location;
+  @override
+  List<Reminder> get reminders;
   @override
   @JsonKey(ignore: true)
   _$$EventAddStateImplCopyWith<_$EventAddStateImpl> get copyWith =>

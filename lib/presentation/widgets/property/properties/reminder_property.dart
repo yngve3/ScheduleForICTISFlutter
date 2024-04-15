@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
-import '../../../../domain/models/notification/reminder.dart';
+import '../../../../domain/models/reminder/reminder.dart';
 import '../../../../gen/assets.gen.dart';
 import '../property.dart';
 
@@ -20,11 +21,11 @@ class RemindersProperty extends StatelessWidget {
   Widget build(BuildContext context) {
     return Property(
       icon: const Icon(Icons.notifications),
-      children: _getWidgets(),
+      children: _getWidgets(context),
     );
   }
 
-  List<Widget> _getWidgets() {
+  List<Widget> _getWidgets(BuildContext context) {
     List<Widget> widgets = [];
     widgets.addAll(reminders.map((reminder) => ReminderTile(
         reminder: reminder,
@@ -32,7 +33,12 @@ class RemindersProperty extends StatelessWidget {
     )));
 
     widgets.add(TextButton(
-      onPressed: onAdd,
+      onPressed: () => showDialog(
+        context: context,
+        builder: (context) {
+
+        }
+      ),
       child: Text("Добавить уведомление"),
     ));
 
@@ -66,5 +72,54 @@ class ReminderTile extends StatelessWidget {
         )
       ],
     );
+  }
+
+  String _getTime(int minutesBefore) {
+    int hours = minutesBefore ~/ 60;
+    int minutes = minutesBefore - hours * 60;
+    int days = 0;
+    int weeks = 0;
+
+    if (hours > 24) {
+      days = hours ~/ 24;
+      hours -= days * 24;
+    }
+
+    if (days > 1) {
+      weeks = days ~/ 7;
+      days -= weeks * 7;
+    }
+
+    return "${_getString(weeks)} "
+        "${_getString(days)} "
+        "${_getString(hours)} "
+        "${_getString(minutes)}";
+  }
+
+  List<String> _getString(int num) {
+    final List<List<String>> list = [
+      ["неделя", "день", "час", "минута"],
+      ["недели", "дня", "часа", "минуты"],
+      ["недель", "дней", "часов", "минут"]
+    ];
+
+    List<String>? l;
+
+    if (num % 10 == 1) {
+      l =  list[0];
+    } else if (num % 10 >= 2 && num % 10 <= 4) {
+      l = list[1];
+    } else if ((num >= 5 && num <= 20) || num % 10 >= 5 && num % 10 <= 9 || num % 10 == 0) {
+      l = list[2];
+    }
+
+    if (l != null) {
+      for (int i = 0; i < 4; i++) {
+        l[i] = "$num ${l[i]}";
+      }
+      return l;
+    }
+
+    return ["", "", "", ""];
   }
 }

@@ -10,14 +10,13 @@ class NoteAddCubit extends Cubit<NoteAddState> {
   final NotesInteractor _interactor = NotesInteractor();
 
   void addNote() {
-    _interactor.addNote(
+    _interactor.saveNote(
       noteID: state.noteID,
       title: state.title,
       date: state.date ?? DateTime.now(),
       coupleID: state.coupleID,
       description: state.description,
       files: state.files,
-      deletedFilesIds: state.deletedFilesIds
     );
   }
 
@@ -29,10 +28,8 @@ class NoteAddCubit extends Cubit<NoteAddState> {
 
   void deleteFile(NoteFile file) {
     final files = [...state.files];
-    final deletedFilesIds = [...state.deletedFilesIds];
     files.remove(file);
-    if (state.noteID != null) deletedFilesIds.add(file.id);
-    emit(state.copyWith(files: files, deletedFilesIds: deletedFilesIds));
+    emit(state.copyWith(files: files));
   }
 
   void loadFromCouple(String? coupleID) async {

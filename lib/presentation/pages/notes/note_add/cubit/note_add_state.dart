@@ -15,7 +15,6 @@ class NoteAddState with _$NoteAddState {
     @Default(false) isButtonSaveEnabled,
     int? noteID,
     @Default([]) List<NoteFile> files,
-    @Default([]) List<int> deletedFilesIds
   }) = _NoteAddState;
 
 }

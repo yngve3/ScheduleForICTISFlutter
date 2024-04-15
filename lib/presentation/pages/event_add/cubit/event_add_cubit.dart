@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:schedule_for_ictis_flutter/domain/interactors/events_interactor.dart';
 
+import '../../../../domain/models/notification/reminder.dart';
 import 'event_add_state.dart';
 
 class EventAddCubit extends Cubit<EventAddState> {
@@ -35,6 +36,15 @@ class EventAddCubit extends Cubit<EventAddState> {
       date: event.date,
       isSaveButtonEnabled: true
     ));
+  }
+
+  void addReminder({
+    required String title,
+    required DateTime dateTime,
+    required String description,
+    String? body
+  }) {
+
   }
 
   void titleChanged(String value) {

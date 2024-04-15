@@ -5,7 +5,6 @@ import 'package:schedule_for_ictis_flutter/presentation/extensions/context_ext.d
 import 'package:schedule_for_ictis_flutter/presentation/pages/event_add/cubit/event_add_cubit.dart';
 import 'package:schedule_for_ictis_flutter/presentation/pages/event_add/cubit/event_add_state.dart';
 import 'package:schedule_for_ictis_flutter/presentation/widgets/app_bar.dart';
-import 'package:schedule_for_ictis_flutter/presentation/widgets/property/properties/reminder_property.dart';
 
 import '../../../gen/assets.gen.dart';
 import '../../widgets/property/properties/date_property.dart';
@@ -76,6 +75,7 @@ class EventAdd extends StatelessWidget {
                       cubit.locationChanged(value);
                     }
                 ),
+
               ],
             ),
           ),

@@ -1,6 +1,6 @@
 import 'package:objectbox/objectbox.dart';
 
-import '../../domain/models/notification/reminder.dart';
+import '../../domain/models/reminder/reminder.dart';
 
 @Entity()
 class EventDB {

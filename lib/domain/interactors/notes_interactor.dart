@@ -35,28 +35,36 @@ class NotesInteractor {
     return _noteFilesRepository.getFilesByNoteID(noteID);
   }
 
-  void addNote({
+  void saveNote({
     int? noteID,
     required String title, 
     required DateTime date,
     required String coupleID,
     String? description,
-    List<NoteFile>? files,
-    List<int>? deletedFilesIds
-  }) {
-    final note = Note(
-        id: noteID ?? 0,
+    List<NoteFile>? files
+  }) async {
+    Note? note;
+    if (noteID != null) {
+      note = await _notesRepository.getNote(noteID);
+      note?.update(
+        title: title,
+        description: description,
+        date: date,
+        files: files
+      );
+    } else {
+      note = Note(
         title: title,
         date: date,
         coupleID: coupleID,
-        description: description
-    );
+        description: description,
+      );
+      note.attachedFiles.addAll(files ?? []);
+    }
 
-    deleteFiles(deletedFilesIds ?? []);
-    note.attachedFiles.addAll(files ?? []);
-    _notesRepository.addNote(note);
+    _notesRepository.addNote(note!);
   }
-  
+
   void deleteNote(int noteID) {
     _notesRepository.deleteNote(noteID);
   }

@@ -3,12 +3,12 @@ import 'package:schedule_for_ictis_flutter/domain/models/note_file/note_file.dar
 
 @Entity()
 class Note {
-  @Id() int id;
-  final String title;
-  final String? description;
+  @Id() int id = 0;
+  String title;
+  String? description;
   @Property(type: PropertyType.date)
-  final DateTime date;
-  final String coupleID;
+  DateTime date;
+  String coupleID;
 
   bool get hasFiles => attachedFiles.isNotEmpty;
 
@@ -16,10 +16,24 @@ class Note {
   final ToMany<NoteFile> attachedFiles = ToMany<NoteFile>();
 
   Note({
-    required this.id,
     required this.title,
     required this.date,
     required this.coupleID,
     this.description
   });
+
+  void update({
+    String? title,
+    String? description,
+    DateTime? date,
+    List<NoteFile>? files
+  }) {
+    this.title = title ?? this.title;
+    this.description = description ?? this.description;
+    this.date = date ?? this.date;
+    if (files != null) {
+      attachedFiles.clear();
+      attachedFiles.addAll(files);
+    }
+  }
 }

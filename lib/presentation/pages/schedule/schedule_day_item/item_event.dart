@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:schedule_for_ictis_flutter/presentation/extensions/context_ext.dart';
-import 'package:schedule_for_ictis_flutter/presentation/pages/event_info/event_info_page.dart';
 import 'package:schedule_for_ictis_flutter/presentation/pages/schedule/schedule_day_item/schedule_day_item.dart';
 
 import '../../../../domain/models/schedule/day_schedule_item.dart';

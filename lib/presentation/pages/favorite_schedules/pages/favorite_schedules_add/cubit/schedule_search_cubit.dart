@@ -1,4 +1,4 @@
-import 'package:bloc/bloc.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:collection/collection.dart';
 import 'package:schedule_for_ictis_flutter/data/repositories/favorite_schedules_repository.dart';
 import 'package:schedule_for_ictis_flutter/domain/models/schedule_subject/schedule_subject.dart';

@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:awesome_notifications/awesome_notifications.dart';
 
 import '../domain/models/reminder/reminder.dart';
@@ -19,25 +17,25 @@ class RemindersHelper {
     checkNotificationPermissions();
   }
 
-  static void createReminder(Reminder reminder) async {
+  static void createReminder(Reminder reminder, DateTime dateTime, {String? title, String? body}) async {
     AwesomeNotifications().createNotification(
       content: NotificationContent(
-        id: Random().nextInt(0x7fffffffffffffff),
+        id: reminder.id ?? 0,
         channelKey: channelKey,
         actionType: ActionType.Default,
-        title: reminder.title,
-        body: reminder.body,
+        title: title,
+        body: body,
         wakeUpScreen: false,
         category: NotificationCategory.Reminder,
         criticalAlert: true
       ),
       schedule: NotificationCalendar(
-        year: reminder.dateTime?.year,
-        month: reminder.dateTime?.month,
-        day: reminder.dateTime?.day,
-        hour: reminder.dateTime?.hour,
-        minute: reminder.dateTime?.minute,
-        second: reminder.dateTime?.second,
+        year: dateTime.year,
+        month: dateTime.month,
+        day: dateTime.day,
+        hour: dateTime.hour,
+        minute: dateTime.minute,
+        second: dateTime.second,
         timeZone: await AwesomeNotifications().getLocalTimeZoneIdentifier(),
         preciseAlarm: true,
         allowWhileIdle: true

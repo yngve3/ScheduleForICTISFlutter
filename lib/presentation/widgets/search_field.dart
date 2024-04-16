@@ -20,8 +20,14 @@ class SearchField extends StatelessWidget {
         onSubmitted: (value) => onSubmit(value),
         textInputAction: TextInputAction.search,
         decoration: InputDecoration(
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(10),
+            borderSide: BorderSide.none
+          ),
           contentPadding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
           labelText: label,
+          labelStyle: context.textTheme.bodyLarge,
+          filled: true
         )
     );
   }

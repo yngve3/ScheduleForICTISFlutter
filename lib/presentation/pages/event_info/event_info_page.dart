@@ -5,7 +5,9 @@ import 'package:schedule_for_ictis_flutter/presentation/extensions/context_ext.d
 import 'package:schedule_for_ictis_flutter/presentation/pages/event_info/cubit/event_info_cubit.dart';
 import 'package:schedule_for_ictis_flutter/presentation/widgets/app_bar.dart';
 import 'package:schedule_for_ictis_flutter/presentation/widgets/date_text.dart';
+import 'package:schedule_for_ictis_flutter/presentation/widgets/property/properties/reminder_property.dart';
 import 'package:schedule_for_ictis_flutter/presentation/widgets/property/properties/text_property.dart';
+import 'package:schedule_for_ictis_flutter/presentation/widgets/screen.dart';
 
 import '../../../gen/assets.gen.dart';
 import '../../route/routes.dart';
@@ -48,9 +50,8 @@ class EventInfoPage extends StatelessWidget {
                   )
                 ],
               ),
-              body: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 15),
-                child: Column(
+              body: ScrollableScreen(
+                scrollable: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     TextProperty(
@@ -61,7 +62,6 @@ class EventInfoPage extends StatelessWidget {
                         )
                       ],
                     ),
-
                     TextProperty(
                       icon: Assets.icons.icTime.image(),
                       children: [
@@ -71,7 +71,6 @@ class EventInfoPage extends StatelessWidget {
                         )
                       ],
                     ),
-
                     TextProperty(
                       icon: Assets.icons.icEvent.image(),
                       children: [
@@ -84,9 +83,20 @@ class EventInfoPage extends StatelessWidget {
                         )
                       ],
                     ),
-
-                    _getWidgetOrEmpty(property: state.description, icon: Assets.icons.icList.image(), context: context),
-                    _getWidgetOrEmpty(property: state.location, icon: Assets.icons.icLocation.image(), context: context)
+                    _getWidgetOrEmpty(
+                      property: state.description,
+                      icon: Assets.icons.icList.image(),
+                      context: context
+                    ),
+                    _getWidgetOrEmpty(
+                      property: state.location,
+                      icon: Assets.icons.icLocation.image(),
+                      context: context
+                    ),
+                    RemindersProperty(
+                      reminders: state.reminders ?? [],
+                      readOnly: true,
+                    )
                   ],
                 ),
               )

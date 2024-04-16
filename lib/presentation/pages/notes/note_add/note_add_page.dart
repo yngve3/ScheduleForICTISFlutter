@@ -5,6 +5,8 @@ import 'package:schedule_for_ictis_flutter/presentation/pages/notes/note_add/cub
 import 'package:schedule_for_ictis_flutter/presentation/widgets/app_bar.dart';
 import 'package:schedule_for_ictis_flutter/presentation/widgets/discipline_and_date.dart';
 import 'package:schedule_for_ictis_flutter/presentation/widgets/property/properties/input_property.dart';
+import 'package:schedule_for_ictis_flutter/presentation/widgets/property/properties/reminder_property.dart';
+import 'package:schedule_for_ictis_flutter/presentation/widgets/screen.dart';
 
 import '../../../../gen/assets.gen.dart';
 import '../../../widgets/property/properties/files_property.dart';
@@ -34,48 +36,44 @@ class NoteAddPage extends StatelessWidget {
               appBar: AppBar(),
               title: "Задача",
             ),
-            body: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 15),
-              child: Column(
+            body: ScrollableScreen(
+              top: DisciplineAndDate(
+                discipline: state.discipline,
+                date: state.date ?? DateTime.now(),
+              ),
+              scrollable: Column(
                 children: [
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        DisciplineAndDate(
-                          discipline: state.discipline,
-                          date: state.date ?? DateTime.now(),
-                        ),
-                        const SizedBox(height: 10),
-                        InputProperty(
-                          hint: "Заголовок",
-                          onChanged: (value) => cubit.titleChanged(value),
-                          value: state.title,
-                        ),
-                        InputProperty(
-                          hint: "Описание",
-                          onChanged: (value) => cubit.descriptionChanged(value),
-                          isMultiLines: true,
-                          icon: Assets.icons.icList.image(),
-                          value: state.description ?? "",
-                        ),
-                        FilesProperty(
-                          files: state.files,
-                          isEditPossible: true,
-                          onChosen: (file) => cubit.addFile(file),
-                          onDelete: (file) => cubit.deleteFile(file),
-                        )
-                      ],
-                    ),
+                  InputProperty(
+                    hint: "Заголовок",
+                    onChanged: (value) => cubit.titleChanged(value),
+                    value: state.title,
                   ),
-                  FilledButton(
-                    onPressed: state.isButtonSaveEnabled ? () {
-                      cubit.addNote();
-                      context.pop();
-                    } : null,
-                    child: const Text("Сохранить"),
+                  InputProperty(
+                    hint: "Описание",
+                    onChanged: (value) => cubit.descriptionChanged(value),
+                    isMultiLines: true,
+                    icon: Assets.icons.icList.image(),
+                    value: state.description ?? "",
+                  ),
+                  // RemindersProperty(
+                  //   reminders: state.reminders,
+                  //   onDelete: (reminder) => cubit.deleteReminder(reminder),
+                  //   onAdd: (reminder) => cubit.addReminder(reminder),
+                  // ),
+                  FilesProperty(
+                    files: state.files,
+                    isEditPossible: true,
+                    onChosen: (file) => cubit.addFile(file),
+                    onDelete: (file) => cubit.deleteFile(file),
                   )
                 ],
+              ),
+              bottom: FilledButton(
+                onPressed: state.isButtonSaveEnabled ? () {
+                  cubit.addNote();
+                  context.pop();
+                } : null,
+                child: const Text("Сохранить"),
               ),
             )
           );

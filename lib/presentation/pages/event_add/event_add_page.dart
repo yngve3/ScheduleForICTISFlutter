@@ -11,6 +11,7 @@ import '../../../gen/assets.gen.dart';
 import '../../widgets/property/properties/date_property.dart';
 import '../../widgets/property/properties/input_property.dart';
 import '../../widgets/property/properties/time_property.dart';
+import '../../widgets/screen.dart';
 
 class EventAddPage extends StatelessWidget {
   const EventAddPage({
@@ -42,57 +43,52 @@ class EventAdd extends StatelessWidget {
   Widget build(BuildContext context) {
     final cubit = BlocProvider.of<EventAddCubit>(context);
     return BlocBuilder<EventAddCubit, EventAddState>(
-      builder: (context, state) => Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 15),
-        child: Column(children: [
-          Expanded(
-            child: Column(
-              children: [
-                InputProperty(
-                    hint: "Название",
-                    value: state.title,
-                    onChanged: (value) => cubit.titleChanged(value)),
-                InputProperty(
-                    hint: "Описание",
-                    value: state.description,
-                    isMultiLines: true,
-                    icon: Assets.icons.icList.image(color: context.customColors.text1),
-                    onChanged: (value) => cubit.descriptionChanged(value)),
-                TimeProperty(
-                  timeStart: state.timeStart,
-                  timeEnd: state.timeEnd,
-                  onTimeEndChosen: (time) => cubit.timeEndChanged(time),
-                  onTimeStartChosen: (time) => cubit.timeStartChanged(time),
-                ),
-                DateProperty(
-                  date: state.date,
-                  onDateChosen: (date) => cubit.dateChanged(date),
-                ),
-                InputProperty(
-                    hint: "Локация",
-                    value: state.location,
-                    icon: Assets.icons.icLocation.image(),
-                    onChanged: (value) {
-                      cubit.locationChanged(value);
-                    }
-                ),
-                RemindersProperty(
-                    reminders: state.reminders,
-                    onDelete: (reminder) => cubit.deleteReminder(reminder),
-                    onAdd: (reminder) => cubit.addReminder(reminder)
-                )
-              ],
+      builder: (context, state) => ScrollableScreen(
+        bottom: FilledButton(
+          onPressed:
+          state.isSaveButtonEnabled
+              ? () {cubit.saveEvent(); context.pop();}
+              : null,
+          child: const Text("Сохранить"),
+        ),
+        scrollable: Column(
+          children: [
+            InputProperty(
+                hint: "Название",
+                value: state.title,
+                onChanged: (value) => cubit.titleChanged(value)),
+            InputProperty(
+                hint: "Описание",
+                value: state.description,
+                isMultiLines: true,
+                icon: Assets.icons.icList.image(color: context.customColors.text1),
+                onChanged: (value) => cubit.descriptionChanged(value)),
+            TimeProperty(
+              timeStart: state.timeStart,
+              timeEnd: state.timeEnd,
+              onTimeEndChosen: (time) => cubit.timeEndChanged(time),
+              onTimeStartChosen: (time) => cubit.timeStartChanged(time),
             ),
-          ),
-          FilledButton(
-            onPressed:
-              state.isSaveButtonEnabled
-                  ? () {cubit.saveEvent(); context.pop();}
-                  : null,
-            child: Text(state.id != null ? "Сохранить" : "Создать"),
-          ),
-        ]),
-      ),
+            DateProperty(
+              date: state.date,
+              onDateChosen: (date) => cubit.dateChanged(date),
+            ),
+            InputProperty(
+                hint: "Локация",
+                value: state.location,
+                icon: Assets.icons.icLocation.image(),
+                onChanged: (value) {
+                  cubit.locationChanged(value);
+                }
+            ),
+            RemindersProperty(
+                reminders: state.reminders,
+                onDelete: (reminder) => cubit.deleteReminder(reminder),
+                onAdd: (reminder) => cubit.addReminder(reminder)
+            )
+          ],
+        ),
+      )
     );
   }
 }

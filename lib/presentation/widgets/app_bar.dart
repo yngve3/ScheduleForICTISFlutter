@@ -12,7 +12,7 @@ class MyAppBar extends StatelessWidget implements PreferredSizeWidget{
     List<Widget>? actions
   }) : actions = actions ?? [];
 
-  List<Widget> actions;
+  final List<Widget> actions;
   final String title;
   final AppBar appBar;
 

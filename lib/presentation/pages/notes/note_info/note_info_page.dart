@@ -6,6 +6,7 @@ import 'package:schedule_for_ictis_flutter/presentation/widgets/app_bar.dart';
 import 'package:schedule_for_ictis_flutter/presentation/widgets/discipline_and_date.dart';
 import 'package:schedule_for_ictis_flutter/presentation/widgets/property/properties/files_property.dart';
 import 'package:schedule_for_ictis_flutter/presentation/widgets/property/properties/text_property.dart';
+import 'package:schedule_for_ictis_flutter/presentation/widgets/screen.dart';
 
 import '../../../../gen/assets.gen.dart';
 import '../../../route/routes.dart';
@@ -50,32 +51,29 @@ class NoteInfoPage extends StatelessWidget {
                 )
               ],
             ),
-            body: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 15),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    DisciplineAndDate(
-                      discipline: state.discipline,
-                      date: state.date ?? DateTime.now(),
-                    ),
-                    const SizedBox(height: 10),
-                    TextProperty(
-                      children: [
-                        TextTile(text: state.title, style: context.textTheme.bodyLarge),
-                      ],
-                    ),
-                    _getWidgetOrEmpty(
+            body: ScrollableScreen(
+              top: DisciplineAndDate(
+                discipline: state.discipline,
+                date: state.date ?? DateTime.now(),
+              ),
+              scrollable: Column(
+                children: [
+                  TextProperty(
+                    children: [
+                      TextTile(text: state.title, style: context.textTheme.bodyLarge),
+                    ],
+                  ),
+                  _getWidgetOrEmpty(
                       property: state.description,
                       style: context.textTheme.bodyLarge,
                       icon: Assets.icons.icList.image()
-                    ),
-                    state.files.isNotEmpty ? FilesProperty(
-                      files: state.files,
-                      isEditPossible: false,
-                    ) : const SizedBox.shrink()
-                  ],
-                )
+                  ),
+                  state.files.isNotEmpty ? FilesProperty(
+                    files: state.files,
+                    isEditPossible: false,
+                  ) : const SizedBox.shrink()
+                ],
+              ),
             ),
           );
         },

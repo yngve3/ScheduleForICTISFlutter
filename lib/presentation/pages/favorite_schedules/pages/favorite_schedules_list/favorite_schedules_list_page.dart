@@ -6,6 +6,7 @@ import 'package:schedule_for_ictis_flutter/presentation/extensions/context_ext.d
 import 'package:schedule_for_ictis_flutter/presentation/pages/favorite_schedules/pages/favorite_schedules_list/cubit/favorite_schedules_list_cubit.dart';
 import 'package:schedule_for_ictis_flutter/presentation/pages/favorite_schedules/pages/favorite_schedules_list/cubit/favorite_schedules_list_state.dart';
 import 'package:schedule_for_ictis_flutter/presentation/widgets/app_bar.dart';
+import 'package:schedule_for_ictis_flutter/presentation/widgets/screen.dart';
 
 import '../../../../../domain/models/schedule_subject/schedule_subject.dart';
 import '../../../../../gen/assets.gen.dart';
@@ -32,33 +33,22 @@ class FavoriteSchedulesListPage extends StatelessWidget {
       body: BlocProvider (
         create: (context) => FavoriteSchedulesListCubit(FavoriteSchedulesRepository())..getFavoriteSchedules(),
         child: BlocBuilder<FavoriteSchedulesListCubit, FavoriteSchedulesListState>(
-          builder: (context, state) =>
-              Padding(
-                  padding: const EdgeInsets.only(bottom: 15, right: 15, left: 15),
-                  child: Column(
-                    children: [
-                      Expanded(
-                          child: SingleChildScrollView(
-                            child: Column(
-                              children: [
-                                FavoriteSchedulesList(favoriteSchedules: state.favoriteSchedules),
-                                const Divider(),
-                                FavoriteSchedulesList(favoriteSchedules: state.favoriteVPKs),
-                              ],
-                            ),
-                          )
-                      ),
-                      const SizedBox(height: 15),
-                      FilledButton(
-                        onPressed: () {
-                          context.read<FavoriteSchedulesListCubit>().saveChanges();
-                          context.pop();
-                        },
-                        child: const Text("Готово"),
-                      )
-                    ],
-                  )
-              ),
+          builder: (context, state) => ScrollableScreen(
+            bottom: FilledButton(
+              onPressed: () {
+                context.read<FavoriteSchedulesListCubit>().saveChanges();
+                context.pop();
+              },
+              child: const Text("Готово"),
+            ),
+            scrollable: Column(
+              children: [
+                FavoriteSchedulesList(favoriteSchedules: state.favoriteSchedules),
+                const Divider(),
+                FavoriteSchedulesList(favoriteSchedules: state.favoriteVPKs),
+              ],
+            ),
+          )
         )
       )
     );

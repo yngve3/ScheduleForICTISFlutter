@@ -23,6 +23,7 @@ mixin _$EventInfoState {
   TimeOfDay? get timeStart => throw _privateConstructorUsedError;
   TimeOfDay? get timeEnd => throw _privateConstructorUsedError;
   String? get location => throw _privateConstructorUsedError;
+  List<Reminder>? get reminders => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $EventInfoStateCopyWith<EventInfoState> get copyWith =>
@@ -42,7 +43,8 @@ abstract class $EventInfoStateCopyWith<$Res> {
       DateTime? date,
       TimeOfDay? timeStart,
       TimeOfDay? timeEnd,
-      String? location});
+      String? location,
+      List<Reminder>? reminders});
 }
 
 /// @nodoc
@@ -65,6 +67,7 @@ class _$EventInfoStateCopyWithImpl<$Res, $Val extends EventInfoState>
     Object? timeStart = freezed,
     Object? timeEnd = freezed,
     Object? location = freezed,
+    Object? reminders = freezed,
   }) {
     return _then(_value.copyWith(
       id: null == id
@@ -95,6 +98,10 @@ class _$EventInfoStateCopyWithImpl<$Res, $Val extends EventInfoState>
           ? _value.location
           : location // ignore: cast_nullable_to_non_nullable
               as String?,
+      reminders: freezed == reminders
+          ? _value.reminders
+          : reminders // ignore: cast_nullable_to_non_nullable
+              as List<Reminder>?,
     ) as $Val);
   }
 }
@@ -114,7 +121,8 @@ abstract class _$$EventInfoStateImplCopyWith<$Res>
       DateTime? date,
       TimeOfDay? timeStart,
       TimeOfDay? timeEnd,
-      String? location});
+      String? location,
+      List<Reminder>? reminders});
 }
 
 /// @nodoc
@@ -135,6 +143,7 @@ class __$$EventInfoStateImplCopyWithImpl<$Res>
     Object? timeStart = freezed,
     Object? timeEnd = freezed,
     Object? location = freezed,
+    Object? reminders = freezed,
   }) {
     return _then(_$EventInfoStateImpl(
       id: null == id
@@ -165,6 +174,10 @@ class __$$EventInfoStateImplCopyWithImpl<$Res>
           ? _value.location
           : location // ignore: cast_nullable_to_non_nullable
               as String?,
+      reminders: freezed == reminders
+          ? _value._reminders
+          : reminders // ignore: cast_nullable_to_non_nullable
+              as List<Reminder>?,
     ));
   }
 }
@@ -179,7 +192,9 @@ class _$EventInfoStateImpl implements _EventInfoState {
       this.date,
       this.timeStart,
       this.timeEnd,
-      this.location});
+      this.location,
+      final List<Reminder>? reminders})
+      : _reminders = reminders;
 
   @override
   @JsonKey()
@@ -197,10 +212,19 @@ class _$EventInfoStateImpl implements _EventInfoState {
   final TimeOfDay? timeEnd;
   @override
   final String? location;
+  final List<Reminder>? _reminders;
+  @override
+  List<Reminder>? get reminders {
+    final value = _reminders;
+    if (value == null) return null;
+    if (_reminders is EqualUnmodifiableListView) return _reminders;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(value);
+  }
 
   @override
   String toString() {
-    return 'EventInfoState(id: $id, title: $title, description: $description, date: $date, timeStart: $timeStart, timeEnd: $timeEnd, location: $location)';
+    return 'EventInfoState(id: $id, title: $title, description: $description, date: $date, timeStart: $timeStart, timeEnd: $timeEnd, location: $location, reminders: $reminders)';
   }
 
   @override
@@ -217,12 +241,22 @@ class _$EventInfoStateImpl implements _EventInfoState {
                 other.timeStart == timeStart) &&
             (identical(other.timeEnd, timeEnd) || other.timeEnd == timeEnd) &&
             (identical(other.location, location) ||
-                other.location == location));
+                other.location == location) &&
+            const DeepCollectionEquality()
+                .equals(other._reminders, _reminders));
   }
 
   @override
   int get hashCode => Object.hash(
-      runtimeType, id, title, description, date, timeStart, timeEnd, location);
+      runtimeType,
+      id,
+      title,
+      description,
+      date,
+      timeStart,
+      timeEnd,
+      location,
+      const DeepCollectionEquality().hash(_reminders));
 
   @JsonKey(ignore: true)
   @override
@@ -240,7 +274,8 @@ abstract class _EventInfoState implements EventInfoState {
       final DateTime? date,
       final TimeOfDay? timeStart,
       final TimeOfDay? timeEnd,
-      final String? location}) = _$EventInfoStateImpl;
+      final String? location,
+      final List<Reminder>? reminders}) = _$EventInfoStateImpl;
 
   @override
   int get id;
@@ -256,6 +291,8 @@ abstract class _EventInfoState implements EventInfoState {
   TimeOfDay? get timeEnd;
   @override
   String? get location;
+  @override
+  List<Reminder>? get reminders;
   @override
   @JsonKey(ignore: true)
   _$$EventInfoStateImplCopyWith<_$EventInfoStateImpl> get copyWith =>

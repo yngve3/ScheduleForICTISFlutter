@@ -2,15 +2,18 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:schedule_for_ictis_flutter/data/repositories/events_repository.dart';
+import 'package:schedule_for_ictis_flutter/data/repositories/reminders_repository.dart';
 import 'package:schedule_for_ictis_flutter/presentation/extensions/date_time_ext.dart';
 import 'package:schedule_for_ictis_flutter/presentation/extensions/time_of_day_ext.dart';
 
 import '../../data/models/event_db.dart';
+import '../../utils/my_list.dart';
 import '../models/reminder/reminder.dart';
 import '../models/schedule/day_schedule_item.dart';
 
 class EventsInteractor {
   final EventsRepository _eventsRepository = EventsRepository();
+  final RemindersRepository _remindersRepository = RemindersRepository();
 
   void addEvent({
     int? id,
@@ -20,15 +23,17 @@ class EventsInteractor {
     required String title,
     String? description,
     String? location,
-    List<Reminder>? reminders
+    DBList<Reminder>? reminders,
   }) async {
     if (id != null) {
-      EventDB? eventDB = await _eventsRepository.getEventById(id);
-      if (eventDB != null) {
-        eventDB.reminders.clear();
-        _eventsRepository.addEvent(eventDB);
-      }
+      _remindersRepository.deleteReminders(deletedRemindersIds ?? []);
     }
+
+    reminders
+        ?.where((element) => element.id == null)
+        .forEach((element) => element.id = Random().nextInt(400));
+
+    _remindersRepository.addMany(reminders ?? []);
 
     EventDB eventDB = EventDB(
       id: id ?? 0,
@@ -41,13 +46,6 @@ class EventsInteractor {
       location: _getText(location),
     );
 
-    reminders?.forEach((element) => 
-        element.setFields(
-            title: title, 
-            id: Random().nextInt(4000000000).abs(),
-            dateTimeBefore: date
-        )
-    );
     eventDB.reminders.addAll(reminders ?? []);
     
     _eventsRepository.addEvent(eventDB);
@@ -63,12 +61,10 @@ class EventsInteractor {
     _eventsRepository.deleteEvent(id);
   }
 
-
   String? _getText(String? string) {
     if (string != null && string.isEmpty) return null;
 
     return string;
   }
-
 }
 

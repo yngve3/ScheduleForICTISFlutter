@@ -1,4 +1,3 @@
-import 'package:file_picker/file_picker.dart';
 import 'package:schedule_for_ictis_flutter/data/repositories/couples_repository.dart';
 import 'package:schedule_for_ictis_flutter/data/repositories/note_files_repository.dart';
 import 'package:schedule_for_ictis_flutter/data/repositories/notes_repository.dart';

@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:schedule_for_ictis_flutter/domain/interactors/events_interactor.dart';
 
 import '../../../../domain/models/reminder/reminder.dart';
+import '../../../../utils/my_list.dart';
 import 'event_add_state.dart';
 
 class EventAddCubit extends Cubit<EventAddState> {
@@ -18,7 +19,7 @@ class EventAddCubit extends Cubit<EventAddState> {
       description: state.description,
       date: state.date!,
       location: state.location,
-      reminders: state.reminders
+      reminders: state.reminders,
     );
   }
 
@@ -36,20 +37,23 @@ class EventAddCubit extends Cubit<EventAddState> {
       location: event.location ?? "",
       date: event.date,
       isSaveButtonEnabled: true,
-      reminders: event.reminders ?? []
+      reminders: DBList<Reminder>(event.reminders ?? [])
     ));
   }
 
   void addReminder(Reminder reminder) {
-    final reminders = [...state.reminders];
-    reminders.add(reminder);
+
     emit(state.copyWith(reminders: reminders));
   }
 
   void deleteReminder(Reminder reminder) {
     final reminders = [...state.reminders];
+    final deletedRemindersIds = [...state.deletedRemindersIds];
     reminders.remove(reminder);
-    emit(state.copyWith(reminders: reminders));
+    if (state.id != null && reminder.id != null) {
+      deletedRemindersIds.add(reminder.id!);
+    }
+    emit(state.copyWith(reminders: reminders, deletedRemindersIds: deletedRemindersIds));
   }
 
   void titleChanged(String value) {

@@ -19,7 +19,8 @@ class EventInfoCubit extends Cubit<EventInfoState> {
       date: event.date,
       timeStart: event.timeStart,
       timeEnd: event.timeEnd,
-      location: event.location
+      location: event.location,
+      reminders: event.reminders
     ));
   }
 

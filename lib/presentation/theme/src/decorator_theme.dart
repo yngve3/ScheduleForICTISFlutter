@@ -6,7 +6,6 @@ InputDecorationTheme inputDecorationThemeData(ThemeColors colors, TextTheme text
     contentPadding: EdgeInsets.zero,
     filled: true,
     focusColor: colors.background,
-    outlineBorder: null,
     fillColor: colors.card,
     border: InputBorder.none
 );

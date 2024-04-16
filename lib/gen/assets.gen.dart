@@ -26,6 +26,10 @@ class $AssetsIconsGen {
   AssetGenImage get icBackArrow =>
       const AssetGenImage('assets/icons/ic_back_arrow.png');
 
+  /// File path: assets/icons/ic_circle.png
+  AssetGenImage get icCircle =>
+      const AssetGenImage('assets/icons/ic_circle.png');
+
   /// File path: assets/icons/ic_delete.png
   AssetGenImage get icDelete =>
       const AssetGenImage('assets/icons/ic_delete.png');
@@ -65,6 +69,10 @@ class $AssetsIconsGen {
   AssetGenImage get icLocation =>
       const AssetGenImage('assets/icons/ic_location.png');
 
+  /// File path: assets/icons/ic_notification.png
+  AssetGenImage get icNotification =>
+      const AssetGenImage('assets/icons/ic_notification.png');
+
   /// File path: assets/icons/ic_open.png
   AssetGenImage get icOpen => const AssetGenImage('assets/icons/ic_open.png');
 
@@ -91,6 +99,7 @@ class $AssetsIconsGen {
         icAlert,
         icAttach,
         icBackArrow,
+        icCircle,
         icDelete,
         icEdit,
         icEvent,
@@ -102,6 +111,7 @@ class $AssetsIconsGen {
         icHome,
         icList,
         icLocation,
+        icNotification,
         icOpen,
         icSchedule,
         icSettings,

@@ -243,11 +243,13 @@ final _entities = <obx_int.ModelEntity>[
             type: 9,
             flags: 0)
       ],
-      relations: <obx_int.ModelRelation>[],
-      backlinks: <obx_int.ModelBacklink>[
-        obx_int.ModelBacklink(
-            name: 'reminders', srcEntity: 'Reminder', srcField: 'event')
-      ]),
+      relations: <obx_int.ModelRelation>[
+        obx_int.ModelRelation(
+            id: const obx_int.IdUid(2, 5901542307825576892),
+            name: 'reminders',
+            targetId: const obx_int.IdUid(18, 723268708847700747))
+      ],
+      backlinks: <obx_int.ModelBacklink>[]),
   obx_int.ModelEntity(
       id: const obx_int.IdUid(15, 3529840884396796264),
       name: 'WeekNumber',
@@ -299,7 +301,12 @@ final _entities = <obx_int.ModelEntity>[
             type: 9,
             flags: 0)
       ],
-      relations: <obx_int.ModelRelation>[],
+      relations: <obx_int.ModelRelation>[
+        obx_int.ModelRelation(
+            id: const obx_int.IdUid(3, 7580521061366540174),
+            name: 'reminders',
+            targetId: const obx_int.IdUid(18, 723268708847700747))
+      ],
       backlinks: <obx_int.ModelBacklink>[
         obx_int.ModelBacklink(
             name: 'attachedFiles', srcEntity: 'NoteFile', srcField: 'note')
@@ -343,7 +350,7 @@ final _entities = <obx_int.ModelEntity>[
   obx_int.ModelEntity(
       id: const obx_int.IdUid(18, 723268708847700747),
       name: 'Reminder',
-      lastPropertyId: const obx_int.IdUid(7, 7793930249452873794),
+      lastPropertyId: const obx_int.IdUid(8, 5819539001547067082),
       flags: 0,
       properties: <obx_int.ModelProperty>[
         obx_int.ModelProperty(
@@ -352,32 +359,10 @@ final _entities = <obx_int.ModelEntity>[
             type: 6,
             flags: 129),
         obx_int.ModelProperty(
-            id: const obx_int.IdUid(2, 3981874277290770469),
-            name: 'dateTime',
-            type: 10,
-            flags: 0),
-        obx_int.ModelProperty(
-            id: const obx_int.IdUid(3, 4529835760660775438),
-            name: 'title',
-            type: 9,
-            flags: 0),
-        obx_int.ModelProperty(
-            id: const obx_int.IdUid(5, 2279409324267548940),
-            name: 'body',
-            type: 9,
-            flags: 0),
-        obx_int.ModelProperty(
-            id: const obx_int.IdUid(6, 4369471774678984486),
+            id: const obx_int.IdUid(8, 5819539001547067082),
             name: 'minutesBefore',
             type: 6,
-            flags: 0),
-        obx_int.ModelProperty(
-            id: const obx_int.IdUid(7, 7793930249452873794),
-            name: 'eventId',
-            type: 11,
-            flags: 520,
-            indexId: const obx_int.IdUid(16, 6702232084178333351),
-            relationTarget: 'EventDB')
+            flags: 0)
       ],
       relations: <obx_int.ModelRelation>[],
       backlinks: <obx_int.ModelBacklink>[])
@@ -420,7 +405,7 @@ obx_int.ModelDefinition getObjectBoxModel() {
       entities: _entities,
       lastEntityId: const obx_int.IdUid(18, 723268708847700747),
       lastIndexId: const obx_int.IdUid(16, 6702232084178333351),
-      lastRelationId: const obx_int.IdUid(1, 7624436913426914363),
+      lastRelationId: const obx_int.IdUid(3, 7580521061366540174),
       lastSequenceId: const obx_int.IdUid(0, 0),
       retiredEntityUids: const [
         1910578607431801677,
@@ -433,7 +418,7 @@ obx_int.ModelDefinition getObjectBoxModel() {
         914042337563340598,
         2460264848318751972
       ],
-      retiredIndexUids: const [1606607200252430453],
+      retiredIndexUids: const [1606607200252430453, 6702232084178333351],
       retiredPropertyUids: const [
         8531280715951716256,
         5343336231592800032,
@@ -472,7 +457,12 @@ obx_int.ModelDefinition getObjectBoxModel() {
         2414596226964128475,
         7964189422232866656,
         8524115835594038515,
-        8586891483261331178
+        8586891483261331178,
+        3981874277290770469,
+        4529835760660775438,
+        2279409324267548940,
+        4369471774678984486,
+        7793930249452873794
       ],
       retiredRelationUids: const [7624436913426914363],
       modelVersion: 5,
@@ -679,11 +669,8 @@ obx_int.ModelDefinition getObjectBoxModel() {
     EventDB: obx_int.EntityDefinition<EventDB>(
         model: _entities[4],
         toOneRelations: (EventDB object) => [],
-        toManyRelations: (EventDB object) => {
-              obx_int.RelInfo<Reminder>.toOneBacklink(
-                      7, object.id, (Reminder srcObject) => srcObject.event):
-                  object.reminders
-            },
+        toManyRelations: (EventDB object) =>
+            {obx_int.RelInfo<EventDB>.toMany(2, object.id): object.reminders},
         getId: (EventDB object) => object.id,
         setId: (EventDB object, int id) {
           object.id = id;
@@ -739,11 +726,8 @@ obx_int.ModelDefinition getObjectBoxModel() {
               weekNum: weekNumParam,
               location: locationParam,
               description: descriptionParam);
-          obx_int.InternalToManyAccess.setRelInfo<EventDB>(
-              object.reminders,
-              store,
-              obx_int.RelInfo<Reminder>.toOneBacklink(
-                  7, object.id, (Reminder srcObject) => srcObject.event));
+          obx_int.InternalToManyAccess.setRelInfo<EventDB>(object.reminders,
+              store, obx_int.RelInfo<EventDB>.toMany(2, object.id));
           return object;
         }),
     WeekNumber: obx_int.EntityDefinition<WeekNumber>(
@@ -785,6 +769,7 @@ obx_int.ModelDefinition getObjectBoxModel() {
         model: _entities[6],
         toOneRelations: (Note object) => [],
         toManyRelations: (Note object) => {
+              obx_int.RelInfo<Note>.toMany(3, object.id): object.reminders,
               obx_int.RelInfo<NoteFile>.toOneBacklink(
                       5, object.id, (NoteFile srcObject) => srcObject.note):
                   object.attachedFiles
@@ -826,6 +811,8 @@ obx_int.ModelDefinition getObjectBoxModel() {
               coupleID: coupleIDParam,
               description: descriptionParam)
             ..id = const fb.Int64Reader().vTableGet(buffer, rootOffset, 4, 0);
+          obx_int.InternalToManyAccess.setRelInfo<Note>(object.reminders, store,
+              obx_int.RelInfo<Note>.toMany(3, object.id));
           obx_int.InternalToManyAccess.setRelInfo<Note>(
               object.attachedFiles,
               store,
@@ -871,52 +858,28 @@ obx_int.ModelDefinition getObjectBoxModel() {
         }),
     Reminder: obx_int.EntityDefinition<Reminder>(
         model: _entities[8],
-        toOneRelations: (Reminder object) => [object.event],
+        toOneRelations: (Reminder object) => [],
         toManyRelations: (Reminder object) => {},
         getId: (Reminder object) => object.id,
         setId: (Reminder object, int id) {
           object.id = id;
         },
         objectToFB: (Reminder object, fb.Builder fbb) {
-          final titleOffset =
-              object.title == null ? null : fbb.writeString(object.title!);
-          final bodyOffset =
-              object.body == null ? null : fbb.writeString(object.body!);
-          fbb.startTable(8);
+          fbb.startTable(9);
           fbb.addInt64(0, object.id ?? 0);
-          fbb.addInt64(1, object.dateTime?.millisecondsSinceEpoch);
-          fbb.addOffset(2, titleOffset);
-          fbb.addOffset(4, bodyOffset);
-          fbb.addInt64(5, object.minutesBefore);
-          fbb.addInt64(6, object.event.targetId);
+          fbb.addInt64(7, object.minutesBefore);
           fbb.finish(fbb.endTable());
           return object.id ?? 0;
         },
         objectFromFB: (obx.Store store, ByteData fbData) {
           final buffer = fb.BufferContext(fbData);
           final rootOffset = buffer.derefObject(0);
-          final dateTimeValue =
-              const fb.Int64Reader().vTableGetNullable(buffer, rootOffset, 6);
           final minutesBeforeParam =
-              const fb.Int64Reader().vTableGet(buffer, rootOffset, 14, 0);
-          final idParam =
-              const fb.Int64Reader().vTableGetNullable(buffer, rootOffset, 4);
-          final dateTimeParam = dateTimeValue == null
-              ? null
-              : DateTime.fromMillisecondsSinceEpoch(dateTimeValue);
-          final titleParam = const fb.StringReader(asciiOptimization: true)
-              .vTableGetNullable(buffer, rootOffset, 8);
-          final bodyParam = const fb.StringReader(asciiOptimization: true)
-              .vTableGetNullable(buffer, rootOffset, 12);
-          final object = Reminder(
-              minutesBefore: minutesBeforeParam,
-              id: idParam,
-              dateTime: dateTimeParam,
-              title: titleParam,
-              body: bodyParam);
-          object.event.targetId =
-              const fb.Int64Reader().vTableGet(buffer, rootOffset, 16, 0);
-          object.event.attach(store);
+              const fb.Int64Reader().vTableGet(buffer, rootOffset, 18, 0);
+          final object = Reminder(minutesBefore: minutesBeforeParam)
+            ..id =
+                const fb.Int64Reader().vTableGetNullable(buffer, rootOffset, 4);
+
           return object;
         })
   };
@@ -1076,7 +1039,7 @@ class EventDB_ {
 
   /// see [EventDB.reminders]
   static final reminders =
-      obx.QueryBacklinkToMany<Reminder, EventDB>(Reminder_.event);
+      obx.QueryRelationToMany<EventDB, Reminder>(_entities[4].relations[0]);
 }
 
 /// [WeekNumber] entity fields to define ObjectBox queries.
@@ -1109,6 +1072,10 @@ class Note_ {
   /// see [Note.description]
   static final description =
       obx.QueryStringProperty<Note>(_entities[6].properties[4]);
+
+  /// see [Note.reminders]
+  static final reminders =
+      obx.QueryRelationToMany<Note, Reminder>(_entities[6].relations[0]);
 
   /// see [Note.attachedFiles]
   static final attachedFiles =
@@ -1144,23 +1111,7 @@ class Reminder_ {
   static final id =
       obx.QueryIntegerProperty<Reminder>(_entities[8].properties[0]);
 
-  /// see [Reminder.dateTime]
-  static final dateTime =
-      obx.QueryDateProperty<Reminder>(_entities[8].properties[1]);
-
-  /// see [Reminder.title]
-  static final title =
-      obx.QueryStringProperty<Reminder>(_entities[8].properties[2]);
-
-  /// see [Reminder.body]
-  static final body =
-      obx.QueryStringProperty<Reminder>(_entities[8].properties[3]);
-
   /// see [Reminder.minutesBefore]
   static final minutesBefore =
-      obx.QueryIntegerProperty<Reminder>(_entities[8].properties[4]);
-
-  /// see [Reminder.event]
-  static final event =
-      obx.QueryRelationToOne<Reminder, EventDB>(_entities[8].properties[5]);
+      obx.QueryIntegerProperty<Reminder>(_entities[8].properties[1]);
 }

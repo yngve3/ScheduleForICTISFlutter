@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:schedule_for_ictis_flutter/domain/interactors/events_interactor.dart';
 
 import '../../../../domain/models/reminder/reminder.dart';
-import '../../../../utils/my_list.dart';
 import 'event_add_state.dart';
 
 class EventAddCubit extends Cubit<EventAddState> {
@@ -20,6 +19,7 @@ class EventAddCubit extends Cubit<EventAddState> {
       date: state.date!,
       location: state.location,
       reminders: state.reminders,
+      deletedRemindersIds: state.deletedRemindersIds
     );
   }
 
@@ -37,12 +37,13 @@ class EventAddCubit extends Cubit<EventAddState> {
       location: event.location ?? "",
       date: event.date,
       isSaveButtonEnabled: true,
-      reminders: DBList<Reminder>(event.reminders ?? [])
+      reminders: event.reminders ?? []
     ));
   }
 
   void addReminder(Reminder reminder) {
-
+    final reminders = [...state.reminders];
+    reminders.add(reminder);
     emit(state.copyWith(reminders: reminders));
   }
 

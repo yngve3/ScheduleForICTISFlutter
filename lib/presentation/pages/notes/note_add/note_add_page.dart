@@ -5,7 +5,6 @@ import 'package:schedule_for_ictis_flutter/presentation/pages/notes/note_add/cub
 import 'package:schedule_for_ictis_flutter/presentation/widgets/app_bar.dart';
 import 'package:schedule_for_ictis_flutter/presentation/widgets/discipline_and_date.dart';
 import 'package:schedule_for_ictis_flutter/presentation/widgets/property/properties/input_property.dart';
-import 'package:schedule_for_ictis_flutter/presentation/widgets/property/properties/reminder_property.dart';
 import 'package:schedule_for_ictis_flutter/presentation/widgets/screen.dart';
 
 import '../../../../gen/assets.gen.dart';

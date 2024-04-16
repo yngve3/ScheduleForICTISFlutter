@@ -1,7 +1,5 @@
 import 'package:objectbox/objectbox.dart';
 
-import '../../../data/models/event_db.dart';
-
 @Entity()
 class Reminder {
   @Id(assignable: true) int? id;

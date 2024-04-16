@@ -43,23 +43,7 @@ class NotesInteractor {
     List<NoteFile>? files
   }) async {
     Note? note;
-    if (noteID != null) {
-      note = await _notesRepository.getNote(noteID);
-      note?.update(
-        title: title,
-        description: description,
-        date: date,
-        files: files
-      );
-    } else {
-      note = Note(
-        title: title,
-        date: date,
-        coupleID: coupleID,
-        description: description,
-      );
-      note.attachedFiles.addAll(files ?? []);
-    }
+
 
     _notesRepository.addNote(note!);
   }

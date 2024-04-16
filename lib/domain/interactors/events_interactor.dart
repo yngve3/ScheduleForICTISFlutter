@@ -5,9 +5,9 @@ import 'package:schedule_for_ictis_flutter/data/repositories/events_repository.d
 import 'package:schedule_for_ictis_flutter/data/repositories/reminders_repository.dart';
 import 'package:schedule_for_ictis_flutter/presentation/extensions/date_time_ext.dart';
 import 'package:schedule_for_ictis_flutter/presentation/extensions/time_of_day_ext.dart';
+import 'package:schedule_for_ictis_flutter/utils/reminders_helper.dart';
 
 import '../../data/models/event_db.dart';
-import '../../utils/my_list.dart';
 import '../models/reminder/reminder.dart';
 import '../models/schedule/day_schedule_item.dart';
 
@@ -23,17 +23,23 @@ class EventsInteractor {
     required String title,
     String? description,
     String? location,
-    DBList<Reminder>? reminders,
+    required List<Reminder> reminders,
+    required List<int> deletedRemindersIds,
   }) async {
     if (id != null) {
-      _remindersRepository.deleteReminders(deletedRemindersIds ?? []);
+      _remindersRepository.deleteReminders(deletedRemindersIds);
+      RemindersHelper.deleteReminders(deletedRemindersIds);
     }
 
-    reminders
-        ?.where((element) => element.id == null)
+    reminders.where((element) => element.id == null)
         .forEach((element) => element.id = Random().nextInt(400));
 
-    _remindersRepository.addMany(reminders ?? []);
+    _remindersRepository.addMany(reminders);
+    RemindersHelper.createReminders(
+      reminders,
+      DateTime(date.year, date.month, date.day, timeStart.hour, timeStart.minute),
+      title: title
+    );
 
     EventDB eventDB = EventDB(
       id: id ?? 0,
@@ -46,8 +52,7 @@ class EventsInteractor {
       location: _getText(location),
     );
 
-    eventDB.reminders.addAll(reminders ?? []);
-    
+    eventDB.reminders.addAll(reminders);
     _eventsRepository.addEvent(eventDB);
   }
 

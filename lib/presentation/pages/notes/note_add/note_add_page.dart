@@ -9,6 +9,7 @@ import 'package:schedule_for_ictis_flutter/presentation/widgets/screen.dart';
 
 import '../../../../gen/assets.gen.dart';
 import '../../../widgets/property/properties/files_property.dart';
+import '../../../widgets/property/properties/reminder_property.dart';
 import 'cubit/note_add_state.dart';
 
 class NoteAddPage extends StatelessWidget {
@@ -54,13 +55,13 @@ class NoteAddPage extends StatelessWidget {
                     icon: Assets.icons.icList.image(),
                     value: state.description ?? "",
                   ),
-                  // RemindersProperty(
-                  //   reminders: state.reminders,
-                  //   onDelete: (reminder) => cubit.deleteReminder(reminder),
-                  //   onAdd: (reminder) => cubit.addReminder(reminder),
-                  // ),
+                  RemindersProperty(
+                    reminders: state.reminders.elements,
+                    onDelete: (reminder) => cubit.deleteReminder(reminder),
+                    onAdd: (reminder) => cubit.addReminder(reminder),
+                  ),
                   FilesProperty(
-                    files: state.files,
+                    files: state.files.elements,
                     isEditPossible: true,
                     onChosen: (file) => cubit.addFile(file),
                     onDelete: (file) => cubit.deleteFile(file),

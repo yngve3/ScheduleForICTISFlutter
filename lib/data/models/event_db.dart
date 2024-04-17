@@ -23,6 +23,9 @@ class EventDB {
     required this.date,
     required this.weekNum,
     this.location,
-    this.description
-  });
+    this.description,
+    List<Reminder>? reminders
+  }) {
+    this.reminders.addAll(reminders ?? []);
+  }
 }

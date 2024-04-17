@@ -1,11 +1,17 @@
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:schedule_for_ictis_flutter/domain/interactors/notes_interactor.dart';
 
 import '../../../../../domain/models/note_file/note_file.dart';
+import '../../../../../domain/models/reminder/reminder.dart';
+import '../../../../../utils/state_list.dart';
 import 'note_add_state.dart';
 
 class NoteAddCubit extends Cubit<NoteAddState> {
-  NoteAddCubit() : super(const NoteAddState());
+  NoteAddCubit() : super(NoteAddState(
+      reminders: StateList([]),
+      files: StateList([]))
+  );
 
   final NotesInteractor _interactor = NotesInteractor();
 
@@ -17,19 +23,33 @@ class NoteAddCubit extends Cubit<NoteAddState> {
       coupleID: state.coupleID,
       description: state.description,
       files: state.files,
+      reminders: state.reminders,
+      time: state.time ?? TimeOfDay.now()
     );
   }
 
   void addFile(NoteFile file) {
-    final files = [...state.files];
+    final files = state.files.copy();
     files.add(file);
     emit(state.copyWith(files: files));
   }
 
   void deleteFile(NoteFile file) {
-    final files = [...state.files];
+    final files = state.files.copy();
     files.remove(file);
     emit(state.copyWith(files: files));
+  }
+
+  void addReminder(Reminder reminder) {
+    final reminders = state.reminders.copy();
+    reminders.add(reminder);
+    emit(state.copyWith(reminders: reminders));
+  }
+
+  void deleteReminder(Reminder reminder) {
+    final reminders = state.reminders.copy();
+    reminders.remove(reminder);
+    emit(state.copyWith(reminders: reminders));
   }
 
   void loadFromCouple(String? coupleID) async {
@@ -37,10 +57,11 @@ class NoteAddCubit extends Cubit<NoteAddState> {
     final couple = await _interactor.getCoupleByID(coupleID);
     if (couple == null) return;
     
-    emit(NoteAddState(
+    emit(state.copyWith(
       coupleID: couple.id,
       date: couple.date,
-      discipline: couple.discipline
+      discipline: couple.discipline,
+      time: couple.timeStart
     ));
   }
 
@@ -53,7 +74,8 @@ class NoteAddCubit extends Cubit<NoteAddState> {
       title: note.title,
       description: note.description,
       noteID: note.id,
-      files: note.attachedFiles,
+      files: StateList(note.attachedFiles),
+      reminders: StateList(note.reminders),
       isButtonSaveEnabled: true
     ));
   }

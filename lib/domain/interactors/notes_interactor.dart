@@ -1,15 +1,21 @@
+import 'package:flutter/material.dart';
 import 'package:schedule_for_ictis_flutter/data/repositories/couples_repository.dart';
 import 'package:schedule_for_ictis_flutter/data/repositories/note_files_repository.dart';
 import 'package:schedule_for_ictis_flutter/data/repositories/notes_repository.dart';
+import 'package:schedule_for_ictis_flutter/data/repositories/reminders_repository.dart';
 import 'package:schedule_for_ictis_flutter/domain/models/note/note.dart';
+import 'package:schedule_for_ictis_flutter/utils/reminders_helper.dart';
+import 'package:schedule_for_ictis_flutter/utils/state_list.dart';
 
 import '../models/note_file/note_file.dart';
+import '../models/reminder/reminder.dart';
 import '../models/schedule/day_schedule_item.dart';
 
 class NotesInteractor {
   final NotesRepository _notesRepository = NotesRepository();
   final CouplesRepository _couplesRepository = CouplesRepository();
   final NoteFilesRepository _noteFilesRepository = NoteFilesRepository();
+  final RemindersRepository _remindersRepository = RemindersRepository();
   
   Future<Couple?> getCoupleByID(String id) async {
     final coupleDB = await _couplesRepository.getCoupleByID(id);
@@ -26,10 +32,6 @@ class NotesInteractor {
     return await _notesRepository.getNote(id);
   }
 
-  void deleteFiles(List<int> ids) {
-    _noteFilesRepository.deleteFiles(ids);
-  }
-
   Stream<List<NoteFile>> getNoteFiles(int noteID) {
     return _noteFilesRepository.getFilesByNoteID(noteID);
   }
@@ -38,17 +40,41 @@ class NotesInteractor {
     int? noteID,
     required String title, 
     required DateTime date,
+    required TimeOfDay time,
     required String coupleID,
     String? description,
-    List<NoteFile>? files
+    required StateList<Reminder> reminders,
+    required StateList<NoteFile> files
   }) async {
-    Note? note;
+    if (noteID != null) {
+      final deletedFilesIds = files.elements.map((file) => file.id).toList();
+      _noteFilesRepository.deleteFiles(deletedFilesIds);
+    }
 
+    final remindersList = _remindersRepository.processReminders(
+      reminders,
+      isEdit: noteID != null,
+      title: title,
+      date: date,
+      timeStart: time
+    );
 
-    _notesRepository.addNote(note!);
+    final note = Note(
+      id: noteID ?? 0,
+      title: title,
+      date: date,
+      coupleID: coupleID,
+      description: description,
+      files: files.elements,
+      reminders: remindersList
+    );
+
+    _notesRepository.addNote(note);
   }
 
-  void deleteNote(int noteID) {
+  void deleteNote(int noteID, List<Reminder> reminders) {
     _notesRepository.deleteNote(noteID);
+    final deletedFilesIds = reminders.map((file) => file.id!).toList();
+    RemindersHelper.deleteReminders(deletedFilesIds);
   }
 }

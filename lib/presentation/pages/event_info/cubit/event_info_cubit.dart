@@ -25,6 +25,6 @@ class EventInfoCubit extends Cubit<EventInfoState> {
   }
 
   void deleteEvent() {
-    _interactor.deleteEvent(state.id);
+    _interactor.deleteEvent(state.id, state.reminders);
   }
 }

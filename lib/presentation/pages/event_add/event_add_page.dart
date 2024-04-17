@@ -82,7 +82,7 @@ class EventAdd extends StatelessWidget {
                 }
             ),
             RemindersProperty(
-                reminders: state.reminders,
+                reminders: state.reminders?.elements ?? [],
                 onDelete: (reminder) => cubit.deleteReminder(reminder),
                 onAdd: (reminder) => cubit.addReminder(reminder)
             )

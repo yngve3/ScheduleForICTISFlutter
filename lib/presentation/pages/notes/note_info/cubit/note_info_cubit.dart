@@ -19,11 +19,12 @@ class NoteInfoCubit extends Cubit<NoteInfoState> {
       description: note.description,
       date: couple.date,
       discipline: couple.discipline,
-      files: note.attachedFiles
+      files: note.attachedFiles,
+      reminders: note.reminders
     ));
   }
 
   void deleteNote() {
-    _notesInteractor.deleteNote(state.noteID);
+    _notesInteractor.deleteNote(state.noteID, state.reminders);
   }
 }

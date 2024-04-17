@@ -18,12 +18,14 @@ final _privateConstructorUsedError = UnsupportedError(
 mixin _$NoteAddState {
   String get coupleID => throw _privateConstructorUsedError;
   String get title => throw _privateConstructorUsedError;
+  TimeOfDay? get time => throw _privateConstructorUsedError;
   String? get description => throw _privateConstructorUsedError;
   String get discipline => throw _privateConstructorUsedError;
   DateTime? get date => throw _privateConstructorUsedError;
   dynamic get isButtonSaveEnabled => throw _privateConstructorUsedError;
   int? get noteID => throw _privateConstructorUsedError;
-  List<NoteFile> get files => throw _privateConstructorUsedError;
+  StateList<NoteFile> get files => throw _privateConstructorUsedError;
+  StateList<Reminder> get reminders => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $NoteAddStateCopyWith<NoteAddState> get copyWith =>
@@ -39,12 +41,14 @@ abstract class $NoteAddStateCopyWith<$Res> {
   $Res call(
       {String coupleID,
       String title,
+      TimeOfDay? time,
       String? description,
       String discipline,
       DateTime? date,
       dynamic isButtonSaveEnabled,
       int? noteID,
-      List<NoteFile> files});
+      StateList<NoteFile> files,
+      StateList<Reminder> reminders});
 }
 
 /// @nodoc
@@ -62,12 +66,14 @@ class _$NoteAddStateCopyWithImpl<$Res, $Val extends NoteAddState>
   $Res call({
     Object? coupleID = null,
     Object? title = null,
+    Object? time = freezed,
     Object? description = freezed,
     Object? discipline = null,
     Object? date = freezed,
     Object? isButtonSaveEnabled = freezed,
     Object? noteID = freezed,
     Object? files = null,
+    Object? reminders = null,
   }) {
     return _then(_value.copyWith(
       coupleID: null == coupleID
@@ -78,6 +84,10 @@ class _$NoteAddStateCopyWithImpl<$Res, $Val extends NoteAddState>
           ? _value.title
           : title // ignore: cast_nullable_to_non_nullable
               as String,
+      time: freezed == time
+          ? _value.time
+          : time // ignore: cast_nullable_to_non_nullable
+              as TimeOfDay?,
       description: freezed == description
           ? _value.description
           : description // ignore: cast_nullable_to_non_nullable
@@ -101,7 +111,11 @@ class _$NoteAddStateCopyWithImpl<$Res, $Val extends NoteAddState>
       files: null == files
           ? _value.files
           : files // ignore: cast_nullable_to_non_nullable
-              as List<NoteFile>,
+              as StateList<NoteFile>,
+      reminders: null == reminders
+          ? _value.reminders
+          : reminders // ignore: cast_nullable_to_non_nullable
+              as StateList<Reminder>,
     ) as $Val);
   }
 }
@@ -117,12 +131,14 @@ abstract class _$$NoteAddStateImplCopyWith<$Res>
   $Res call(
       {String coupleID,
       String title,
+      TimeOfDay? time,
       String? description,
       String discipline,
       DateTime? date,
       dynamic isButtonSaveEnabled,
       int? noteID,
-      List<NoteFile> files});
+      StateList<NoteFile> files,
+      StateList<Reminder> reminders});
 }
 
 /// @nodoc
@@ -138,12 +154,14 @@ class __$$NoteAddStateImplCopyWithImpl<$Res>
   $Res call({
     Object? coupleID = null,
     Object? title = null,
+    Object? time = freezed,
     Object? description = freezed,
     Object? discipline = null,
     Object? date = freezed,
     Object? isButtonSaveEnabled = freezed,
     Object? noteID = freezed,
     Object? files = null,
+    Object? reminders = null,
   }) {
     return _then(_$NoteAddStateImpl(
       coupleID: null == coupleID
@@ -154,6 +172,10 @@ class __$$NoteAddStateImplCopyWithImpl<$Res>
           ? _value.title
           : title // ignore: cast_nullable_to_non_nullable
               as String,
+      time: freezed == time
+          ? _value.time
+          : time // ignore: cast_nullable_to_non_nullable
+              as TimeOfDay?,
       description: freezed == description
           ? _value.description
           : description // ignore: cast_nullable_to_non_nullable
@@ -174,9 +196,13 @@ class __$$NoteAddStateImplCopyWithImpl<$Res>
           : noteID // ignore: cast_nullable_to_non_nullable
               as int?,
       files: null == files
-          ? _value._files
+          ? _value.files
           : files // ignore: cast_nullable_to_non_nullable
-              as List<NoteFile>,
+              as StateList<NoteFile>,
+      reminders: null == reminders
+          ? _value.reminders
+          : reminders // ignore: cast_nullable_to_non_nullable
+              as StateList<Reminder>,
     ));
   }
 }
@@ -187,13 +213,14 @@ class _$NoteAddStateImpl implements _NoteAddState {
   const _$NoteAddStateImpl(
       {this.coupleID = "",
       this.title = "",
+      this.time,
       this.description,
       this.discipline = "",
       this.date,
       this.isButtonSaveEnabled = false,
       this.noteID,
-      final List<NoteFile> files = const []})
-      : _files = files;
+      required this.files,
+      required this.reminders});
 
   @override
   @JsonKey()
@@ -201,6 +228,8 @@ class _$NoteAddStateImpl implements _NoteAddState {
   @override
   @JsonKey()
   final String title;
+  @override
+  final TimeOfDay? time;
   @override
   final String? description;
   @override
@@ -213,18 +242,14 @@ class _$NoteAddStateImpl implements _NoteAddState {
   final dynamic isButtonSaveEnabled;
   @override
   final int? noteID;
-  final List<NoteFile> _files;
   @override
-  @JsonKey()
-  List<NoteFile> get files {
-    if (_files is EqualUnmodifiableListView) return _files;
-    // ignore: implicit_dynamic_type
-    return EqualUnmodifiableListView(_files);
-  }
+  final StateList<NoteFile> files;
+  @override
+  final StateList<Reminder> reminders;
 
   @override
   String toString() {
-    return 'NoteAddState(coupleID: $coupleID, title: $title, description: $description, discipline: $discipline, date: $date, isButtonSaveEnabled: $isButtonSaveEnabled, noteID: $noteID, files: $files)';
+    return 'NoteAddState(coupleID: $coupleID, title: $title, time: $time, description: $description, discipline: $discipline, date: $date, isButtonSaveEnabled: $isButtonSaveEnabled, noteID: $noteID, files: $files, reminders: $reminders)';
   }
 
   @override
@@ -235,6 +260,7 @@ class _$NoteAddStateImpl implements _NoteAddState {
             (identical(other.coupleID, coupleID) ||
                 other.coupleID == coupleID) &&
             (identical(other.title, title) || other.title == title) &&
+            (identical(other.time, time) || other.time == time) &&
             (identical(other.description, description) ||
                 other.description == description) &&
             (identical(other.discipline, discipline) ||
@@ -243,7 +269,9 @@ class _$NoteAddStateImpl implements _NoteAddState {
             const DeepCollectionEquality()
                 .equals(other.isButtonSaveEnabled, isButtonSaveEnabled) &&
             (identical(other.noteID, noteID) || other.noteID == noteID) &&
-            const DeepCollectionEquality().equals(other._files, _files));
+            (identical(other.files, files) || other.files == files) &&
+            (identical(other.reminders, reminders) ||
+                other.reminders == reminders));
   }
 
   @override
@@ -251,12 +279,14 @@ class _$NoteAddStateImpl implements _NoteAddState {
       runtimeType,
       coupleID,
       title,
+      time,
       description,
       discipline,
       date,
       const DeepCollectionEquality().hash(isButtonSaveEnabled),
       noteID,
-      const DeepCollectionEquality().hash(_files));
+      files,
+      reminders);
 
   @JsonKey(ignore: true)
   @override
@@ -269,17 +299,21 @@ abstract class _NoteAddState implements NoteAddState {
   const factory _NoteAddState(
       {final String coupleID,
       final String title,
+      final TimeOfDay? time,
       final String? description,
       final String discipline,
       final DateTime? date,
       final dynamic isButtonSaveEnabled,
       final int? noteID,
-      final List<NoteFile> files}) = _$NoteAddStateImpl;
+      required final StateList<NoteFile> files,
+      required final StateList<Reminder> reminders}) = _$NoteAddStateImpl;
 
   @override
   String get coupleID;
   @override
   String get title;
+  @override
+  TimeOfDay? get time;
   @override
   String? get description;
   @override
@@ -291,7 +325,9 @@ abstract class _NoteAddState implements NoteAddState {
   @override
   int? get noteID;
   @override
-  List<NoteFile> get files;
+  StateList<NoteFile> get files;
+  @override
+  StateList<Reminder> get reminders;
   @override
   @JsonKey(ignore: true)
   _$$NoteAddStateImplCopyWith<_$NoteAddStateImpl> get copyWith =>

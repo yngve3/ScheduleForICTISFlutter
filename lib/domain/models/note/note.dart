@@ -19,9 +19,15 @@ class Note {
   final ToMany<Reminder> reminders = ToMany<Reminder>();
 
   Note({
+    required this.id,
     required this.title,
     required this.date,
     required this.coupleID,
-    this.description
-  });
+    this.description,
+    List<NoteFile>? files,
+    List<Reminder>? reminders
+  }) {
+    attachedFiles.addAll(files ?? []);
+    this.reminders.addAll(reminders ?? []);
+  }
 }

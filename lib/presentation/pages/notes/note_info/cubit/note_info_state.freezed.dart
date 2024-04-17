@@ -22,6 +22,7 @@ mixin _$NoteInfoState {
   DateTime? get date => throw _privateConstructorUsedError;
   String get discipline => throw _privateConstructorUsedError;
   List<NoteFile> get files => throw _privateConstructorUsedError;
+  List<Reminder> get reminders => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $NoteInfoStateCopyWith<NoteInfoState> get copyWith =>
@@ -40,7 +41,8 @@ abstract class $NoteInfoStateCopyWith<$Res> {
       String? description,
       DateTime? date,
       String discipline,
-      List<NoteFile> files});
+      List<NoteFile> files,
+      List<Reminder> reminders});
 }
 
 /// @nodoc
@@ -62,6 +64,7 @@ class _$NoteInfoStateCopyWithImpl<$Res, $Val extends NoteInfoState>
     Object? date = freezed,
     Object? discipline = null,
     Object? files = null,
+    Object? reminders = null,
   }) {
     return _then(_value.copyWith(
       noteID: null == noteID
@@ -88,6 +91,10 @@ class _$NoteInfoStateCopyWithImpl<$Res, $Val extends NoteInfoState>
           ? _value.files
           : files // ignore: cast_nullable_to_non_nullable
               as List<NoteFile>,
+      reminders: null == reminders
+          ? _value.reminders
+          : reminders // ignore: cast_nullable_to_non_nullable
+              as List<Reminder>,
     ) as $Val);
   }
 }
@@ -106,7 +113,8 @@ abstract class _$$NoteInfoStateImplCopyWith<$Res>
       String? description,
       DateTime? date,
       String discipline,
-      List<NoteFile> files});
+      List<NoteFile> files,
+      List<Reminder> reminders});
 }
 
 /// @nodoc
@@ -126,6 +134,7 @@ class __$$NoteInfoStateImplCopyWithImpl<$Res>
     Object? date = freezed,
     Object? discipline = null,
     Object? files = null,
+    Object? reminders = null,
   }) {
     return _then(_$NoteInfoStateImpl(
       noteID: null == noteID
@@ -152,6 +161,10 @@ class __$$NoteInfoStateImplCopyWithImpl<$Res>
           ? _value._files
           : files // ignore: cast_nullable_to_non_nullable
               as List<NoteFile>,
+      reminders: null == reminders
+          ? _value._reminders
+          : reminders // ignore: cast_nullable_to_non_nullable
+              as List<Reminder>,
     ));
   }
 }
@@ -165,8 +178,10 @@ class _$NoteInfoStateImpl implements _NoteInfoState {
       this.description,
       this.date,
       this.discipline = "",
-      final List<NoteFile> files = const []})
-      : _files = files;
+      final List<NoteFile> files = const [],
+      final List<Reminder> reminders = const []})
+      : _files = files,
+        _reminders = reminders;
 
   @override
   @JsonKey()
@@ -190,9 +205,18 @@ class _$NoteInfoStateImpl implements _NoteInfoState {
     return EqualUnmodifiableListView(_files);
   }
 
+  final List<Reminder> _reminders;
+  @override
+  @JsonKey()
+  List<Reminder> get reminders {
+    if (_reminders is EqualUnmodifiableListView) return _reminders;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_reminders);
+  }
+
   @override
   String toString() {
-    return 'NoteInfoState(noteID: $noteID, title: $title, description: $description, date: $date, discipline: $discipline, files: $files)';
+    return 'NoteInfoState(noteID: $noteID, title: $title, description: $description, date: $date, discipline: $discipline, files: $files, reminders: $reminders)';
   }
 
   @override
@@ -207,12 +231,21 @@ class _$NoteInfoStateImpl implements _NoteInfoState {
             (identical(other.date, date) || other.date == date) &&
             (identical(other.discipline, discipline) ||
                 other.discipline == discipline) &&
-            const DeepCollectionEquality().equals(other._files, _files));
+            const DeepCollectionEquality().equals(other._files, _files) &&
+            const DeepCollectionEquality()
+                .equals(other._reminders, _reminders));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, noteID, title, description, date,
-      discipline, const DeepCollectionEquality().hash(_files));
+  int get hashCode => Object.hash(
+      runtimeType,
+      noteID,
+      title,
+      description,
+      date,
+      discipline,
+      const DeepCollectionEquality().hash(_files),
+      const DeepCollectionEquality().hash(_reminders));
 
   @JsonKey(ignore: true)
   @override
@@ -228,7 +261,8 @@ abstract class _NoteInfoState implements NoteInfoState {
       final String? description,
       final DateTime? date,
       final String discipline,
-      final List<NoteFile> files}) = _$NoteInfoStateImpl;
+      final List<NoteFile> files,
+      final List<Reminder> reminders}) = _$NoteInfoStateImpl;
 
   @override
   int get noteID;
@@ -242,6 +276,8 @@ abstract class _NoteInfoState implements NoteInfoState {
   String get discipline;
   @override
   List<NoteFile> get files;
+  @override
+  List<Reminder> get reminders;
   @override
   @JsonKey(ignore: true)
   _$$NoteInfoStateImplCopyWith<_$NoteInfoStateImpl> get copyWith =>

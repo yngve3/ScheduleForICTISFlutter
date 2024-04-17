@@ -24,8 +24,7 @@ mixin _$EventAddState {
   DateTime? get date => throw _privateConstructorUsedError;
   bool get isSaveButtonEnabled => throw _privateConstructorUsedError;
   String get location => throw _privateConstructorUsedError;
-  List<Reminder> get reminders => throw _privateConstructorUsedError;
-  List<int> get deletedRemindersIds => throw _privateConstructorUsedError;
+  StateList<Reminder>? get reminders => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $EventAddStateCopyWith<EventAddState> get copyWith =>
@@ -47,8 +46,7 @@ abstract class $EventAddStateCopyWith<$Res> {
       DateTime? date,
       bool isSaveButtonEnabled,
       String location,
-      List<Reminder> reminders,
-      List<int> deletedRemindersIds});
+      StateList<Reminder>? reminders});
 }
 
 /// @nodoc
@@ -72,8 +70,7 @@ class _$EventAddStateCopyWithImpl<$Res, $Val extends EventAddState>
     Object? date = freezed,
     Object? isSaveButtonEnabled = null,
     Object? location = null,
-    Object? reminders = null,
-    Object? deletedRemindersIds = null,
+    Object? reminders = freezed,
   }) {
     return _then(_value.copyWith(
       id: freezed == id
@@ -108,14 +105,10 @@ class _$EventAddStateCopyWithImpl<$Res, $Val extends EventAddState>
           ? _value.location
           : location // ignore: cast_nullable_to_non_nullable
               as String,
-      reminders: null == reminders
+      reminders: freezed == reminders
           ? _value.reminders
           : reminders // ignore: cast_nullable_to_non_nullable
-              as List<Reminder>,
-      deletedRemindersIds: null == deletedRemindersIds
-          ? _value.deletedRemindersIds
-          : deletedRemindersIds // ignore: cast_nullable_to_non_nullable
-              as List<int>,
+              as StateList<Reminder>?,
     ) as $Val);
   }
 }
@@ -137,8 +130,7 @@ abstract class _$$EventAddStateImplCopyWith<$Res>
       DateTime? date,
       bool isSaveButtonEnabled,
       String location,
-      List<Reminder> reminders,
-      List<int> deletedRemindersIds});
+      StateList<Reminder>? reminders});
 }
 
 /// @nodoc
@@ -160,8 +152,7 @@ class __$$EventAddStateImplCopyWithImpl<$Res>
     Object? date = freezed,
     Object? isSaveButtonEnabled = null,
     Object? location = null,
-    Object? reminders = null,
-    Object? deletedRemindersIds = null,
+    Object? reminders = freezed,
   }) {
     return _then(_$EventAddStateImpl(
       id: freezed == id
@@ -196,14 +187,10 @@ class __$$EventAddStateImplCopyWithImpl<$Res>
           ? _value.location
           : location // ignore: cast_nullable_to_non_nullable
               as String,
-      reminders: null == reminders
-          ? _value._reminders
+      reminders: freezed == reminders
+          ? _value.reminders
           : reminders // ignore: cast_nullable_to_non_nullable
-              as List<Reminder>,
-      deletedRemindersIds: null == deletedRemindersIds
-          ? _value._deletedRemindersIds
-          : deletedRemindersIds // ignore: cast_nullable_to_non_nullable
-              as List<int>,
+              as StateList<Reminder>?,
     ));
   }
 }
@@ -220,10 +207,7 @@ class _$EventAddStateImpl implements _EventAddState {
       this.date = null,
       this.isSaveButtonEnabled = false,
       this.location = "",
-      final List<Reminder> reminders = const [],
-      final List<int> deletedRemindersIds = const []})
-      : _reminders = reminders,
-        _deletedRemindersIds = deletedRemindersIds;
+      this.reminders});
 
   @override
   final int? id;
@@ -248,28 +232,12 @@ class _$EventAddStateImpl implements _EventAddState {
   @override
   @JsonKey()
   final String location;
-  final List<Reminder> _reminders;
   @override
-  @JsonKey()
-  List<Reminder> get reminders {
-    if (_reminders is EqualUnmodifiableListView) return _reminders;
-    // ignore: implicit_dynamic_type
-    return EqualUnmodifiableListView(_reminders);
-  }
-
-  final List<int> _deletedRemindersIds;
-  @override
-  @JsonKey()
-  List<int> get deletedRemindersIds {
-    if (_deletedRemindersIds is EqualUnmodifiableListView)
-      return _deletedRemindersIds;
-    // ignore: implicit_dynamic_type
-    return EqualUnmodifiableListView(_deletedRemindersIds);
-  }
+  final StateList<Reminder>? reminders;
 
   @override
   String toString() {
-    return 'EventAddState(id: $id, title: $title, description: $description, timeStart: $timeStart, timeEnd: $timeEnd, date: $date, isSaveButtonEnabled: $isSaveButtonEnabled, location: $location, reminders: $reminders, deletedRemindersIds: $deletedRemindersIds)';
+    return 'EventAddState(id: $id, title: $title, description: $description, timeStart: $timeStart, timeEnd: $timeEnd, date: $date, isSaveButtonEnabled: $isSaveButtonEnabled, location: $location, reminders: $reminders)';
   }
 
   @override
@@ -289,25 +257,13 @@ class _$EventAddStateImpl implements _EventAddState {
                 other.isSaveButtonEnabled == isSaveButtonEnabled) &&
             (identical(other.location, location) ||
                 other.location == location) &&
-            const DeepCollectionEquality()
-                .equals(other._reminders, _reminders) &&
-            const DeepCollectionEquality()
-                .equals(other._deletedRemindersIds, _deletedRemindersIds));
+            (identical(other.reminders, reminders) ||
+                other.reminders == reminders));
   }
 
   @override
-  int get hashCode => Object.hash(
-      runtimeType,
-      id,
-      title,
-      description,
-      timeStart,
-      timeEnd,
-      date,
-      isSaveButtonEnabled,
-      location,
-      const DeepCollectionEquality().hash(_reminders),
-      const DeepCollectionEquality().hash(_deletedRemindersIds));
+  int get hashCode => Object.hash(runtimeType, id, title, description,
+      timeStart, timeEnd, date, isSaveButtonEnabled, location, reminders);
 
   @JsonKey(ignore: true)
   @override
@@ -326,8 +282,7 @@ abstract class _EventAddState implements EventAddState {
       final DateTime? date,
       final bool isSaveButtonEnabled,
       final String location,
-      final List<Reminder> reminders,
-      final List<int> deletedRemindersIds}) = _$EventAddStateImpl;
+      final StateList<Reminder>? reminders}) = _$EventAddStateImpl;
 
   @override
   int? get id;
@@ -346,9 +301,7 @@ abstract class _EventAddState implements EventAddState {
   @override
   String get location;
   @override
-  List<Reminder> get reminders;
-  @override
-  List<int> get deletedRemindersIds;
+  StateList<Reminder>? get reminders;
   @override
   @JsonKey(ignore: true)
   _$$EventAddStateImplCopyWith<_$EventAddStateImpl> get copyWith =>

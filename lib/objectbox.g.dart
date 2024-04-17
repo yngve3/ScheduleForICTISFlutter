@@ -314,7 +314,7 @@ final _entities = <obx_int.ModelEntity>[
   obx_int.ModelEntity(
       id: const obx_int.IdUid(17, 6581195835741669404),
       name: 'NoteFile',
-      lastPropertyId: const obx_int.IdUid(6, 7979301773689421163),
+      lastPropertyId: const obx_int.IdUid(7, 8436684183961678458),
       flags: 0,
       properties: <obx_int.ModelProperty>[
         obx_int.ModelProperty(
@@ -343,6 +343,11 @@ final _entities = <obx_int.ModelEntity>[
             id: const obx_int.IdUid(6, 7979301773689421163),
             name: 'dbType',
             type: 6,
+            flags: 0),
+        obx_int.ModelProperty(
+            id: const obx_int.IdUid(7, 8436684183961678458),
+            name: 'identifier',
+            type: 9,
             flags: 0)
       ],
       relations: <obx_int.ModelRelation>[],
@@ -796,6 +801,8 @@ obx_int.ModelDefinition getObjectBoxModel() {
         objectFromFB: (obx.Store store, ByteData fbData) {
           final buffer = fb.BufferContext(fbData);
           final rootOffset = buffer.derefObject(0);
+          final idParam =
+              const fb.Int64Reader().vTableGet(buffer, rootOffset, 4, 0);
           final titleParam = const fb.StringReader(asciiOptimization: true)
               .vTableGet(buffer, rootOffset, 12, '');
           final dateParam = DateTime.fromMillisecondsSinceEpoch(
@@ -806,11 +813,11 @@ obx_int.ModelDefinition getObjectBoxModel() {
               const fb.StringReader(asciiOptimization: true)
                   .vTableGetNullable(buffer, rootOffset, 14);
           final object = Note(
+              id: idParam,
               title: titleParam,
               date: dateParam,
               coupleID: coupleIDParam,
-              description: descriptionParam)
-            ..id = const fb.Int64Reader().vTableGet(buffer, rootOffset, 4, 0);
+              description: descriptionParam);
           obx_int.InternalToManyAccess.setRelInfo<Note>(object.reminders, store,
               obx_int.RelInfo<Note>.toMany(3, object.id));
           obx_int.InternalToManyAccess.setRelInfo<Note>(
@@ -831,12 +838,14 @@ obx_int.ModelDefinition getObjectBoxModel() {
         objectToFB: (NoteFile object, fb.Builder fbb) {
           final pathOffset = fbb.writeString(object.path);
           final nameOffset = fbb.writeString(object.name);
-          fbb.startTable(7);
+          final identifierOffset = fbb.writeString(object.identifier);
+          fbb.startTable(8);
           fbb.addInt64(0, object.id);
           fbb.addOffset(1, pathOffset);
           fbb.addOffset(3, nameOffset);
           fbb.addInt64(4, object.note.targetId);
           fbb.addInt64(5, object.dbType);
+          fbb.addOffset(6, identifierOffset);
           fbb.finish(fbb.endTable());
           return object.id;
         },
@@ -847,7 +856,10 @@ obx_int.ModelDefinition getObjectBoxModel() {
               .vTableGet(buffer, rootOffset, 6, '');
           final nameParam = const fb.StringReader(asciiOptimization: true)
               .vTableGet(buffer, rootOffset, 10, '');
-          final object = NoteFile(path: pathParam, name: nameParam)
+          final identifierParam = const fb.StringReader(asciiOptimization: true)
+              .vTableGet(buffer, rootOffset, 16, '');
+          final object = NoteFile(
+              path: pathParam, name: nameParam, identifier: identifierParam)
             ..id = const fb.Int64Reader().vTableGet(buffer, rootOffset, 4, 0)
             ..dbType = const fb.Int64Reader()
                 .vTableGetNullable(buffer, rootOffset, 14);
@@ -1103,6 +1115,10 @@ class NoteFile_ {
   /// see [NoteFile.dbType]
   static final dbType =
       obx.QueryIntegerProperty<NoteFile>(_entities[7].properties[4]);
+
+  /// see [NoteFile.identifier]
+  static final identifier =
+      obx.QueryStringProperty<NoteFile>(_entities[7].properties[5]);
 }
 
 /// [Reminder] entity fields to define ObjectBox queries.

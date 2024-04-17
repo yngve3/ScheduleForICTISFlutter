@@ -7,19 +7,22 @@ import '../note/note.dart';
 class NoteFile {
   @Id() int id = 0;
   final String path;
-  TypeOfFile? type;
+  final String identifier;
+  @Transient() TypeOfFile? type;
   final String name;
   ToOne<Note> note = ToOne<Note>();
   
   NoteFile({
     required this.path,
-    required this.name
+    required this.name,
+    required this.identifier
   });
 
   factory NoteFile.fromPlatformFile(PlatformFile file) {
     final noteFile = NoteFile(
       path: file.path ?? "",
       name: file.name,
+      identifier: file.identifier ?? ""
     );
 
     noteFile.type = TypeOfFile.fromExtension(file.extension ?? "");
@@ -41,6 +44,13 @@ class NoteFile {
         }
       }
     }
+  }
+
+  @override
+  bool operator ==(Object other) {
+    if (other is! NoteFile) return false;
+
+    return identifier == other.identifier;
   }
 }
 

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 import '../../../../domain/models/reminder/reminder.dart';
+import '../../../../utils/state_list.dart';
 
 part 'event_add_state.freezed.dart';
 
@@ -16,7 +17,6 @@ class EventAddState with _$EventAddState {
     @Default(null) DateTime? date,
     @Default(false) bool isSaveButtonEnabled,
     @Default("") String location,
-    @Default([]) List<Reminder> reminders,
-    @Default([]) List<int> deletedRemindersIds
+    StateList<Reminder>? reminders
   }) = _EventAddState;
 }

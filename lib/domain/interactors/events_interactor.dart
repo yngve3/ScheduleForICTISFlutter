@@ -8,6 +8,7 @@ import 'package:schedule_for_ictis_flutter/presentation/extensions/time_of_day_e
 import 'package:schedule_for_ictis_flutter/utils/reminders_helper.dart';
 
 import '../../data/models/event_db.dart';
+import '../../utils/state_list.dart';
 import '../models/reminder/reminder.dart';
 import '../models/schedule/day_schedule_item.dart';
 
@@ -23,36 +24,27 @@ class EventsInteractor {
     required String title,
     String? description,
     String? location,
-    required List<Reminder> reminders,
-    required List<int> deletedRemindersIds,
+    required StateList<Reminder> reminders,
   }) async {
-    if (id != null) {
-      _remindersRepository.deleteReminders(deletedRemindersIds);
-      RemindersHelper.deleteReminders(deletedRemindersIds);
-    }
-
-    reminders.where((element) => element.id == null)
-        .forEach((element) => element.id = Random().nextInt(400));
-
-    _remindersRepository.addMany(reminders);
-    RemindersHelper.createReminders(
-      reminders,
-      DateTime(date.year, date.month, date.day, timeStart.hour, timeStart.minute),
-      title: title
+    final remindersList = _remindersRepository.processReminders(reminders,
+      isEdit: id != null,
+      title: title,
+      date: date,
+      timeStart: timeStart
     );
 
-    EventDB eventDB = EventDB(
+    final eventDB = EventDB(
       id: id ?? 0,
       timeStart: timeStart.string,
       timeEnd: timeEnd.string,
       title: title,
-      description: _getText(description),
       date: date,
       weekNum: date.weekNumber,
-      location: _getText(location),
+      location: toNullIfEmpty(location),
+      description: toNullIfEmpty(description),
+      reminders: remindersList
     );
 
-    eventDB.reminders.addAll(reminders);
     _eventsRepository.addEvent(eventDB);
   }
 
@@ -62,13 +54,15 @@ class EventsInteractor {
     return Event.fromEventDB(eventDB);
   }
 
-  void deleteEvent(int id) {
+  void deleteEvent(int id, List<Reminder>? reminders) {
     _eventsRepository.deleteEvent(id);
+    final deletedRemindersIds = reminders?.map((e) => e.id!).toList();
+    RemindersHelper.deleteReminders(deletedRemindersIds ?? []);
   }
 
-  String? _getText(String? string) {
-    if (string != null && string.isEmpty) return null;
-
+  String? toNullIfEmpty(String? string) {
+    if (string == null) return null;
+    if (string.isEmpty) return null;
     return string;
   }
 }

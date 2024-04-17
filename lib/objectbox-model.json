@@ -280,7 +280,7 @@
     },
     {
       "id": "17:6581195835741669404",
-      "lastPropertyId": "6:7979301773689421163",
+      "lastPropertyId": "7:8436684183961678458",
       "name": "NoteFile",
       "properties": [
         {
@@ -311,6 +311,11 @@
           "id": "6:7979301773689421163",
           "name": "dbType",
           "type": 6
+        },
+        {
+          "id": "7:8436684183961678458",
+          "name": "identifier",
+          "type": 9
         }
       ],
       "relations": []

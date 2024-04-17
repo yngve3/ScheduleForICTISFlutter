@@ -3,10 +3,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:schedule_for_ictis_flutter/domain/interactors/events_interactor.dart';
 
 import '../../../../domain/models/reminder/reminder.dart';
+import '../../../../utils/state_list.dart';
 import 'event_add_state.dart';
 
 class EventAddCubit extends Cubit<EventAddState> {
-  EventAddCubit(): super(EventAddState());
+  EventAddCubit(): super(EventAddState(reminders: StateList([])));
   final EventsInteractor _interactor = EventsInteractor();
 
   void saveEvent() {
@@ -18,8 +19,7 @@ class EventAddCubit extends Cubit<EventAddState> {
       description: state.description,
       date: state.date!,
       location: state.location,
-      reminders: state.reminders,
-      deletedRemindersIds: state.deletedRemindersIds
+      reminders: state.reminders ?? StateList([]),
     );
   }
 
@@ -37,24 +37,20 @@ class EventAddCubit extends Cubit<EventAddState> {
       location: event.location ?? "",
       date: event.date,
       isSaveButtonEnabled: true,
-      reminders: event.reminders ?? []
+      reminders: StateList(event.reminders ?? [])
     ));
   }
 
   void addReminder(Reminder reminder) {
-    final reminders = [...state.reminders];
-    reminders.add(reminder);
+    final reminders = state.reminders?.copy();
+    reminders?.add(reminder);
     emit(state.copyWith(reminders: reminders));
   }
 
   void deleteReminder(Reminder reminder) {
-    final reminders = [...state.reminders];
-    final deletedRemindersIds = [...state.deletedRemindersIds];
-    reminders.remove(reminder);
-    if (state.id != null && reminder.id != null) {
-      deletedRemindersIds.add(reminder.id!);
-    }
-    emit(state.copyWith(reminders: reminders, deletedRemindersIds: deletedRemindersIds));
+    final reminders = state.reminders?.copy();
+    reminders?.remove(reminder);
+    emit(state.copyWith(reminders: reminders));
   }
 
   void titleChanged(String value) {

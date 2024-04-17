@@ -8,23 +8,31 @@ class DateHeader extends StatelessWidget {
     super.key,
     required this.date,
     required this.buttonIsVisible,
-    required this.onButtonToCurrentDateTapped,
+    this.onButtonToCurrentDateTapped,
     this.studyWeek
   });
 
   final DateTime date;
   final int? studyWeek;
-  final VoidCallback onButtonToCurrentDateTapped;
+  final VoidCallback? onButtonToCurrentDateTapped;
   final bool buttonIsVisible;
 
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-      child: ListTile(
-        title: DateText(date: date, style: Theme.of(context).textTheme.headlineLarge),
-        subtitle: Text(_getSubtitle()),
-        contentPadding: const EdgeInsets.only(left: 15),
-        trailing: _getButton()
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              DateText(date: date, style: Theme.of(context).textTheme.headlineLarge),
+              Text(_getSubtitle()),
+            ],
+          ),
+          _getButton()
+        ],
       ),
     );
   }
@@ -37,10 +45,10 @@ class DateHeader extends StatelessWidget {
     }
   }
 
-  Widget? _getButton() {
+  Widget _getButton() {
     return buttonIsVisible ? IconButton(
       icon: Assets.icons.icEvent.image(),
       onPressed: onButtonToCurrentDateTapped,
-    ) : null;
+    ) : const SizedBox.shrink();
   }
 }

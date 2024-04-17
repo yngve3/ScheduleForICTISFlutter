@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:schedule_for_ictis_flutter/domain/interactors/events_interactor.dart';
 
-import '../../../../domain/models/reminder/reminder.dart';
-import '../../../../utils/state_list.dart';
+import '../../../../../domain/models/reminder/reminder.dart';
+import '../../../../../utils/state_list.dart';
 import 'event_add_state.dart';
 
 class EventAddCubit extends Cubit<EventAddState> {

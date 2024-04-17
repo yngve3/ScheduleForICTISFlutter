@@ -2,16 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:schedule_for_ictis_flutter/presentation/extensions/context_ext.dart';
-import 'package:schedule_for_ictis_flutter/presentation/pages/event_info/cubit/event_info_cubit.dart';
 import 'package:schedule_for_ictis_flutter/presentation/widgets/app_bar.dart';
 import 'package:schedule_for_ictis_flutter/presentation/widgets/date_text.dart';
 import 'package:schedule_for_ictis_flutter/presentation/widgets/property/properties/reminder_property.dart';
 import 'package:schedule_for_ictis_flutter/presentation/widgets/property/properties/text_property.dart';
 import 'package:schedule_for_ictis_flutter/presentation/widgets/screen.dart';
 
-import '../../../gen/assets.gen.dart';
-import '../../route/routes.dart';
-import '../../widgets/property/tiles/text_tile.dart';
+import '../../../../gen/assets.gen.dart';
+import '../../../route/routes.dart';
+import '../../../widgets/property/tiles/text_tile.dart';
+import 'cubit/event_info_cubit.dart';
 import 'cubit/event_info_state.dart';
 
 class EventInfoPage extends StatelessWidget {

@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:schedule_for_ictis_flutter/presentation/pages/event_add/event_add_page.dart';
-import 'package:schedule_for_ictis_flutter/presentation/pages/event_info/event_info_page.dart';
+import 'package:schedule_for_ictis_flutter/presentation/pages/home/home_page.dart';
 import 'package:schedule_for_ictis_flutter/presentation/pages/notes/note_add/note_add_page.dart';
 import 'package:schedule_for_ictis_flutter/presentation/pages/notes/note_info/note_info_page.dart';
 import 'package:schedule_for_ictis_flutter/presentation/route/routes.dart';
 
+import '../pages/events/event_add/event_add_page.dart';
+import '../pages/events/event_info/event_info_page.dart';
 import '../pages/favorite_schedules/pages/favorite_schedules_add/favorite_schedules_add_page.dart';
 import '../pages/favorite_schedules/pages/favorite_schedules_list/favorite_schedules_list_page.dart';
 import '../pages/main_page/main_page.dart';
@@ -22,7 +23,7 @@ abstract class AppRouter {
 
   static final GoRouter router = GoRouter(
       navigatorKey: _rootNavigatorKey,
-      initialLocation: Routes.schedule.path,
+      initialLocation: Routes.home.path,
       debugLogDiagnostics: true,
       routes: [
         ShellRoute(
@@ -31,6 +32,14 @@ abstract class AppRouter {
               return MainPage(child: child);
             },
             routes: [
+              GoRoute(
+                path: Routes.home.path,
+                pageBuilder: (BuildContext context, GoRouterState state) {
+                  return const NoTransitionPage(
+                      child: HomePage()
+                  );
+                },
+              ),
               GoRoute(
                 path: Routes.schedule.path,
                 pageBuilder: (BuildContext context, GoRouterState state) {

@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:schedule_for_ictis_flutter/data/repositories/events_repository.dart';
 import 'package:schedule_for_ictis_flutter/data/repositories/reminders_repository.dart';

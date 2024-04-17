@@ -18,7 +18,6 @@ class ScheduleInteractor {
   final FavoriteSchedulesRepository favoriteSchedulesRepository = FavoriteSchedulesRepository();
   final EventsRepository eventsRepository = EventsRepository();
 
-
   Future<Stream<WeekSchedule>> getWeekSchedule({WeekNumber? weekNumber}) async {
 
     final calendarWeekNumber = weekNumber?.calendarWeekNumber ?? DateTime.now().weekNumber;

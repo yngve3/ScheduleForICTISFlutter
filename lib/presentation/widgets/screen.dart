@@ -22,36 +22,34 @@ class ScrollableScreen extends StatelessWidget {
     super.key,
     required this.scrollable,
     this.bottom,
-    this.top
+    this.top,
+    this.bottomGap = 10,
+    this.topGap = 10
   });
 
   final Widget? top;
   final Widget scrollable;
   final Widget? bottom;
+  final double bottomGap;
+  final double topGap;
 
   @override
   Widget build(BuildContext context) {
     return Screen(
       child: Column(
         children: [
-          _getGap(top),
           top ?? const SizedBox.shrink(),
-          _getGap(top),
+          SizedBox(height: bottomGap),
           Expanded(
             child: SingleChildScrollView(
               child: scrollable,
             )
           ),
-          _getGap(bottom),
+          SizedBox(height: topGap),
           bottom ?? const SizedBox.shrink()
         ],
       )
     );
-  }
-
-  Widget _getGap(Widget? widget) {
-    if (widget == null) return const SizedBox.shrink();
-    return const SizedBox(height: 10);
   }
 }
 

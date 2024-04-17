@@ -17,11 +17,14 @@ class MainPage extends StatelessWidget {
 
   static int _calculateSelectedIndex(BuildContext context) {
     final String location = GoRouterState.of(context).uri.toString();
-    if (location.startsWith(Routes.schedule.path)) {
+    if (location.startsWith(Routes.home.path)) {
       return 0;
     }
-    if (location.startsWith(Routes.preferences.path)) {
+    if (location.startsWith(Routes.schedule.path)) {
       return 1;
+    }
+    if (location.startsWith(Routes.preferences.path)) {
+      return 2;
     }
     return 0;
   }
@@ -29,8 +32,10 @@ class MainPage extends StatelessWidget {
   void _onItemTapped(int index, BuildContext context) {
     switch (index) {
       case 0:
-        context.go(Routes.schedule.path);
+        context.go(Routes.home.path);
       case 1:
+        context.go(Routes.schedule.path);
+      case 2:
         context.go(Routes.preferences.path);
     }
   }
@@ -52,12 +57,17 @@ class MainPage extends StatelessWidget {
         elevation: 0,
         items: [
           BottomNavigationBarItem(
-            icon: Assets.icons.icSchedule.image(color: context.customColors.text1),
+              icon: Assets.icons.icHome.image(),
+              activeIcon: Assets.icons.icHome.image(color: context.customColors.accent),
+              label: "Home"
+          ),
+          BottomNavigationBarItem(
+            icon: Assets.icons.icSchedule.image(),
             activeIcon: Assets.icons.icSchedule.image(color: context.customColors.accent),
             label: "Schedule",
           ),
           BottomNavigationBarItem(
-              icon: Assets.icons.icSettings.image(color: context.customColors.text1),
+              icon: Assets.icons.icSettings.image(),
               activeIcon: Assets.icons.icSettings.image(color: context.customColors.accent),
               label: "Preferences"
           ),

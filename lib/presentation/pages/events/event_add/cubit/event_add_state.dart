@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
-import '../../../../domain/models/reminder/reminder.dart';
-import '../../../../utils/state_list.dart';
+import '../../../../../domain/models/reminder/reminder.dart';
+import '../../../../../utils/state_list.dart';
 
 part 'event_add_state.freezed.dart';
 

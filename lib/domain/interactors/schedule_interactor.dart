@@ -1,107 +1,63 @@
 import 'dart:async';
 
-import 'package:schedule_for_ictis_flutter/data/models/event_db.dart';
-import 'package:schedule_for_ictis_flutter/data/models/week_schedule_db.dart';
+import 'package:schedule_for_ictis_flutter/data/repositories/couples_repository.dart';
 import 'package:schedule_for_ictis_flutter/data/repositories/events_repository.dart';
 import 'package:schedule_for_ictis_flutter/data/repositories/favorite_schedules_repository.dart';
-import 'package:schedule_for_ictis_flutter/data/repositories/schedule_repository.dart';
+import 'package:schedule_for_ictis_flutter/data/repositories/week_number_repository.dart';
+import 'package:schedule_for_ictis_flutter/domain/models/schedule/day_schedule/day_schedule.dart';
 import 'package:schedule_for_ictis_flutter/domain/models/week_number.dart';
 import 'package:schedule_for_ictis_flutter/presentation/extensions/date_time_ext.dart';
-import 'package:schedule_for_ictis_flutter/presentation/extensions/time_of_day_ext.dart';
 
-import '../models/schedule/day_schedule/day_schedule.dart';
+import '../../data/models/couple_db.dart';
+import '../../data/models/event_db.dart';
 import '../models/schedule/day_schedule_item.dart';
 import '../models/schedule/week_schedule/week_schedule.dart';
 
 class ScheduleInteractor {
-  final ScheduleRepository scheduleRepository = ScheduleRepository();
-  final FavoriteSchedulesRepository favoriteSchedulesRepository = FavoriteSchedulesRepository();
-  final EventsRepository eventsRepository = EventsRepository();
+  final CouplesRepository _couplesRepository = CouplesRepository();
+  final FavoriteSchedulesRepository _favoriteSchedulesRepository = FavoriteSchedulesRepository();
+  final EventsRepository _eventsRepository = EventsRepository();
+  final WeekNumberRepository _weekNumberRepository = WeekNumberRepository();
+
+
+  void loadSchedule(WeekNumber? weekNumber) async {
+    final mainScheduleSubject = await _favoriteSchedulesRepository.getSelectedFavoriteSchedule();
+    if (mainScheduleSubject != null) {
+      _couplesRepository.loadCouples(mainScheduleSubject, weekNumber);
+    }
+    final vpkScheduleSubject = await _favoriteSchedulesRepository.getSelectedFavoriteSchedule(isVPK: true);
+    if (vpkScheduleSubject != null) {
+      _couplesRepository.loadCouples(vpkScheduleSubject, weekNumber);
+    }
+  }
 
   Future<Stream<WeekSchedule>> getWeekSchedule({WeekNumber? weekNumber}) async {
+    List<CoupleDB> couplesDB = [];
 
-    final calendarWeekNumber = weekNumber?.calendarWeekNumber ?? DateTime.now().weekNumber;
-    final eventsDBStream = eventsRepository.getEventsByWeekNum(calendarWeekNumber);
-
-    WeekScheduleDB? mainStudySchedule;
-    WeekScheduleDB? vpkStudySchedule;
-
-    final scheduleSubject= await favoriteSchedulesRepository.getSelectedFavoriteSchedules();
-    if (scheduleSubject != null) {
-      await scheduleRepository.loadWeekSchedule(scheduleSubject, weekNumber);
-      mainStudySchedule = await scheduleRepository.getWeekSchedule(scheduleSubject, calendarWeekNumber);
-
-      if (mainStudySchedule?.isVPK ?? false) {
-        final scheduleSubjectVPK = await favoriteSchedulesRepository.getSelectedFavoriteSchedules(isVPK: true);
-        if (scheduleSubjectVPK != null) {
-          await scheduleRepository.loadWeekSchedule(scheduleSubjectVPK, weekNumber);
-          vpkStudySchedule = await scheduleRepository.getWeekSchedule(scheduleSubjectVPK, calendarWeekNumber);
-        }
-      }
+    weekNumber ??= _weekNumberRepository.getCurrentWeekNumber();
+    final mainScheduleSubject = await _favoriteSchedulesRepository.getSelectedFavoriteSchedule();
+    if (mainScheduleSubject != null) {
+       couplesDB.addAll(_couplesRepository.getCouples(weekNumber!, mainScheduleSubject));
     }
-
-    return eventsDBStream.map((eventsDB) => _createWeekSchedule(eventsDB: eventsDB, mainStudySchedule: mainStudySchedule, vpkStudySchedule: vpkStudySchedule));
+    
+    final vpkScheduleSubject = await _favoriteSchedulesRepository.getSelectedFavoriteSchedule(isVPK: true);
+    if (vpkScheduleSubject != null) {
+      couplesDB.addAll(_couplesRepository.getCouples(weekNumber!, vpkScheduleSubject));
+    }
+    
+    final eventsDBStream = _eventsRepository.getEventsByWeekNum(weekNumber!);
+    
+    return eventsDBStream.map((eventsDB) => _createWeekSchedule(eventsDB: eventsDB, couplesDB: couplesDB));
   }
 
   WeekSchedule _createWeekSchedule({
     required List<EventDB> eventsDB,
-    WeekScheduleDB? mainStudySchedule,
-    WeekScheduleDB? vpkStudySchedule
+    required List<CoupleDB> couplesDB
   }) {
     List<DaySchedule> daySchedules = [];
     for (int weekday = 1; weekday <= 7; weekday++) {
-      final List<DayScheduleItem> items = [];
-
-      _addEvents(weekday, items, eventsDB);
-      _addStudySchedule(weekday, items, mainStudySchedule);
-      _addStudySchedule(weekday, items, vpkStudySchedule);
-
-      bool? isVPK;
-      bool? isVUC;
-
-      if (weekday != 7) {
-        isVPK = vpkStudySchedule == null && (mainStudySchedule?.daySchedules[weekday - 1].isVPK ?? false);
-        isVUC = mainStudySchedule?.daySchedules[weekday - 1].isVUC;
-      }
-
-      items.sort((a, b) => a.timeStart.compareTo(b.timeStart));
-      daySchedules.add(DaySchedule(items: items, isVPK: isVPK ?? false, isVUC: isVUC ?? false));
+      List<DayScheduleItem> items = [];
+      items.addAll(eventsDB.where((eventDB) => eventDB.date.weekNumber == weekday).map((eventDB) => Event.fromEventDB(eventDB)).toList());
     }
-
-    final weekNumber = _createWeekNumber(mainStudySchedule);
-
-    return WeekSchedule(weekNumber: weekNumber, daySchedules: daySchedules);
-  }
-
-  WeekNumber _createWeekNumber(WeekScheduleDB? weekScheduleDB) {
-    if (weekScheduleDB != null) {
-      return WeekNumber(
-        calendarWeekNumber: weekScheduleDB.calendarWeekNumber,
-        studyWeekNumber: weekScheduleDB.studyWeekNumber,
-      );
-    } else {
-      return WeekNumber(
-          calendarWeekNumber: DateTime.now().weekNumber
-      );
-    }
-  }
-
-  void _addEvents(int weekday, List<DayScheduleItem> items, List<EventDB> eventsDB) {
-    items.addAll(eventsDB
-        .where((element) => element.date.weekday == weekday)
-        .map((e) => Event.fromEventDB(e))
-        .toList()
-    );
-  }
-
-  void _addStudySchedule(int weekday, List<DayScheduleItem> items, WeekScheduleDB? weekScheduleDB) {
-    if (weekScheduleDB == null || weekday == 7 || weekScheduleDB.daySchedules[weekday - 1].couples.isEmpty) return;
-
-    items.addAll(weekScheduleDB.daySchedules[weekday - 1]
-        .couples
-        .where((element) => element.isNotEmpty && element.isNotVPKPlaceHolder)
-        .map((element) => Couple.fromCoupleDB(element))
-        .toList()
-    );
   }
 }

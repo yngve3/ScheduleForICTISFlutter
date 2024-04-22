@@ -1,4 +1,5 @@
 import 'package:schedule_for_ictis_flutter/data/models/event_db.dart';
+import 'package:schedule_for_ictis_flutter/domain/models/week_number.dart';
 import 'package:schedule_for_ictis_flutter/main.dart';
 
 import '../../objectbox.g.dart';
@@ -10,8 +11,8 @@ class EventsRepository {
     _eventsBox = objectBox.store.box<EventDB>();
   }
 
-  Stream<List<EventDB>> getEventsByWeekNum(int calendarWeekNumber) {
-    final query = _eventsBox.query(EventDB_.weekNum.equals(calendarWeekNumber));
+  Stream<List<EventDB>> getEventsByWeekNum(WeekNumber weekNumber) {
+    final query = _eventsBox.query(EventDB_.weekNum.equals(weekNumber.calendarWeekNumber));
     return query.watch(triggerImmediately: true).map((event) => event.find());
   }
 

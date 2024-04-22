@@ -2,23 +2,27 @@ import 'package:objectbox/objectbox.dart';
 
 @Entity()
 class WeekNumber {
+  @Id() int id = 0;
+  @Index() @Unique(onConflict: ConflictStrategy.replace) final int calendarWeekNumber;
   final int? studyWeekNumber;
-  @Id(assignable: true) final int calendarWeekNumber;
+  final DateTime weekStartDate;
 
-  const WeekNumber({
+  WeekNumber({
+    required this.calendarWeekNumber,
+    required this.weekStartDate,
     this.studyWeekNumber,
-    required this.calendarWeekNumber
   });
 
-  WeekNumber plus(int weekCount) =>
-      WeekNumber(
-          studyWeekNumber: studyWeekNumber != null ? (studyWeekNumber! + weekCount) : null,
-          calendarWeekNumber: calendarWeekNumber + weekCount
-      );
-
-  factory WeekNumber.empty() =>
-      const WeekNumber(
-          studyWeekNumber: 1,
-          calendarWeekNumber: 1
-      );
+  WeekNumber plus(int weekCount) {
+    final newDate = switch(weekCount) {
+      > 0 => weekStartDate.add(Duration(days: 7 * weekCount)),
+      < 0 => weekStartDate.subtract(Duration(days: 7 * weekCount)),
+      _ => weekStartDate
+    };
+    return WeekNumber(
+        studyWeekNumber: studyWeekNumber != null ? (studyWeekNumber! + weekCount) : null,
+        calendarWeekNumber: calendarWeekNumber + weekCount,
+        weekStartDate: newDate
+    );
+  }
 }

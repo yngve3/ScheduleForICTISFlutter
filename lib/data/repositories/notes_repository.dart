@@ -20,9 +20,8 @@ class NotesRepository {
   }
 
   List<Note> getNotesAfter(DateTime datetime) {
-    return _notesBox.query(Note_.date.greaterOrEqualDate(datetime))
-        .build()
-        .find();
+    final query = _notesBox.query(Note_.date.greaterOrEqualDate(datetime));
+    return query.build().find();
   }
 
   void addNote(Note note) {

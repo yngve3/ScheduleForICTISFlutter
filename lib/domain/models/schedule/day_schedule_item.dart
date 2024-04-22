@@ -41,7 +41,7 @@ class Couple extends DayScheduleItem {
       discipline: coupleDB.discipline,
       lecturers: coupleDB.lecturers,
       date: coupleDB.daySchedule.target!.date,
-      id: coupleDB.idForSearch
+      id: coupleDB.id
     );
   }
 

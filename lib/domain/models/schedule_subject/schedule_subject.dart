@@ -3,12 +3,10 @@ import 'package:schedule_for_ictis_flutter/data/models/week_schedule_db.dart';
 
 @Entity()
 class ScheduleSubject {
-  @Id() int? dbId;
+  @Id() int dbId;
   final String id;
   final String name;
   final bool isChosen;
-  @Backlink("scheduleSubject")
-  final weekSchedules = ToMany<WeekScheduleDB>();
 
   final bool isVPK;
   bool get isNotVPK => !isVPK;
@@ -23,7 +21,7 @@ class ScheduleSubject {
 
   factory ScheduleSubject.fromJson(Map<String, dynamic> json) =>
       ScheduleSubject(
-        dbId: json['dbId'] as int?,
+        dbId: json['dbId'] as int,
         id: json['group'] as String,
         name: json['name'] as String,
         isChosen: json['isChosen'] as bool? ?? false,

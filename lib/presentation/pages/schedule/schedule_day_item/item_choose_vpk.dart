@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:schedule_for_ictis_flutter/presentation/extensions/context_ext.dart';
-import 'package:schedule_for_ictis_flutter/presentation/pages/schedule/schedule_day_item/schedule_day_item.dart';
 
 import '../../../route/routes.dart';
 
-class ItemChooseVPK extends ScheduleDayItem {
+class ItemChooseVPK extends StatelessWidget {
+  const ItemChooseVPK({super.key});
+
   @override
-  Widget buildWidget(BuildContext context) {
+  Widget build(BuildContext context) {
     return InkWell(
       onTap: () => context.go(Routes.addFavoriteSchedule.path),
       child: Card(

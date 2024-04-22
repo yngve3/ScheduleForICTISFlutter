@@ -1,22 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:schedule_for_ictis_flutter/presentation/extensions/context_ext.dart';
-import 'package:schedule_for_ictis_flutter/presentation/pages/schedule/schedule_day_item/schedule_day_item.dart';
 
 import '../../../../domain/models/couple/couple_type.dart';
 import '../../../../domain/models/schedule/day_schedule_item.dart';
 import '../../../route/routes.dart';
 import '../../../widgets/card_with_time_on_left.dart';
 
-class ItemCouple implements ScheduleDayItem {
+class ItemCouple extends StatelessWidget {
   const ItemCouple({
+    super.key,
     required this.couple
   });
 
   final Couple couple;
 
   @override
-  Widget buildWidget(BuildContext context) {
+  Widget build(BuildContext context) {
     return InkWell(
       onTap: () => context.go(Routes.coupleNotesList.path({"couple_id": couple.id})),
       child: CardWithTimeOnLeft(

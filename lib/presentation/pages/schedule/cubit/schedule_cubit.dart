@@ -31,13 +31,12 @@ class ScheduleCubit extends Cubit<ScheduleState> {
   void selectDay(DateTime date) async {
     final weekNumDifference = _weekNumDifference(date);
     emit(state.copyWith(selectedDay: date));
-    final t = state.weekSchedule.weekNumber.plus(weekNumDifference);
-    loadSchedule(weekNumber: t);
+    loadSchedule(weekNumber: state.weekSchedule.weekNumber.plus(weekNumDifference));
   }
 
   void loadSchedule({WeekNumber? weekNumber}) async {
     final stream = await interactor.getWeekSchedule(weekNumber: weekNumber);
-    subscription = stream.listen((event) {
+    final subscription = stream.listen((event) {
       emit(state.copyWith(weekSchedule: event));
     });
   }
@@ -58,7 +57,7 @@ class ScheduleCubit extends Cubit<ScheduleState> {
 
   @override
   Future<void> close() {
-    subscription?.cancel();
-    return super.close();
+   subscription?.cancel();
+   return super.close();
   }
 }

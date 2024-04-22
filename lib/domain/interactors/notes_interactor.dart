@@ -62,7 +62,7 @@ class NotesInteractor {
     final note = Note(
       id: noteID ?? 0,
       title: title,
-      date: date,
+      date: DateTime(date.year, date.month, date.day, time.hour, time.minute),
       coupleID: coupleID,
       description: description,
       files: files.elements,

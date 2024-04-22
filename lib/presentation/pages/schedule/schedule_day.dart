@@ -1,11 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:schedule_for_ictis_flutter/presentation/pages/schedule/schedule_day_item/item_choose_vpk.dart';
-import 'package:schedule_for_ictis_flutter/presentation/pages/schedule/schedule_day_item/item_couple.dart';
-import 'package:schedule_for_ictis_flutter/presentation/pages/schedule/schedule_day_item/item_event.dart';
-import 'package:schedule_for_ictis_flutter/presentation/pages/schedule/schedule_day_item/item_unknown.dart';
+import 'package:schedule_for_ictis_flutter/presentation/pages/schedule/schedule_day_item/schedule_day_item_widget_factory.dart';
 
 import '../../../domain/models/schedule/day_schedule/day_schedule.dart';
-import '../../../domain/models/schedule/day_schedule_item.dart';
 
 class DayScheduleWidget extends StatefulWidget {
   const DayScheduleWidget({
@@ -36,16 +33,12 @@ class _DaySchedule extends State<DayScheduleWidget> with AutomaticKeepAliveClien
   List<Widget> _createItems(BuildContext context) {
     List<Widget> items = [];
     if (widget.daySchedule.isVPK) {
-      items.add(ItemChooseVPK().buildWidget(context));
+      items.add(const ItemChooseVPK());
     }
 
-    items.addAll(widget.daySchedule.items.map((element) {
-      return switch (element) {
-        Couple _=> ItemCouple(couple: element).buildWidget(context),
-        Event _=> ItemEvent(event: element).buildWidget(context),
-        _=> ItemUnknown().buildWidget(context)
-      };
-    }));
+    items.addAll(widget.daySchedule.items.map((element) =>
+        ScheduleDayItemWidgetFactory.create(element))
+    );
 
     return items;
   }

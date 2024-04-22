@@ -15,6 +15,11 @@ class EventsRepository {
     return query.watch(triggerImmediately: true).map((event) => event.find());
   }
 
+  List<EventDB> getEventsAfter(DateTime dateTime) {
+    final query = _eventsBox.query(EventDB_.date.greaterThanDate(dateTime));
+    return query.build().find();
+  }
+
   Future<EventDB?> getEventById(int id) {
     return _eventsBox.getAsync(id);
   }

@@ -36,7 +36,7 @@ class EventsInteractor {
       timeStart: timeStart.string,
       timeEnd: timeEnd.string,
       title: title,
-      date: date,
+      date: DateTime(date.year, date.month, date.day, timeEnd.hour, timeEnd.minute),
       weekNum: date.weekNumber,
       location: toNullIfEmpty(location),
       description: toNullIfEmpty(description),

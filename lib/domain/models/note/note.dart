@@ -13,6 +13,7 @@ class Note {
   String coupleID;
 
   bool get hasFiles => attachedFiles.isNotEmpty;
+  bool get isPast => date.isBefore(DateTime.now());
 
   @Backlink("note")
   final ToMany<NoteFile> attachedFiles = ToMany<NoteFile>();

@@ -35,7 +35,6 @@ class CoupleDB {
     required this.idForSearch
   });
 
-  // Enum базой данных не поддерживается, поэтому нужно конвертировать
   String? get dbType {
     return type?.name;
   }

@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:schedule_for_ictis_flutter/presentation/pages/schedule/schedule_day_item/schedule_day_item.dart';
 
-class ItemUnknown implements ScheduleDayItem {
+class ItemUnknown extends StatelessWidget {
+  const ItemUnknown({super.key});
+
   @override
-  Widget buildWidget(BuildContext context) {
+  Widget build(BuildContext context) {
     return const ListTile(
       title: Text("unknown item"),
     );

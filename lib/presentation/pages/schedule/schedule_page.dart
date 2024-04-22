@@ -64,12 +64,6 @@ class _Schedule extends State<Schedule> {
   CalendarFormat _calendarFormat = CalendarFormat.week;
 
   @override
-  void initState() {
-    context.read<ScheduleCubit>().loadSchedule();
-    super.initState();
-  }
-
-  @override
   Widget build(BuildContext context) {
     final calendarStyle = Theme.of(context).extension<TableCalendarTheme>()!.calendarStyle;
     final daysOfWeekStyle = Theme.of(context).extension<TableCalendarTheme>()!.daysOfWeekStyle;

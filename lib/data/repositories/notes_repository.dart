@@ -19,6 +19,12 @@ class NotesRepository {
     return _notesBox.getAsync(noteID);
   }
 
+  List<Note> getNotesAfter(DateTime datetime) {
+    return _notesBox.query(Note_.date.greaterOrEqualDate(datetime))
+        .build()
+        .find();
+  }
+
   void addNote(Note note) {
     _notesBox.putAsync(note);
   }

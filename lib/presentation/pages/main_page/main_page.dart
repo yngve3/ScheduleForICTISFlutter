@@ -44,7 +44,7 @@ class MainPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: BlocProvider(
-        create: (context) => ScheduleCubit()..loadSchedule(),
+        create: (context) => ScheduleCubit(),
         child: child,
       ),
       bottomNavigationBar: BottomNavigationBar(

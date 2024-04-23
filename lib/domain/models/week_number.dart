@@ -1,10 +1,14 @@
 import 'package:objectbox/objectbox.dart';
+import 'package:schedule_for_ictis_flutter/presentation/extensions/date_time_ext.dart';
+
+import '../../data/models/couple_db.dart';
 
 @Entity()
 class WeekNumber {
   @Id() int id = 0;
   @Index() @Unique(onConflict: ConflictStrategy.replace) final int calendarWeekNumber;
   final int? studyWeekNumber;
+  @Property(type: PropertyType.date)
   final DateTime weekStartDate;
 
   WeekNumber({
@@ -23,6 +27,14 @@ class WeekNumber {
         studyWeekNumber: studyWeekNumber != null ? (studyWeekNumber! + weekCount) : null,
         calendarWeekNumber: calendarWeekNumber + weekCount,
         weekStartDate: newDate
+    );
+  }
+
+  factory WeekNumber.empty() {
+    final date = DateTime.now();
+    return WeekNumber(
+      calendarWeekNumber: date.weekNumber,
+      weekStartDate: date.subtract(Duration(days: date.weekday - 1))
     );
   }
 }

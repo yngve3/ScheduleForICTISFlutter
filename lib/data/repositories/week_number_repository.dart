@@ -1,10 +1,15 @@
 import 'package:schedule_for_ictis_flutter/presentation/extensions/date_time_ext.dart';
 
 import '../../domain/models/week_number.dart';
+import '../../main.dart';
 import '../../objectbox.g.dart';
 
 class WeekNumberRepository {
   late Box<WeekNumber> _weekNumberBox;
+
+  WeekNumberRepository() {
+    _weekNumberBox = objectBox.store.box<WeekNumber>();
+  }
 
   void add(WeekNumber weekNumber) {
     _weekNumberBox.put(weekNumber);
@@ -15,5 +20,9 @@ class WeekNumberRepository {
         .query(WeekNumber_.calendarWeekNumber.equals(DateTime.now().weekNumber))
         .build()
         .findFirst();
+  }
+
+  List<WeekNumber> getAll() {
+    return _weekNumberBox.getAll();
   }
 }

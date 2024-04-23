@@ -21,27 +21,25 @@ class Couple extends DayScheduleItem {
   final DateTime date;
   final String id;
 
-  Couple(int coupleNum, {
+  Couple(super.timeStart, super.timeEnd, {
     required this.audiences,
     required this.type,
     required this.discipline,
     required this.lecturers,
     required this.date,
     required this.id
-  }): super(
-      TimeOfDayExtension.timeStart(coupleNum)!,
-      TimeOfDayExtension.timeEnd(coupleNum)!
-  );
+  });
 
   factory Couple.fromCoupleDB(CoupleDB coupleDB) {
     return Couple(
-      coupleDB.coupleNum,
+      TimeOfDayExtension.parse(coupleDB.timeStart),
+      TimeOfDayExtension.parse(coupleDB.timeEnd),
       audiences: coupleDB.audiences,
       type: coupleDB.type ?? CoupleType.none,
       discipline: coupleDB.discipline,
       lecturers: coupleDB.lecturers,
-      date: coupleDB.daySchedule.target!.date,
-      id: coupleDB.id
+      date: coupleDB.dateTimeEnd,
+      id: coupleDB.id,
     );
   }
 

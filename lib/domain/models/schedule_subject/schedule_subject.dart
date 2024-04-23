@@ -1,5 +1,4 @@
 import 'package:objectbox/objectbox.dart';
-import 'package:schedule_for_ictis_flutter/data/models/week_schedule_db.dart';
 
 @Entity()
 class ScheduleSubject {
@@ -21,7 +20,7 @@ class ScheduleSubject {
 
   factory ScheduleSubject.fromJson(Map<String, dynamic> json) =>
       ScheduleSubject(
-        dbId: json['dbId'] as int,
+        dbId: (json['dbId'] as int?) ?? 0,
         id: json['group'] as String,
         name: json['name'] as String,
         isChosen: json['isChosen'] as bool? ?? false,

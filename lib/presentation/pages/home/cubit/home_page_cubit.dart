@@ -8,6 +8,7 @@ import 'home_page_state.dart';
 class HomePageCubit extends Cubit<HomePageState> {
   HomePageCubit() : super(const HomePageState());
   final _eventsRepository = EventsRepository();
+
   final _notesRepository = NotesRepository();
 
   void loadState() {

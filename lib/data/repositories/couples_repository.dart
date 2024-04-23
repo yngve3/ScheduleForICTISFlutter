@@ -1,5 +1,7 @@
 import 'dart:convert';
 
+import 'package:schedule_for_ictis_flutter/data/repositories/week_number_repository.dart';
+import 'package:schedule_for_ictis_flutter/domain/models/schedule/week_schedule/week_schedule.dart';
 import 'package:schedule_for_ictis_flutter/domain/models/week_number.dart';
 import 'package:schedule_for_ictis_flutter/main.dart';
 
@@ -36,12 +38,12 @@ class CouplesRepository {
           scheduleSubject: scheduleSubject
         );
 
-        _couplesBox.putManyAsync(couplesDB);
+        _couplesBox.putMany(couplesDB);
 
         return couplesDB[0].weekNumber.target!;
       }
-    } catch (_) {
-
+    } catch (e) {
+      print(e);
     }
 
     return null;
@@ -70,5 +72,9 @@ class CouplesRepository {
     );
 
     return query.build().find();
+  }
+
+  List<CoupleDB> getAll() {
+    return _couplesBox.getAll();
   }
 }

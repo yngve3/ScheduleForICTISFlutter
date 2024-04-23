@@ -12,26 +12,27 @@ class CouplesMapper {
   }) {
     json = json['table'];
     int studyWeekNum = json["week"];
+    weekNumber = _createWeekNumberIfNull(weekNumber, studyWeekNum);
 
     final List<dynamic> weekSchedule = json["table"];
 
     List<CoupleDB> couplesDB = [];
 
     weekSchedule.skip(2).forEachIndexed((weekday, daySchedule) {
-      (daySchedule as List<String>).skip(1).forEachIndexed((coupleNum, coupleStr) {
+      (daySchedule as List<dynamic>).skip(1).forEachIndexed((coupleNum, coupleStr) {
         String id = _createID(
           studyWeekNum: studyWeekNum,
           scheduleSubjectID: scheduleSubject.id,
-          coupleNum: coupleNum,
-          weekday: weekday
+          coupleNum: coupleNum + 1,
+          weekday: weekday + 1
         );
 
         final coupleDB = CoupleDB.fromString(coupleStr,
-          coupleNum: coupleNum,
+          coupleNum: coupleNum + 1,
           id: id,
           scheduleSubject: scheduleSubject,
-          weekday: weekday,
-          weekNumber: _createWeekNumberIfNull(weekNumber, studyWeekNum)
+          weekday: weekday + 1,
+          weekNumber: weekNumber!
         );
 
         couplesDB.add(coupleDB);

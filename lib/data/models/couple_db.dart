@@ -62,9 +62,9 @@ class CoupleDB {
     String lecturers = "";
     String groups = "";
 
-    (audiences, input) = _applyRegExp(RegExp(r"LMS(-[0-9]| |$)|[А-Я]-[0-9]{3}[а-я]?"), input);
-    (lecturers, input) = _applyRegExp(RegExp(r"(\d\d? п/г)? [А-Я][а-я]* [А-Я]. [A-Я]."), input);
-    (groups, input) = _applyRegExp(RegExp(
+    (input, audiences) = _applyRegExp(RegExp(r"LMS(-[0-9]| |$)|[А-Я]-[0-9]{3}[а-я]?"), input);
+    (input, lecturers) = _applyRegExp(RegExp(r"(\d\d? п/г)? [А-Я][а-я]* [А-Я]. [A-Я]."), input);
+    (input, groups) = _applyRegExp(RegExp(
         r"КТ[бмас][озв]\d-\d\d?,?"
         r"|ВПК \d\d?-\d\d?(.\d)?,?"
         r"|\d{2}[А-ЯЁа-яё]{2}-\d{2}\.\d{2}\.\d{2}\.\d{2}-[а-о]\d,?"

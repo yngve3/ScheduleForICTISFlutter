@@ -254,20 +254,15 @@ final _entities = <obx_int.ModelEntity>[
   obx_int.ModelEntity(
       id: const obx_int.IdUid(19, 234295889408471229),
       name: 'WeekNumber',
-      lastPropertyId: const obx_int.IdUid(4, 4541798334966378603),
+      lastPropertyId: const obx_int.IdUid(5, 3003941807877410036),
       flags: 0,
       properties: <obx_int.ModelProperty>[
-        obx_int.ModelProperty(
-            id: const obx_int.IdUid(1, 9163641180261437739),
-            name: 'id',
-            type: 6,
-            flags: 1),
         obx_int.ModelProperty(
             id: const obx_int.IdUid(2, 6272107406252233869),
             name: 'calendarWeekNumber',
             type: 6,
             flags: 32808,
-            indexId: const obx_int.IdUid(20, 905497168917521630)),
+            indexId: const obx_int.IdUid(21, 4695460110029072893)),
         obx_int.ModelProperty(
             id: const obx_int.IdUid(3, 2430353312985409425),
             name: 'studyWeekNumber',
@@ -277,7 +272,12 @@ final _entities = <obx_int.ModelEntity>[
             id: const obx_int.IdUid(4, 4541798334966378603),
             name: 'weekStartDate',
             type: 10,
-            flags: 0)
+            flags: 0),
+        obx_int.ModelProperty(
+            id: const obx_int.IdUid(5, 3003941807877410036),
+            name: 'id',
+            type: 6,
+            flags: 1)
       ],
       relations: <obx_int.ModelRelation>[],
       backlinks: <obx_int.ModelBacklink>[]),
@@ -353,7 +353,7 @@ obx_int.ModelDefinition getObjectBoxModel() {
   final model = obx_int.ModelInfo(
       entities: _entities,
       lastEntityId: const obx_int.IdUid(20, 3099322797470029057),
-      lastIndexId: const obx_int.IdUid(20, 905497168917521630),
+      lastIndexId: const obx_int.IdUid(21, 4695460110029072893),
       lastRelationId: const obx_int.IdUid(3, 7580521061366540174),
       lastSequenceId: const obx_int.IdUid(0, 0),
       retiredEntityUids: const [
@@ -375,7 +375,8 @@ obx_int.ModelDefinition getObjectBoxModel() {
         1606607200252430453,
         6702232084178333351,
         5695844585636368914,
-        7434552496165741410
+        7434552496165741410,
+        905497168917521630
       ],
       retiredPropertyUids: const [
         8531280715951716256,
@@ -439,7 +440,8 @@ obx_int.ModelDefinition getObjectBoxModel() {
         3183900514941058989,
         3536761177846029287,
         2055389319938891387,
-        5340708925378251933
+        5340708925378251933,
+        9163641180261437739
       ],
       retiredRelationUids: const [7624436913426914363],
       modelVersion: 5,
@@ -714,11 +716,11 @@ obx_int.ModelDefinition getObjectBoxModel() {
           object.id = id;
         },
         objectToFB: (WeekNumber object, fb.Builder fbb) {
-          fbb.startTable(5);
-          fbb.addInt64(0, object.id);
+          fbb.startTable(6);
           fbb.addInt64(1, object.calendarWeekNumber);
           fbb.addInt64(2, object.studyWeekNumber);
           fbb.addInt64(3, object.weekStartDate.millisecondsSinceEpoch);
+          fbb.addInt64(4, object.id);
           fbb.finish(fbb.endTable());
           return object.id;
         },
@@ -735,7 +737,7 @@ obx_int.ModelDefinition getObjectBoxModel() {
               calendarWeekNumber: calendarWeekNumberParam,
               weekStartDate: weekStartDateParam,
               studyWeekNumber: studyWeekNumberParam)
-            ..id = const fb.Int64Reader().vTableGet(buffer, rootOffset, 4, 0);
+            ..id = const fb.Int64Reader().vTableGet(buffer, rootOffset, 12, 0);
 
           return object;
         }),
@@ -942,21 +944,21 @@ class Reminder_ {
 
 /// [WeekNumber] entity fields to define ObjectBox queries.
 class WeekNumber_ {
-  /// see [WeekNumber.id]
-  static final id =
-      obx.QueryIntegerProperty<WeekNumber>(_entities[5].properties[0]);
-
   /// see [WeekNumber.calendarWeekNumber]
   static final calendarWeekNumber =
-      obx.QueryIntegerProperty<WeekNumber>(_entities[5].properties[1]);
+      obx.QueryIntegerProperty<WeekNumber>(_entities[5].properties[0]);
 
   /// see [WeekNumber.studyWeekNumber]
   static final studyWeekNumber =
-      obx.QueryIntegerProperty<WeekNumber>(_entities[5].properties[2]);
+      obx.QueryIntegerProperty<WeekNumber>(_entities[5].properties[1]);
 
   /// see [WeekNumber.weekStartDate]
   static final weekStartDate =
-      obx.QueryDateProperty<WeekNumber>(_entities[5].properties[3]);
+      obx.QueryDateProperty<WeekNumber>(_entities[5].properties[2]);
+
+  /// see [WeekNumber.id]
+  static final id =
+      obx.QueryIntegerProperty<WeekNumber>(_entities[5].properties[3]);
 }
 
 /// [ScheduleSubject] entity fields to define ObjectBox queries.

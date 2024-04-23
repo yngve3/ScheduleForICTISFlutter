@@ -33,14 +33,13 @@ class EventsInteractor {
 
     final eventDB = EventDB(
       id: id ?? 0,
-      timeStart: timeStart.string,
-      timeEnd: timeEnd.string,
       title: title,
-      date: DateTime(date.year, date.month, date.day, timeEnd.hour, timeEnd.minute),
+      dateTimeStart: DateTime(date.year, date.month, date.day, timeStart.hour, timeStart.minute),
+      dateTimeEnd: DateTime(date.year, date.month, date.day, timeEnd.hour, timeEnd.minute),
       weekNum: date.weekNumber,
       location: toNullIfEmpty(location),
       description: toNullIfEmpty(description),
-      reminders: remindersList
+      reminders: remindersList,
     );
 
     _eventsRepository.addEvent(eventDB);

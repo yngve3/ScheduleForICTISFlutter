@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:schedule_for_ictis_flutter/domain/interactors/events_interactor.dart';
 
@@ -16,9 +17,9 @@ class EventInfoCubit extends Cubit<EventInfoState> {
       id: event.id,
       title: event.title,
       description: event.description,
-      date: event.date,
-      timeStart: event.timeStart,
-      timeEnd: event.timeEnd,
+      date: event.dateTimeEnd,
+      timeStart: TimeOfDay.fromDateTime(event.dateTimeStart),
+      timeEnd: TimeOfDay.fromDateTime(event.dateTimeEnd),
       location: event.location,
       reminders: event.reminders
     ));

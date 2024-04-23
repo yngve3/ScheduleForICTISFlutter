@@ -20,8 +20,8 @@ class ItemCouple extends StatelessWidget {
     return InkWell(
       onTap: () => context.go(Routes.coupleNotesList.path({"couple_id": couple.id})),
       child: CardWithTimeOnLeft(
-        timeStart: couple.timeStart,
-        timeEnd: couple.timeEnd,
+        timeStart: TimeOfDay.fromDateTime(couple.dateTimeStart),
+        timeEnd: TimeOfDay.fromDateTime(couple.dateTimeEnd),
         dividerColor: _getDividerColor(context),
         timeStartTextStyle: context.textTheme.bodyLarge,
         timeEndTextStyle: context.textTheme.bodySmall,

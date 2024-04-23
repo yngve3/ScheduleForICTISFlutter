@@ -37,7 +37,7 @@ class CoupleNotesListPage extends StatelessWidget {
                 children: [
                   DisciplineAndDate(
                     discipline: state.couple?.discipline ?? "",
-                    date: state.couple?.date ?? DateTime.now(),
+                    date: state.couple?.dateTimeEnd ?? DateTime.now(),
                   ),
                   const SizedBox(height: 5),
                   Text(

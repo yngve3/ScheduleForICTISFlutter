@@ -17,7 +17,7 @@ class NoteInfoCubit extends Cubit<NoteInfoState> {
       noteID: note.id,
       title: note.title,
       description: note.description,
-      date: couple.date,
+      date: couple.dateTimeEnd,
       discipline: couple.discipline,
       files: note.attachedFiles,
       reminders: note.reminders

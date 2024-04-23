@@ -7,10 +7,10 @@ import '../couple/couple_type.dart';
 import '../reminder/reminder.dart';
 
 abstract class DayScheduleItem {
-  final TimeOfDay timeStart;
-  final TimeOfDay timeEnd;
+  final DateTime dateTimeStart;
+  final DateTime dateTimeEnd;
 
-  DayScheduleItem(this.timeStart, this.timeEnd);
+  DayScheduleItem(this.dateTimeStart, this.dateTimeEnd);
 }
 
 class Couple extends DayScheduleItem {
@@ -18,27 +18,24 @@ class Couple extends DayScheduleItem {
   final CoupleType type;
   final String discipline;
   final String lecturers;
-  final DateTime date;
   final String id;
 
-  Couple(super.timeStart, super.timeEnd, {
+  Couple(super.dateTimeStart, super.dateTimeEnd, {
     required this.audiences,
     required this.type,
     required this.discipline,
     required this.lecturers,
-    required this.date,
     required this.id
   });
 
   factory Couple.fromCoupleDB(CoupleDB coupleDB) {
     return Couple(
-      TimeOfDayExtension.parse(coupleDB.timeStart),
-      TimeOfDayExtension.parse(coupleDB.timeEnd),
+      coupleDB.dateTimeStart,
+      coupleDB.dateTimeEnd,
       audiences: coupleDB.audiences,
       type: coupleDB.type ?? CoupleType.none,
       discipline: coupleDB.discipline,
       lecturers: coupleDB.lecturers,
-      date: coupleDB.dateTimeEnd,
       id: coupleDB.id,
     );
   }
@@ -53,13 +50,11 @@ class Event extends DayScheduleItem {
   final String title;
   final String? description;
   final String? location;
-  final DateTime date;
   final int id;
   final List<Reminder>? reminders;
 
-  Event(super.timeStart, super.timeEnd, {
+  Event(super.dateTimeStart, super.dateTimeEnd, {
     required this.title,
-    required this.date,
     required this.id,
     this.description,
     this.location,
@@ -68,14 +63,13 @@ class Event extends DayScheduleItem {
 
   factory Event.fromEventDB(EventDB eventDB) {
     return Event(
-      TimeOfDayExtension.parse(eventDB.timeStart),
-      TimeOfDayExtension.parse(eventDB.timeEnd),
+      eventDB.dateTimeStart,
+      eventDB.dateTimeEnd,
       title: eventDB.title,
       description: eventDB.description,
       location: eventDB.location,
-      date: eventDB.date,
       id: eventDB.id,
-      reminders: eventDB.reminders
+      reminders: eventDB.reminders,
     );
   }
 }

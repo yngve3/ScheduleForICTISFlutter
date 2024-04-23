@@ -59,9 +59,9 @@ class NoteAddCubit extends Cubit<NoteAddState> {
     
     emit(state.copyWith(
       coupleID: couple.id,
-      date: couple.date,
+      date: couple.dateTimeEnd,
       discipline: couple.discipline,
-      time: couple.timeStart
+      time: TimeOfDay.fromDateTime(couple.dateTimeStart)
     ));
   }
 

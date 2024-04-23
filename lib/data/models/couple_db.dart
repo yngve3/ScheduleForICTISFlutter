@@ -20,10 +20,9 @@ class CoupleDB {
   final String lecturers;
 
   @Property(type: PropertyType.date)
+  final DateTime dateTimeStart;
+  @Property(type: PropertyType.date)
   final DateTime dateTimeEnd;
-
-  final String timeStart;
-  final String timeEnd;
 
   @Transient() CoupleType? type;
 
@@ -42,8 +41,7 @@ class CoupleDB {
     required this.discipline,
     required this.lecturers,
     required this.dateTimeEnd,
-    required this.timeStart,
-    required this.timeEnd
+    required this.dateTimeStart
   });
 
   static CoupleDB fromString(String coupleStr, {
@@ -80,9 +78,8 @@ class CoupleDB {
       audiences: audiences,
       discipline: input,
       lecturers: lecturers.isNotEmpty ? lecturers : groups,
-      timeStart: timeStart.string,
-      timeEnd: timeEnd.string,
-      dateTimeEnd: DateTime(date.year, date.month, date.day, timeEnd.hour, timeEnd.minute)
+      dateTimeStart: DateTime(date.year, date.month, date.day, timeStart.hour, timeStart.minute),
+      dateTimeEnd: DateTime(date.year, date.month, date.day, timeEnd.hour, timeEnd.minute),
     );
 
     coupleDB.type = CoupleType.fromString(type);

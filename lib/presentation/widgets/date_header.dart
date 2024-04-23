@@ -21,6 +21,7 @@ class DateHeader extends StatelessWidget {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Column(

@@ -7,6 +7,7 @@ import 'package:schedule_for_ictis_flutter/data/repositories/favorite_schedules_
 import 'package:schedule_for_ictis_flutter/data/repositories/week_number_repository.dart';
 import 'package:schedule_for_ictis_flutter/domain/models/schedule/day_schedule/day_schedule.dart';
 import 'package:schedule_for_ictis_flutter/domain/models/week_number.dart';
+import 'package:schedule_for_ictis_flutter/presentation/extensions/time_of_day_ext.dart';
 
 import '../../data/models/couple_db.dart';
 import '../../data/models/event_db.dart';
@@ -67,7 +68,7 @@ class ScheduleInteractor {
       List<DayScheduleItem> items = [];
       items.addAll(
           eventsDB
-              .where((eventDB) => eventDB.date.weekday == weekday)
+              .where((eventDB) => eventDB.dateTimeEnd.weekday == weekday)
               .map((eventDB) => Event.fromEventDB(eventDB))
               .toList()
       );
@@ -94,6 +95,8 @@ class ScheduleInteractor {
         isVPK = vpkCouplesDB.isEmpty && _containsVPKPlaceHolder(couplesDBByWeekDay);
       }
 
+      items.sort((a, b) => a.dateTimeStart.compareTo(b.dateTimeStart));
+
       daySchedules.add(DaySchedule(items: items, isVPK: isVPK));
     }
 
@@ -104,3 +107,4 @@ class ScheduleInteractor {
     return couplesDB.firstWhereOrNull((coupleDB) => coupleDB.isVPKPlaceHolder) != null;
   }
 }
+

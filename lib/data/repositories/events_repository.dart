@@ -17,7 +17,7 @@ class EventsRepository {
   }
 
   List<EventDB> getEventsAfter(DateTime dateTime) {
-    final query = _eventsBox.query(EventDB_.date.greaterThanDate(dateTime));
+    final query = _eventsBox.query(EventDB_.dateTimeEnd.greaterThanDate(dateTime));
     return query.build().find();
   }
 

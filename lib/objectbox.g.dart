@@ -29,7 +29,7 @@ final _entities = <obx_int.ModelEntity>[
   obx_int.ModelEntity(
       id: const obx_int.IdUid(6, 5480714166435319607),
       name: 'CoupleDB',
-      lastPropertyId: const obx_int.IdUid(14, 605446746748711282),
+      lastPropertyId: const obx_int.IdUid(15, 7162566815983338014),
       flags: 0,
       properties: <obx_int.ModelProperty>[
         obx_int.ModelProperty(
@@ -83,14 +83,9 @@ final _entities = <obx_int.ModelEntity>[
             type: 10,
             flags: 0),
         obx_int.ModelProperty(
-            id: const obx_int.IdUid(13, 5630191814713138280),
-            name: 'timeStart',
-            type: 9,
-            flags: 0),
-        obx_int.ModelProperty(
-            id: const obx_int.IdUid(14, 605446746748711282),
-            name: 'timeEnd',
-            type: 9,
+            id: const obx_int.IdUid(15, 7162566815983338014),
+            name: 'dateTimeStart',
+            type: 10,
             flags: 0)
       ],
       relations: <obx_int.ModelRelation>[],
@@ -98,7 +93,7 @@ final _entities = <obx_int.ModelEntity>[
   obx_int.ModelEntity(
       id: const obx_int.IdUid(13, 5408297173790329811),
       name: 'EventDB',
-      lastPropertyId: const obx_int.IdUid(8, 1668606529899355858),
+      lastPropertyId: const obx_int.IdUid(10, 5124352015699425989),
       flags: 0,
       properties: <obx_int.ModelProperty>[
         obx_int.ModelProperty(
@@ -117,21 +112,6 @@ final _entities = <obx_int.ModelEntity>[
             type: 9,
             flags: 0),
         obx_int.ModelProperty(
-            id: const obx_int.IdUid(4, 328405976758079175),
-            name: 'date',
-            type: 10,
-            flags: 0),
-        obx_int.ModelProperty(
-            id: const obx_int.IdUid(5, 1760040761526889768),
-            name: 'timeStart',
-            type: 9,
-            flags: 0),
-        obx_int.ModelProperty(
-            id: const obx_int.IdUid(6, 4075190789421474376),
-            name: 'timeEnd',
-            type: 9,
-            flags: 0),
-        obx_int.ModelProperty(
             id: const obx_int.IdUid(7, 2140713880612862238),
             name: 'weekNum',
             type: 6,
@@ -140,6 +120,16 @@ final _entities = <obx_int.ModelEntity>[
             id: const obx_int.IdUid(8, 1668606529899355858),
             name: 'location',
             type: 9,
+            flags: 0),
+        obx_int.ModelProperty(
+            id: const obx_int.IdUid(9, 6927335239875420421),
+            name: 'dateTimeEnd',
+            type: 10,
+            flags: 0),
+        obx_int.ModelProperty(
+            id: const obx_int.IdUid(10, 5124352015699425989),
+            name: 'dateTimeStart',
+            type: 10,
             flags: 0)
       ],
       relations: <obx_int.ModelRelation>[
@@ -441,7 +431,12 @@ obx_int.ModelDefinition getObjectBoxModel() {
         3536761177846029287,
         2055389319938891387,
         5340708925378251933,
-        9163641180261437739
+        9163641180261437739,
+        328405976758079175,
+        5630191814713138280,
+        605446746748711282,
+        1760040761526889768,
+        4075190789421474376
       ],
       retiredRelationUids: const [7624436913426914363],
       modelVersion: 5,
@@ -465,9 +460,7 @@ obx_int.ModelDefinition getObjectBoxModel() {
           final lecturersOffset = fbb.writeString(object.lecturers);
           final dbTypeOffset =
               object.dbType == null ? null : fbb.writeString(object.dbType!);
-          final timeStartOffset = fbb.writeString(object.timeStart);
-          final timeEndOffset = fbb.writeString(object.timeEnd);
-          fbb.startTable(15);
+          fbb.startTable(16);
           fbb.addOffset(0, idOffset);
           fbb.addOffset(1, audiencesOffset);
           fbb.addOffset(2, disciplineOffset);
@@ -477,8 +470,7 @@ obx_int.ModelDefinition getObjectBoxModel() {
           fbb.addInt64(9, object.weekNumber.targetId);
           fbb.addInt64(10, object.scheduleSubject.targetId);
           fbb.addInt64(11, object.dateTimeEnd.millisecondsSinceEpoch);
-          fbb.addOffset(12, timeStartOffset);
-          fbb.addOffset(13, timeEndOffset);
+          fbb.addInt64(14, object.dateTimeStart.millisecondsSinceEpoch);
           fbb.finish(fbb.endTable());
           return object.dbID;
         },
@@ -495,18 +487,15 @@ obx_int.ModelDefinition getObjectBoxModel() {
               .vTableGet(buffer, rootOffset, 10, '');
           final dateTimeEndParam = DateTime.fromMillisecondsSinceEpoch(
               const fb.Int64Reader().vTableGet(buffer, rootOffset, 26, 0));
-          final timeStartParam = const fb.StringReader(asciiOptimization: true)
-              .vTableGet(buffer, rootOffset, 28, '');
-          final timeEndParam = const fb.StringReader(asciiOptimization: true)
-              .vTableGet(buffer, rootOffset, 30, '');
+          final dateTimeStartParam = DateTime.fromMillisecondsSinceEpoch(
+              const fb.Int64Reader().vTableGet(buffer, rootOffset, 32, 0));
           final object = CoupleDB(
               id: idParam,
               audiences: audiencesParam,
               discipline: disciplineParam,
               lecturers: lecturersParam,
               dateTimeEnd: dateTimeEndParam,
-              timeStart: timeStartParam,
-              timeEnd: timeEndParam)
+              dateTimeStart: dateTimeStartParam)
             ..dbType = const fb.StringReader(asciiOptimization: true)
                 .vTableGetNullable(buffer, rootOffset, 14)
             ..dbID =
@@ -533,20 +522,17 @@ obx_int.ModelDefinition getObjectBoxModel() {
           final descriptionOffset = object.description == null
               ? null
               : fbb.writeString(object.description!);
-          final timeStartOffset = fbb.writeString(object.timeStart);
-          final timeEndOffset = fbb.writeString(object.timeEnd);
           final locationOffset = object.location == null
               ? null
               : fbb.writeString(object.location!);
-          fbb.startTable(9);
+          fbb.startTable(11);
           fbb.addInt64(0, object.id);
           fbb.addOffset(1, titleOffset);
           fbb.addOffset(2, descriptionOffset);
-          fbb.addInt64(3, object.date.millisecondsSinceEpoch);
-          fbb.addOffset(4, timeStartOffset);
-          fbb.addOffset(5, timeEndOffset);
           fbb.addInt64(6, object.weekNum);
           fbb.addOffset(7, locationOffset);
+          fbb.addInt64(8, object.dateTimeEnd.millisecondsSinceEpoch);
+          fbb.addInt64(9, object.dateTimeStart.millisecondsSinceEpoch);
           fbb.finish(fbb.endTable());
           return object.id;
         },
@@ -555,14 +541,12 @@ obx_int.ModelDefinition getObjectBoxModel() {
           final rootOffset = buffer.derefObject(0);
           final idParam =
               const fb.Int64Reader().vTableGet(buffer, rootOffset, 4, 0);
-          final timeStartParam = const fb.StringReader(asciiOptimization: true)
-              .vTableGet(buffer, rootOffset, 12, '');
-          final timeEndParam = const fb.StringReader(asciiOptimization: true)
-              .vTableGet(buffer, rootOffset, 14, '');
           final titleParam = const fb.StringReader(asciiOptimization: true)
               .vTableGet(buffer, rootOffset, 6, '');
-          final dateParam = DateTime.fromMillisecondsSinceEpoch(
-              const fb.Int64Reader().vTableGet(buffer, rootOffset, 10, 0));
+          final dateTimeStartParam = DateTime.fromMillisecondsSinceEpoch(
+              const fb.Int64Reader().vTableGet(buffer, rootOffset, 22, 0));
+          final dateTimeEndParam = DateTime.fromMillisecondsSinceEpoch(
+              const fb.Int64Reader().vTableGet(buffer, rootOffset, 20, 0));
           final weekNumParam =
               const fb.Int64Reader().vTableGet(buffer, rootOffset, 16, 0);
           final locationParam = const fb.StringReader(asciiOptimization: true)
@@ -572,10 +556,9 @@ obx_int.ModelDefinition getObjectBoxModel() {
                   .vTableGetNullable(buffer, rootOffset, 8);
           final object = EventDB(
               id: idParam,
-              timeStart: timeStartParam,
-              timeEnd: timeEndParam,
               title: titleParam,
-              date: dateParam,
+              dateTimeStart: dateTimeStartParam,
+              dateTimeEnd: dateTimeEndParam,
               weekNum: weekNumParam,
               location: locationParam,
               description: descriptionParam);
@@ -827,13 +810,9 @@ class CoupleDB_ {
   static final dateTimeEnd =
       obx.QueryDateProperty<CoupleDB>(_entities[0].properties[8]);
 
-  /// see [CoupleDB.timeStart]
-  static final timeStart =
-      obx.QueryStringProperty<CoupleDB>(_entities[0].properties[9]);
-
-  /// see [CoupleDB.timeEnd]
-  static final timeEnd =
-      obx.QueryStringProperty<CoupleDB>(_entities[0].properties[10]);
+  /// see [CoupleDB.dateTimeStart]
+  static final dateTimeStart =
+      obx.QueryDateProperty<CoupleDB>(_entities[0].properties[9]);
 }
 
 /// [EventDB] entity fields to define ObjectBox queries.
@@ -850,25 +829,21 @@ class EventDB_ {
   static final description =
       obx.QueryStringProperty<EventDB>(_entities[1].properties[2]);
 
-  /// see [EventDB.date]
-  static final date =
-      obx.QueryDateProperty<EventDB>(_entities[1].properties[3]);
-
-  /// see [EventDB.timeStart]
-  static final timeStart =
-      obx.QueryStringProperty<EventDB>(_entities[1].properties[4]);
-
-  /// see [EventDB.timeEnd]
-  static final timeEnd =
-      obx.QueryStringProperty<EventDB>(_entities[1].properties[5]);
-
   /// see [EventDB.weekNum]
   static final weekNum =
-      obx.QueryIntegerProperty<EventDB>(_entities[1].properties[6]);
+      obx.QueryIntegerProperty<EventDB>(_entities[1].properties[3]);
 
   /// see [EventDB.location]
   static final location =
-      obx.QueryStringProperty<EventDB>(_entities[1].properties[7]);
+      obx.QueryStringProperty<EventDB>(_entities[1].properties[4]);
+
+  /// see [EventDB.dateTimeEnd]
+  static final dateTimeEnd =
+      obx.QueryDateProperty<EventDB>(_entities[1].properties[5]);
+
+  /// see [EventDB.dateTimeStart]
+  static final dateTimeStart =
+      obx.QueryDateProperty<EventDB>(_entities[1].properties[6]);
 
   /// see [EventDB.reminders]
   static final reminders =

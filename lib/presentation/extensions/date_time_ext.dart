@@ -20,3 +20,11 @@ extension DateTimeWeekNum on DateTime {
     return ((dayOfDec28 - dec28.weekday + 10) / 7).floor();
   }
 }
+
+extension DateTimeCompare on DateTime {
+  int compareTo(DateTime other) {
+    if (isBefore(other)) return -1;
+    if (isAfter(other)) return 1;
+    return 0;
+  }
+}

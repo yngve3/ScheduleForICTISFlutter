@@ -79,12 +79,15 @@ class _Schedule extends State<Schedule> {
         builder: (context, state) {
           return Column(
             children: [
-              DateHeader(
-                date: state.selectedDay,
-                studyWeek: state.weekSchedule.weekNumber.studyWeekNumber,
-                buttonIsVisible: !isSameDay(DateTime.now(), state.selectedDay),
-                onButtonToCurrentDateTapped: () =>
-                  context.read<ScheduleCubit>().selectDay(DateTime.now()),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 15),
+                child: DateHeader(
+                  date: state.selectedDay,
+                  studyWeek: state.weekSchedule.weekNumber.studyWeekNumber,
+                  buttonIsVisible: !isSameDay(DateTime.now(), state.selectedDay),
+                  onButtonToCurrentDateTapped: () =>
+                      context.read<ScheduleCubit>().selectDay(DateTime.now()),
+                ),
               ),
               const SizedBox(height: 10),
               TableCalendar(

@@ -9,6 +9,7 @@ part 'home_page_state.freezed.dart';
 class HomePageState with _$HomePageState {
   const factory HomePageState({
     @Default([]) List<DayScheduleItem> scheduleItems,
-    @Default([]) List<Note> notes
+    @Default([]) List<Note> notes,
+    int? studyWeekNumber
   }) = _HomePageState;
 }

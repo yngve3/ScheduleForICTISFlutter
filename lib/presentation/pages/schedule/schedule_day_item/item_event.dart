@@ -19,8 +19,8 @@ class ItemEvent extends StatelessWidget {
     return InkWell(
       onTap: () => context.go(Routes.eventInfo.path({"event_id": event.id})),
       child: CardWithTimeOnLeft(
-        timeStart: event.timeStart,
-        timeEnd: event.timeEnd,
+        timeStart: TimeOfDay.fromDateTime(event.dateTimeStart),
+        timeEnd: TimeOfDay.fromDateTime(event.dateTimeEnd),
         color: context.customColors.accent,
         timePanelTopPadding: 5,
         dividerColor: context.customColors.background,

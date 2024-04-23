@@ -23,7 +23,8 @@ class HomePage extends StatelessWidget {
           return ScrollableScreen(
             top: DateHeader(
               date: DateTime.now(),
-              buttonIsVisible: false
+              buttonIsVisible: false,
+              studyWeek: state.studyWeekNumber,
             ),
             scrollable: Column(
               crossAxisAlignment: CrossAxisAlignment.start,

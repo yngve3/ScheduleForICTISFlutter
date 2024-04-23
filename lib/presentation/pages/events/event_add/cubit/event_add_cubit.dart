@@ -32,10 +32,10 @@ class EventAddCubit extends Cubit<EventAddState> {
       id: event.id,
       title: event.title,
       description: event.description ?? "",
-      timeStart: event.timeStart,
-      timeEnd: event.timeEnd,
+      timeStart: TimeOfDay.fromDateTime(event.dateTimeStart),
+      timeEnd: TimeOfDay.fromDateTime(event.dateTimeEnd),
       location: event.location ?? "",
-      date: event.date,
+      date: event.dateTimeEnd,
       isSaveButtonEnabled: true,
       reminders: StateList(event.reminders ?? [])
     ));

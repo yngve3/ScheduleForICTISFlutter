@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:schedule_for_ictis_flutter/presentation/extensions/context_ext.dart';
 import 'package:schedule_for_ictis_flutter/presentation/pages/home/cubit/home_page_cubit.dart';
-import 'package:schedule_for_ictis_flutter/presentation/pages/notes/couple_notes_list/couple_notes_list.dart';
 import 'package:schedule_for_ictis_flutter/presentation/pages/schedule/schedule_day_item/schedule_day_item_widget_factory.dart';
 import 'package:schedule_for_ictis_flutter/presentation/widgets/date_header.dart';
 import 'package:schedule_for_ictis_flutter/presentation/widgets/screen.dart';
@@ -50,7 +49,7 @@ class HomePage extends StatelessWidget {
                 Text("Ближайшие события", style: context.textTheme.headlineMedium),
                 Column(
                   children: state.scheduleItems
-                      .map((element) => ScheduleDayItemWidgetFactory.create(element))
+                      .map((element) => ScheduleDayItemWidgetFactory.create(element, showIndicator: true, onIndicatorEnd: () => context.read<HomePageCubit>().loadState()))
                       .toList(),
                 ),
                 Row(
@@ -63,11 +62,6 @@ class HomePage extends StatelessWidget {
                     ),
                   ],
                 ),
-                Column(
-                  children: state.notes
-                      .map((e) => NotesListItem(note: e, coupleID: e.coupleID))
-                      .toList(),
-                )
               ],
             )
           );

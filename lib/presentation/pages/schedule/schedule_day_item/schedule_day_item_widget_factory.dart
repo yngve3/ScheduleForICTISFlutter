@@ -6,10 +6,13 @@ import 'item_event.dart';
 import 'item_unknown.dart';
 
 class ScheduleDayItemWidgetFactory {
-  static Widget create(DayScheduleItem dayScheduleItem) {
+  static Widget create(DayScheduleItem dayScheduleItem, {
+    VoidCallback? onIndicatorEnd,
+    bool showIndicator = false
+  }) {
     return switch (dayScheduleItem) {
       Couple _=> ItemCouple(couple: dayScheduleItem),
-      Event _=> ItemEvent(event: dayScheduleItem),
+      Event _=> ItemEvent(event: dayScheduleItem, showIndicator: showIndicator, onIndicatorEnd: onIndicatorEnd),
       _=> const ItemUnknown()
     };
   }

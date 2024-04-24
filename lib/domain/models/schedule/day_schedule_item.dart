@@ -23,9 +23,13 @@ abstract class DayScheduleItem {
   double get percent {
     if (!isNow) return -1;
 
-    final diff = dateTimeStart.millisecondsSinceEpoch - dateTimeEnd.millisecondsSinceEpoch;
+    final diff = dateTimeEnd.millisecondsSinceEpoch - dateTimeStart.millisecondsSinceEpoch;
     final currDate = DateTime.now().millisecondsSinceEpoch - dateTimeStart.millisecondsSinceEpoch;
-    return (currDate * 100) / diff;
+    return currDate / diff;
+  }
+
+  Duration get duration {
+    return dateTimeEnd.difference(dateTimeStart);
   }
 }
 

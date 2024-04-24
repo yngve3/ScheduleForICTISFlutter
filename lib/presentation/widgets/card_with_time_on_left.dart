@@ -44,7 +44,9 @@ class CardWithTimeOnLeft extends StatefulWidget {
     this.timeStartTextStyle,
     this.timeEndTextStyle,
     this.indicatorInitPercentage = 0,
-    this.indicatorDuration = Duration.zero
+    this.indicatorDuration = Duration.zero,
+    this.onIndicatorEnd,
+    this.showIndicator = false
   });
 
   final TimeOfDay timeStart;
@@ -58,6 +60,8 @@ class CardWithTimeOnLeft extends StatefulWidget {
 
   final double indicatorInitPercentage;
   final Duration indicatorDuration;
+  final VoidCallback? onIndicatorEnd;
+  final bool showIndicator;
 
   @override
   State<StatefulWidget> createState() => _CardWithTimeOnLeftState();
@@ -73,9 +77,15 @@ class _CardWithTimeOnLeftState extends State<CardWithTimeOnLeft> with TickerProv
     _controller = AnimationController(
       vsync: this,
       duration: widget.indicatorDuration
-    )..addListener(() {
-      setState(() {});
-    });
+    );
+
+    _controller.addListener(() => setState(() {}));
+    final percent = _getPercentage();
+    if (percent != 0) {
+      _controller.forward(from: percent)
+          .then((value) => widget.onIndicatorEnd?.call());
+    }
+
     super.initState();
   }
 
@@ -87,19 +97,17 @@ class _CardWithTimeOnLeftState extends State<CardWithTimeOnLeft> with TickerProv
 
   @override
   Widget build(BuildContext context) {
-    _controller.value = _getPercentage();
     return Card(
       color: widget.color,
       child: IntrinsicHeight(
         child: Stack(
           fit: StackFit.expand,
           children: [
-            LinearProgressIndicator(
+            widget.showIndicator ? LinearProgressIndicator(
               value: _controller.value,
-
               borderRadius: BorderRadius.circular(10),
               backgroundColor: widget.color ?? context.customColors.card,
-            ),
+            ) : const SizedBox.shrink(),
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 10),
               child: Row(

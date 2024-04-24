@@ -4,9 +4,11 @@ import 'package:go_router/go_router.dart';
 import 'package:schedule_for_ictis_flutter/presentation/extensions/context_ext.dart';
 import 'package:schedule_for_ictis_flutter/presentation/pages/notes/couple_notes_list/cubit/couple_notes_list_cubit.dart';
 import 'package:schedule_for_ictis_flutter/presentation/widgets/app_bar.dart';
+import 'package:schedule_for_ictis_flutter/presentation/widgets/date_text.dart';
 import 'package:schedule_for_ictis_flutter/presentation/widgets/discipline_and_date.dart';
 
 import '../../../../domain/models/note/note.dart';
+import '../../../../domain/models/schedule/day_schedule_item.dart';
 import '../../../../gen/assets.gen.dart';
 import '../../../route/routes.dart';
 import '../../../widgets/screen.dart';
@@ -50,7 +52,7 @@ class CoupleNotesListPage extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: state.notes.map((element) => NotesListItem(
                   note: element,
-                  coupleID: coupleID ?? "",
+                  couple: state.couple,
                 )).toList(),
               ),
               bottom: FilledButton(
@@ -69,29 +71,41 @@ class NotesListItem extends StatelessWidget {
   const NotesListItem({
     super.key,
     required this.note,
-    required this.coupleID
+    this.couple,
+    this.showCoupleInformation = false
   });
 
   final Note note;
-  final String coupleID;
+  final Couple? couple;
+  final bool showCoupleInformation;
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () => context.go(Routes.noteInfo.path({"couple_id": coupleID, "note_id": note.id})),
+      onTap: () => context.go(Routes.noteInfo.path({"couple_id": couple?.id ?? "", "note_id": note.id})),
       child: Card(
         child: Padding(
           padding: const EdgeInsets.all(20),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          child: Column(
             children: [
-              Text(note.title, style: context.textTheme.titleLarge),
-              SizedBox.square(
-                dimension: 25,
-                child: note.hasFiles ? Assets.icons.icAttach.image(
-                      color: context.customColors.accent
-                ) : null,
-              )
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(note.title, style: context.textTheme.titleLarge),
+                  SizedBox.square(
+                    dimension: 25,
+                    child: note.hasFiles ? Assets.icons.icAttach.image(
+                        color: context.customColors.accent
+                    ) : null,
+                  )
+                ],
+              ),
+              showCoupleInformation ? Column(
+                children: [
+                  DateText(date: note.date),
+                  Text(couple?.discipline ?? "")
+                ],
+              ) : const SizedBox.shrink()
             ],
           ),
         ),
@@ -105,11 +119,13 @@ class NotesList extends StatelessWidget {
   const NotesList({
     super.key,
     required this.notes,
-    required this.coupleID
+    required this.couple,
+    this.showCoupleInformation = false
   });
 
   final List<Note> notes;
-  final String coupleID;
+  final Couple couple;
+  final bool showCoupleInformation;
 
   @override
   Widget build(BuildContext context) {
@@ -119,7 +135,8 @@ class NotesList extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: notes.map((element) => NotesListItem(
             note: element,
-            coupleID: coupleID,
+            couple: couple,
+            showCoupleInformation: showCoupleInformation,
           )).toList(),
         ),
       ),

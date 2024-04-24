@@ -9,16 +9,24 @@ import '../../../widgets/card_with_time_on_left.dart';
 class ItemEvent extends StatelessWidget {
   const ItemEvent({
     super.key,
-    required this.event
+    required this.event,
+    this.showIndicator = false,
+    this.onIndicatorEnd
   });
 
   final Event event;
+  final bool showIndicator;
+  final VoidCallback? onIndicatorEnd;
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () => context.go(Routes.eventInfo.path({"event_id": event.id})),
       child: CardWithTimeOnLeft(
+        indicatorDuration: event.duration,
+        indicatorInitPercentage: event.percent,
+        onIndicatorEnd: onIndicatorEnd,
+        showIndicator: showIndicator,
         timeStart: TimeOfDay.fromDateTime(event.dateTimeStart),
         timeEnd: TimeOfDay.fromDateTime(event.dateTimeEnd),
         color: context.customColors.accent,

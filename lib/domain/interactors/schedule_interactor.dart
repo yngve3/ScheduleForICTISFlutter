@@ -1,14 +1,13 @@
-import 'dart:async';
-
 import 'package:collection/collection.dart';
+import 'package:stream_transform/stream_transform.dart';
+
 import 'package:schedule_for_ictis_flutter/data/repositories/couples_repository.dart';
 import 'package:schedule_for_ictis_flutter/data/repositories/events_repository.dart';
 import 'package:schedule_for_ictis_flutter/data/repositories/favorite_schedules_repository.dart';
 import 'package:schedule_for_ictis_flutter/data/repositories/week_number_repository.dart';
+
 import 'package:schedule_for_ictis_flutter/domain/models/schedule/day_schedule/day_schedule.dart';
 import 'package:schedule_for_ictis_flutter/domain/models/week_number.dart';
-import 'package:schedule_for_ictis_flutter/presentation/extensions/time_of_day_ext.dart';
-
 import '../../data/models/couple_db.dart';
 import '../../data/models/event_db.dart';
 import '../models/schedule/day_schedule_item.dart';
@@ -34,27 +33,50 @@ class ScheduleInteractor {
   }
 
   Future<Stream<WeekSchedule>> getWeekSchedule({WeekNumber? weekNumber}) async {
-    await loadSchedule(weekNumber);
+    loadSchedule(weekNumber);
 
     weekNumber ??= _weekNumberRepository.getCurrentWeekNumber();
     if (weekNumber == null) return const Stream.empty();
 
-    List<CoupleDB> mainCouplesDB = [];
+    List<Stream<Object>> streams = [];
+
+    streams.add(_eventsRepository.getEventsByWeekNum(weekNumber));
+
     final mainScheduleSubject = await _favoriteSchedulesRepository.getSelectedFavoriteSchedule();
     if (mainScheduleSubject != null) {
-       mainCouplesDB.addAll(_couplesRepository.getCouples(weekNumber, mainScheduleSubject));
+      streams.add(_couplesRepository.getCouples(weekNumber, mainScheduleSubject));
     }
-
-    List<CoupleDB> vpkCouplesDB = [];
     final vpkScheduleSubject = await _favoriteSchedulesRepository.getSelectedFavoriteSchedule(isVPK: true);
     if (vpkScheduleSubject != null) {
-      if (mainCouplesDB.isEmpty || _containsVPKPlaceHolder(mainCouplesDB)) {
-        vpkCouplesDB.addAll(_couplesRepository.getCouples(weekNumber, vpkScheduleSubject));
+      streams.add(_couplesRepository.getCouples(weekNumber, vpkScheduleSubject));
+    }
+
+    return combineLatest(streams)
+        .map((data) => _create(data: data, weekNumber: weekNumber));
+  }
+
+  Stream<List> combineLatest(Iterable<Stream<Object>> streams) {
+    final Stream<Object> first = streams.first.cast<Object>();
+    final List<Stream<Object>> others = [...streams.skip(1)];
+    return first.combineLatestAll(others);
+  }
+
+  WeekSchedule _create({required List<dynamic> data, WeekNumber? weekNumber}) {
+    List<EventDB> eventsDB = [];
+    List<CoupleDB> mainCouplesDB = [];
+    List<CoupleDB> vpkCouplesDB = [];
+
+    if (data.isNotEmpty) {
+      eventsDB = data[0];
+      if (data.length > 1) {
+        mainCouplesDB = data[1];
+        if (data.length == 3) {
+          vpkCouplesDB = data[2];
+        }
       }
     }
 
-    final eventsDBStream = _eventsRepository.getEventsByWeekNum(weekNumber);
-    return eventsDBStream.map((eventsDB) => _createWeekSchedule(eventsDB: eventsDB, mainCouplesDB: mainCouplesDB, weekNumber: weekNumber, vpkCouplesDB: vpkCouplesDB));
+    return _createWeekSchedule(eventsDB: eventsDB, mainCouplesDB: mainCouplesDB, vpkCouplesDB: vpkCouplesDB, weekNumber: weekNumber);
   }
 
   WeekSchedule _createWeekSchedule({
@@ -84,13 +106,14 @@ class ScheduleInteractor {
                 .map((coupleDB) => Couple.fromCoupleDB(coupleDB))
                 .toList()
         );
-
-        items.addAll(
+        if (_containsVPKPlaceHolder(couplesDBByWeekDay) && vpkCouplesDB.isNotEmpty) {
+          items.addAll(
             vpkCouplesDB
                 .where((coupleDB) => coupleDB.dateTimeEnd.weekday == weekday && coupleDB.isNotEmpty)
                 .map((coupleDB) => Couple.fromCoupleDB(coupleDB))
                 .toList()
-        );
+          );
+        }
 
         isVPK = vpkCouplesDB.isEmpty && _containsVPKPlaceHolder(couplesDBByWeekDay);
       }

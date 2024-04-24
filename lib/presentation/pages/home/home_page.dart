@@ -7,6 +7,7 @@ import 'package:schedule_for_ictis_flutter/presentation/pages/schedule/schedule_
 import 'package:schedule_for_ictis_flutter/presentation/widgets/date_header.dart';
 import 'package:schedule_for_ictis_flutter/presentation/widgets/screen.dart';
 
+import '../../../gen/assets.gen.dart';
 import 'cubit/home_page_state.dart';
 
 class HomePage extends StatelessWidget {
@@ -30,24 +31,19 @@ class HomePage extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 GestureDetector(
-                    child: Card(
-                      elevation: 0,
-                      surfaceTintColor: Colors.white,
-                      color: context.customColors.background,
-                      shape: RoundedRectangleBorder(
-                        side: BorderSide(color: context.customColors.card, width: 2),
-                        borderRadius: BorderRadius.circular(10)
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10),
+                        border: Border.all(width: 2, color: context.customColors.card)
                       ),
-                      child: const Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 10, vertical: 15),
-                        child: Row(
-                          children: [
-                            Icon(Icons.search),
-                            SizedBox(width: 10),
-                            Text("Искать Группы, Преподвателей, Аудитории")
-                          ],
-                        ),
-                      ),
+                      child: Row(
+                        children: [
+                          Assets.icons.icSearch.image(height: 20, width: 20),
+                          const SizedBox(width: 10),
+                          const Text("Искать Группы, Преподвателей, Аудитории")
+                        ],
+                      )
                     )
                 ),
                 const SizedBox(height: 10),

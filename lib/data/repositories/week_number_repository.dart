@@ -11,8 +11,8 @@ class WeekNumberRepository {
     _weekNumberBox = objectBox.store.box<WeekNumber>();
   }
 
-  void add(WeekNumber weekNumber) {
-    _weekNumberBox.put(weekNumber);
+  int add(WeekNumber weekNumber) {
+    return _weekNumberBox.put(weekNumber);
   }
 
   WeekNumber? getCurrentWeekNumber() {

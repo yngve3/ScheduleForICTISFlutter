@@ -80,6 +80,10 @@ class $AssetsIconsGen {
   AssetGenImage get icSchedule =>
       const AssetGenImage('assets/icons/ic_schedule.png');
 
+  /// File path: assets/icons/ic_search.png
+  AssetGenImage get icSearch =>
+      const AssetGenImage('assets/icons/ic_search.png');
+
   /// File path: assets/icons/ic_settings.png
   AssetGenImage get icSettings =>
       const AssetGenImage('assets/icons/ic_settings.png');
@@ -114,6 +118,7 @@ class $AssetsIconsGen {
         icNotification,
         icOpen,
         icSchedule,
+        icSearch,
         icSettings,
         icShare,
         icTask,

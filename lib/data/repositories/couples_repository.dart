@@ -56,13 +56,12 @@ class CouplesRepository {
         .findFirstAsync();
   }
 
-  List<CoupleDB> getCouples(WeekNumber weekNumber, ScheduleSubject scheduleSubject) {
+  Stream<List<CoupleDB>> getCouples(WeekNumber weekNumber, ScheduleSubject scheduleSubject) {
     final query = _couplesBox.query(
         CoupleDB_.scheduleSubject.equals(scheduleSubject.dbId)
-            .and(CoupleDB_.weekNumber.equals(weekNumber.id))
     );
-
-    return query.build().find();
+    query.link(CoupleDB_.weekNumber, WeekNumber_.calendarWeekNumber.equals(weekNumber.calendarWeekNumber));
+    return query.watch(triggerImmediately: true).map((event) => event.find());
   }
 
   List<CoupleDB> getCouplesAfter(DateTime dateTime, ScheduleSubject scheduleSubject) {

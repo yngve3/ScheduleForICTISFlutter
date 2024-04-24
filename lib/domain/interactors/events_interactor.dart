@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:schedule_for_ictis_flutter/data/repositories/events_repository.dart';
 import 'package:schedule_for_ictis_flutter/data/repositories/reminders_repository.dart';
 import 'package:schedule_for_ictis_flutter/presentation/extensions/date_time_ext.dart';
-import 'package:schedule_for_ictis_flutter/presentation/extensions/time_of_day_ext.dart';
 import 'package:schedule_for_ictis_flutter/utils/reminders_helper.dart';
 
 import '../../data/models/event_db.dart';

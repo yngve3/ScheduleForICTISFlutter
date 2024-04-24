@@ -1,8 +1,6 @@
 import 'package:objectbox/objectbox.dart';
 import 'package:schedule_for_ictis_flutter/presentation/extensions/date_time_ext.dart';
 
-import '../../data/models/couple_db.dart';
-
 @Entity()
 class WeekNumber {
   @Id() int id = 0;

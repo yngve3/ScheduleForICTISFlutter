@@ -1,8 +1,5 @@
-import 'package:flutter/material.dart';
-
 import '../../../data/models/couple_db.dart';
 import '../../../data/models/event_db.dart';
-import '../../../presentation/extensions/time_of_day_ext.dart';
 import '../couple/couple_type.dart';
 import '../reminder/reminder.dart';
 
@@ -11,6 +8,25 @@ abstract class DayScheduleItem {
   final DateTime dateTimeEnd;
 
   DayScheduleItem(this.dateTimeStart, this.dateTimeEnd);
+
+  bool get isNow {
+    final dateNow = DateTime.now();
+
+    if (dateNow.isBefore(dateTimeEnd)
+        && dateNow.isAfter(dateTimeStart)) return true;
+    if (dateNow.isAtSameMomentAs(dateTimeStart)
+        || dateNow.isAtSameMomentAs(dateTimeEnd)) return true;
+
+    return false;
+  }
+
+  double get percent {
+    if (!isNow) return -1;
+
+    final diff = dateTimeStart.millisecondsSinceEpoch - dateTimeEnd.millisecondsSinceEpoch;
+    final currDate = DateTime.now().millisecondsSinceEpoch - dateTimeStart.millisecondsSinceEpoch;
+    return (currDate * 100) / diff;
+  }
 }
 
 class Couple extends DayScheduleItem {

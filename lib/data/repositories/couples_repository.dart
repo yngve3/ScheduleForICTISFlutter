@@ -1,7 +1,5 @@
 import 'dart:convert';
 
-import 'package:schedule_for_ictis_flutter/data/repositories/week_number_repository.dart';
-import 'package:schedule_for_ictis_flutter/domain/models/schedule/week_schedule/week_schedule.dart';
 import 'package:schedule_for_ictis_flutter/domain/models/week_number.dart';
 import 'package:schedule_for_ictis_flutter/main.dart';
 
@@ -19,7 +17,7 @@ class CouplesRepository {
     _couplesBox = objectBox.store.box<CoupleDB>();
   }
 
-  Future<WeekNumber?> loadCouples(ScheduleSubject scheduleSubject, WeekNumber? weekNumber) async {
+  Future<void> loadCouples(ScheduleSubject scheduleSubject, WeekNumber? weekNumber) async {
     final id = scheduleSubject.id;
     final requestURL =
         '${AppConfig.baseURL}/'
@@ -40,13 +38,10 @@ class CouplesRepository {
 
         _couplesBox.putMany(couplesDB);
 
-        return couplesDB[0].weekNumber.target!;
       }
     } catch (e) {
       print(e);
     }
-
-    return null;
   }
 
   Future<CoupleDB?> getCoupleByID(String id) {

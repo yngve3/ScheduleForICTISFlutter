@@ -42,7 +42,7 @@ class FavoriteSchedulesListCubit extends Cubit<FavoriteSchedulesListState> {
   void delete(ScheduleSubject scheduleSubject) {
     final list = _getList(scheduleSubject);
     list.remove(scheduleSubject);
-    deletionIdsList.add(scheduleSubject.dbId!);
+    deletionIdsList.add(scheduleSubject.dbId);
     emit(state.byScheduleSubject(list));
   }
 

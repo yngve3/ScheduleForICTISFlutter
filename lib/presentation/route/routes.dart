@@ -1,4 +1,7 @@
 abstract class Routes {
+  static SimpleRoute login = const SimpleRoute("/login");
+  static SimpleRoute registration = const SimpleRoute("/login/registration");
+
   static SimpleRoute schedule = const SimpleRoute("/schedule");
   static SimpleRoute preferences = const SimpleRoute("/preferences");
   static SimpleRoute home = const SimpleRoute("/home");

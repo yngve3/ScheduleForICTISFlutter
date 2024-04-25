@@ -6,6 +6,7 @@ import 'package:schedule_for_ictis_flutter/presentation/pages/notes/note_add/not
 import 'package:schedule_for_ictis_flutter/presentation/pages/notes/note_info/note_info_page.dart';
 import 'package:schedule_for_ictis_flutter/presentation/route/routes.dart';
 
+import '../pages/auth/login/login_page.dart';
 import '../pages/events/event_add/event_add_page.dart';
 import '../pages/events/event_info/event_info_page.dart';
 import '../pages/favorite_schedules/pages/favorite_schedules_add/favorite_schedules_add_page.dart';
@@ -24,9 +25,18 @@ abstract class AppRouter {
 
   static final GoRouter router = GoRouter(
       navigatorKey: _rootNavigatorKey,
-      initialLocation: Routes.home.path,
+      initialLocation: Routes.login.path,
       debugLogDiagnostics: true,
       routes: [
+        GoRoute(
+          path: Routes.login.path,
+          pageBuilder: (BuildContext context, GoRouterState state) {
+            return const NoTransitionPage(
+                child: LoginPage()
+            );
+          },
+          routes: []
+        ),
         ShellRoute(
             navigatorKey: _shellNavigatorKey,
             builder: (BuildContext context, GoRouterState state, Widget child) {

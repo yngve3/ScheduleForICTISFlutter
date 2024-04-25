@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "409468177523",
+    "firebase_url": "https://scheduleforictis-default-rtdb.europe-west1.firebasedatabase.app",
+    "project_id": "scheduleforictis",
+    "storage_bucket": "scheduleforictis.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:409468177523:android:af48ef4fd2301b88212e06",
+        "android_client_info": {
+          "package_name": "com.example.schedule_for_ictis_flutter"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "409468177523-61lhimv0kp3bl286cbua20jga0s8ieei.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA9eMO-X442niY80M_yceGqusgn3TJ4BIY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "409468177523-61lhimv0kp3bl286cbua20jga0s8ieei.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

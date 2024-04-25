@@ -6,7 +6,7 @@ import 'package:schedule_for_ictis_flutter/presentation/pages/favorite_schedules
 import 'package:schedule_for_ictis_flutter/presentation/widgets/app_bar.dart';
 import '../../../../widgets/schedule_subject_widget.dart';
 import '../../../../widgets/screen.dart';
-import '../../../../widgets/search_field.dart';
+import '../../../../widgets/input_field.dart';
 import 'cubit/schedule_search_state.dart';
 
 class FavoriteSchedulesAddPage extends StatelessWidget {
@@ -29,9 +29,10 @@ class FavoriteSchedulesAddPage extends StatelessWidget {
         child: BlocBuilder<ScheduleSearchCubit, ScheduleSearchState> (
           builder: (context, state) {
             return ScrollableScreen(
-              top: SearchField(
+              top: InputField(
                 label: "Введите группу, впк, преподавателя или аудиторию",
                 onSubmit: (value) => context.read<ScheduleSearchCubit>().search(value),
+                textInputAction: TextInputAction.search,
               ),
               scrollable: Align(
                 alignment: Alignment.topLeft,

@@ -24,6 +24,10 @@ class NotesRepository {
     return query.build().find();
   }
 
+  List<Note> getAllNotes() {
+    return _notesBox.getAll();
+  }
+
   void addNote(Note note) {
     _notesBox.putAsync(note);
   }

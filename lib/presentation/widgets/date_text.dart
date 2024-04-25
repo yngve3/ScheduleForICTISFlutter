@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:schedule_for_ictis_flutter/presentation/extensions/context_ext.dart';
 
 class DateText extends StatelessWidget {
   DateText({
@@ -19,7 +20,7 @@ class DateText extends StatelessWidget {
       return const Text("");
     }
     String formattedDate = dateFormat.format(date!).firstSymToUpperCase();
-    return Text(formattedDate, style: style);
+    return Text(formattedDate, style: style ?? context.textTheme.bodyMedium);
   }
 
 }

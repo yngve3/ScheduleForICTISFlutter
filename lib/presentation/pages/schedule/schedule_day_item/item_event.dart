@@ -27,6 +27,7 @@ class ItemEvent extends StatelessWidget {
         indicatorInitPercentage: event.percent,
         onIndicatorEnd: onIndicatorEnd,
         showIndicator: showIndicator,
+        indicatorColor: context.customColors.text1,
         timeStart: TimeOfDay.fromDateTime(event.dateTimeStart),
         timeEnd: TimeOfDay.fromDateTime(event.dateTimeEnd),
         color: context.customColors.accent,

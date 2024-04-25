@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:schedule_for_ictis_flutter/presentation/extensions/context_ext.dart';
 import 'package:schedule_for_ictis_flutter/presentation/pages/home/cubit/home_page_cubit.dart';
 import 'package:schedule_for_ictis_flutter/presentation/pages/schedule/schedule_day_item/schedule_day_item_widget_factory.dart';
@@ -7,6 +8,8 @@ import 'package:schedule_for_ictis_flutter/presentation/widgets/date_header.dart
 import 'package:schedule_for_ictis_flutter/presentation/widgets/screen.dart';
 
 import '../../../gen/assets.gen.dart';
+import '../../route/routes.dart';
+import '../../widgets/notes_list_item.dart';
 import 'cubit/home_page_state.dart';
 
 class HomePage extends StatelessWidget {
@@ -38,9 +41,16 @@ class HomePage extends StatelessWidget {
                       ),
                       child: Row(
                         children: [
-                          Assets.icons.icSearch.image(height: 20, width: 20),
+                          Assets.icons.icSearch.image(height: 25, width: 25),
                           const SizedBox(width: 10),
-                          const Text("Искать Группы, Преподвателей, Аудитории")
+                          Expanded(
+                            child: Text(
+                              "Искать Группы, Преподвателей, Аудитории",
+                              style: context.textTheme.bodyLarge,
+                              overflow: TextOverflow.fade,
+                              softWrap: false,
+                            ),
+                          )
                         ],
                       )
                     )
@@ -57,11 +67,14 @@ class HomePage extends StatelessWidget {
                   children: [
                     Text("Задания", style: context.textTheme.headlineMedium),
                     TextButton(
-                      onPressed: () {},
+                      onPressed: () => context.go(Routes.allNotes.path),
                       child: Text("ПОКАЗАТЬ ВСЕ", style: context.textTheme.bodyLarge?.copyWith(color: context.customColors.accent))
                     ),
                   ],
                 ),
+                Column(
+                  children: state.notes.map((note) => NotesListItem(note: note, coupleID: note.coupleID, showDate: true)).toList()
+                )
               ],
             )
           );

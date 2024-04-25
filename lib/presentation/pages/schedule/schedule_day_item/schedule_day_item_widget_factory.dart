@@ -11,7 +11,7 @@ class ScheduleDayItemWidgetFactory {
     bool showIndicator = false
   }) {
     return switch (dayScheduleItem) {
-      Couple _=> ItemCouple(couple: dayScheduleItem),
+      Couple _=> ItemCouple(couple: dayScheduleItem, showIndicator: showIndicator, onIndicatorEnd: onIndicatorEnd),
       Event _=> ItemEvent(event: dayScheduleItem, showIndicator: showIndicator, onIndicatorEnd: onIndicatorEnd),
       _=> const ItemUnknown()
     };

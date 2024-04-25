@@ -46,7 +46,8 @@ class CardWithTimeOnLeft extends StatefulWidget {
     this.indicatorInitPercentage = 0,
     this.indicatorDuration = Duration.zero,
     this.onIndicatorEnd,
-    this.showIndicator = false
+    this.showIndicator = false,
+    this.indicatorColor
   });
 
   final TimeOfDay timeStart;
@@ -62,6 +63,7 @@ class CardWithTimeOnLeft extends StatefulWidget {
   final Duration indicatorDuration;
   final VoidCallback? onIndicatorEnd;
   final bool showIndicator;
+  final Color? indicatorColor;
 
   @override
   State<StatefulWidget> createState() => _CardWithTimeOnLeftState();
@@ -80,9 +82,9 @@ class _CardWithTimeOnLeftState extends State<CardWithTimeOnLeft> with TickerProv
     );
 
     _controller.addListener(() => setState(() {}));
-    final percent = _getPercentage();
-    if (percent != 0) {
-      _controller.forward(from: percent)
+    final percentage = _getPercentage();
+    if (percentage != 0) {
+      _controller.forward(from: percentage)
           .then((value) => widget.onIndicatorEnd?.call());
     }
 
@@ -97,6 +99,7 @@ class _CardWithTimeOnLeftState extends State<CardWithTimeOnLeft> with TickerProv
 
   @override
   Widget build(BuildContext context) {
+    final valueColor = widget.indicatorColor ?? context.customColors.accent;
     return Card(
       color: widget.color,
       child: IntrinsicHeight(
@@ -106,6 +109,7 @@ class _CardWithTimeOnLeftState extends State<CardWithTimeOnLeft> with TickerProv
             widget.showIndicator ? LinearProgressIndicator(
               value: _controller.value,
               borderRadius: BorderRadius.circular(10),
+              valueColor: AlwaysStoppedAnimation<Color>(valueColor.withOpacity(0.1)),
               backgroundColor: widget.color ?? context.customColors.card,
             ) : const SizedBox.shrink(),
             Padding(

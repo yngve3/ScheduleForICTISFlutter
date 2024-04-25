@@ -11,19 +11,23 @@ class ItemCouple extends StatelessWidget {
   const ItemCouple({
     super.key,
     required this.couple,
-    this.showIndicator = false
+    this.showIndicator = false,
+    this.onIndicatorEnd
   });
 
   final Couple couple;
   final bool showIndicator;
+  final VoidCallback? onIndicatorEnd;
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () => context.go(Routes.coupleNotesList.path({"couple_id": couple.id})),
       child: CardWithTimeOnLeft(
-        indicatorDuration: const Duration(hours: 1, minutes: 30),
+        indicatorDuration: couple.duration,
         indicatorInitPercentage: couple.percent,
+        onIndicatorEnd: onIndicatorEnd,
+        showIndicator: showIndicator,
         timeStart: TimeOfDay.fromDateTime(couple.dateTimeStart),
         timeEnd: TimeOfDay.fromDateTime(couple.dateTimeEnd),
         dividerColor: _getDividerColor(context),

@@ -4,13 +4,10 @@ import 'package:go_router/go_router.dart';
 import 'package:schedule_for_ictis_flutter/presentation/extensions/context_ext.dart';
 import 'package:schedule_for_ictis_flutter/presentation/pages/notes/couple_notes_list/cubit/couple_notes_list_cubit.dart';
 import 'package:schedule_for_ictis_flutter/presentation/widgets/app_bar.dart';
-import 'package:schedule_for_ictis_flutter/presentation/widgets/date_text.dart';
 import 'package:schedule_for_ictis_flutter/presentation/widgets/discipline_and_date.dart';
 
-import '../../../../domain/models/note/note.dart';
-import '../../../../domain/models/schedule/day_schedule_item.dart';
-import '../../../../gen/assets.gen.dart';
 import '../../../route/routes.dart';
+import '../../../widgets/notes_list_item.dart';
 import '../../../widgets/screen.dart';
 import 'cubit/couple_notes_list_state.dart';
 
@@ -52,7 +49,7 @@ class CoupleNotesListPage extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: state.notes.map((element) => NotesListItem(
                   note: element,
-                  couple: state.couple,
+                  coupleID: state.couple?.id ?? "",
                 )).toList(),
               ),
               bottom: FilledButton(
@@ -62,83 +59,6 @@ class CoupleNotesListPage extends StatelessWidget {
             )
           );
         },
-      ),
-    );
-  }
-}
-
-class NotesListItem extends StatelessWidget {
-  const NotesListItem({
-    super.key,
-    required this.note,
-    this.couple,
-    this.showCoupleInformation = false
-  });
-
-  final Note note;
-  final Couple? couple;
-  final bool showCoupleInformation;
-
-  @override
-  Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () => context.go(Routes.noteInfo.path({"couple_id": couple?.id ?? "", "note_id": note.id})),
-      child: Card(
-        child: Padding(
-          padding: const EdgeInsets.all(20),
-          child: Column(
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(note.title, style: context.textTheme.titleLarge),
-                  SizedBox.square(
-                    dimension: 25,
-                    child: note.hasFiles ? Assets.icons.icAttach.image(
-                        color: context.customColors.accent
-                    ) : null,
-                  )
-                ],
-              ),
-              showCoupleInformation ? Column(
-                children: [
-                  DateText(date: note.date),
-                  Text(couple?.discipline ?? "")
-                ],
-              ) : const SizedBox.shrink()
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-
-class NotesList extends StatelessWidget {
-  const NotesList({
-    super.key,
-    required this.notes,
-    required this.couple,
-    this.showCoupleInformation = false
-  });
-
-  final List<Note> notes;
-  final Couple couple;
-  final bool showCoupleInformation;
-
-  @override
-  Widget build(BuildContext context) {
-    return Expanded(
-      child: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: notes.map((element) => NotesListItem(
-            note: element,
-            couple: couple,
-            showCoupleInformation: showCoupleInformation,
-          )).toList(),
-        ),
       ),
     );
   }

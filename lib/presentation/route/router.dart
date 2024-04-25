@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:schedule_for_ictis_flutter/presentation/pages/home/home_page.dart';
+import 'package:schedule_for_ictis_flutter/presentation/pages/notes/all_notes_list/all_notes_list_page.dart';
 import 'package:schedule_for_ictis_flutter/presentation/pages/notes/note_add/note_add_page.dart';
 import 'package:schedule_for_ictis_flutter/presentation/pages/notes/note_info/note_info_page.dart';
 import 'package:schedule_for_ictis_flutter/presentation/route/routes.dart';
@@ -39,6 +40,16 @@ abstract class AppRouter {
                       child: HomePage()
                   );
                 },
+                routes: [
+                  GoRoute(
+                    path: Routes.allNotes.lastPathComponent,
+                    pageBuilder: (BuildContext context, GoRouterState state) {
+                      return const NoTransitionPage(
+                          child: AllNotesListPage()
+                      );
+                    },
+                  )
+                ]
               ),
               GoRoute(
                 path: Routes.schedule.path,

@@ -14,6 +14,7 @@ class Note {
 
   bool get hasFiles => attachedFiles.isNotEmpty;
   bool get isPast => date.isBefore(DateTime.now());
+  bool get isActual => date.isAfter(DateTime.now());
 
   @Backlink("note")
   final ToMany<NoteFile> attachedFiles = ToMany<NoteFile>();

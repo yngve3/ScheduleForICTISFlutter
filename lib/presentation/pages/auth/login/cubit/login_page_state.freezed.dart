@@ -17,6 +17,7 @@ final _privateConstructorUsedError = UnsupportedError(
 /// @nodoc
 mixin _$LoginPageState {
   bool get isLogin => throw _privateConstructorUsedError;
+  String get errorMessage => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $LoginPageStateCopyWith<LoginPageState> get copyWith =>
@@ -29,7 +30,7 @@ abstract class $LoginPageStateCopyWith<$Res> {
           LoginPageState value, $Res Function(LoginPageState) then) =
       _$LoginPageStateCopyWithImpl<$Res, LoginPageState>;
   @useResult
-  $Res call({bool isLogin});
+  $Res call({bool isLogin, String errorMessage});
 }
 
 /// @nodoc
@@ -46,12 +47,17 @@ class _$LoginPageStateCopyWithImpl<$Res, $Val extends LoginPageState>
   @override
   $Res call({
     Object? isLogin = null,
+    Object? errorMessage = null,
   }) {
     return _then(_value.copyWith(
       isLogin: null == isLogin
           ? _value.isLogin
           : isLogin // ignore: cast_nullable_to_non_nullable
               as bool,
+      errorMessage: null == errorMessage
+          ? _value.errorMessage
+          : errorMessage // ignore: cast_nullable_to_non_nullable
+              as String,
     ) as $Val);
   }
 }
@@ -64,7 +70,7 @@ abstract class _$$LoginPageStateImplCopyWith<$Res>
       __$$LoginPageStateImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({bool isLogin});
+  $Res call({bool isLogin, String errorMessage});
 }
 
 /// @nodoc
@@ -79,12 +85,17 @@ class __$$LoginPageStateImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? isLogin = null,
+    Object? errorMessage = null,
   }) {
     return _then(_$LoginPageStateImpl(
       isLogin: null == isLogin
           ? _value.isLogin
           : isLogin // ignore: cast_nullable_to_non_nullable
               as bool,
+      errorMessage: null == errorMessage
+          ? _value.errorMessage
+          : errorMessage // ignore: cast_nullable_to_non_nullable
+              as String,
     ));
   }
 }
@@ -92,15 +103,18 @@ class __$$LoginPageStateImplCopyWithImpl<$Res>
 /// @nodoc
 
 class _$LoginPageStateImpl implements _LoginPageState {
-  const _$LoginPageStateImpl({this.isLogin = false});
+  const _$LoginPageStateImpl({this.isLogin = true, this.errorMessage = ""});
 
   @override
   @JsonKey()
   final bool isLogin;
+  @override
+  @JsonKey()
+  final String errorMessage;
 
   @override
   String toString() {
-    return 'LoginPageState(isLogin: $isLogin)';
+    return 'LoginPageState(isLogin: $isLogin, errorMessage: $errorMessage)';
   }
 
   @override
@@ -108,11 +122,13 @@ class _$LoginPageStateImpl implements _LoginPageState {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$LoginPageStateImpl &&
-            (identical(other.isLogin, isLogin) || other.isLogin == isLogin));
+            (identical(other.isLogin, isLogin) || other.isLogin == isLogin) &&
+            (identical(other.errorMessage, errorMessage) ||
+                other.errorMessage == errorMessage));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, isLogin);
+  int get hashCode => Object.hash(runtimeType, isLogin, errorMessage);
 
   @JsonKey(ignore: true)
   @override
@@ -123,10 +139,13 @@ class _$LoginPageStateImpl implements _LoginPageState {
 }
 
 abstract class _LoginPageState implements LoginPageState {
-  const factory _LoginPageState({final bool isLogin}) = _$LoginPageStateImpl;
+  const factory _LoginPageState(
+      {final bool isLogin, final String errorMessage}) = _$LoginPageStateImpl;
 
   @override
   bool get isLogin;
+  @override
+  String get errorMessage;
   @override
   @JsonKey(ignore: true)
   _$$LoginPageStateImplCopyWith<_$LoginPageStateImpl> get copyWith =>

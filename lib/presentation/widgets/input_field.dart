@@ -10,7 +10,8 @@ class InputField extends StatefulWidget {
     this.onSubmit,
     this.textInputAction,
     this.textInputType,
-    this.isPassword = false
+    this.isPassword = false,
+    this.controller
   });
 
   final String label;
@@ -18,13 +19,20 @@ class InputField extends StatefulWidget {
   final TextInputAction? textInputAction;
   final TextInputType? textInputType;
   final bool isPassword;
+  final TextEditingController? controller;
 
   @override
   State<StatefulWidget> createState() => _InputFiledState();
 }
 
 class _InputFiledState extends State<InputField> {
-  bool _obscureText = false;
+  late bool _obscureText;
+
+  @override
+  void initState() {
+    _obscureText = widget.isPassword;
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -34,18 +42,18 @@ class _InputFiledState extends State<InputField> {
       textInputAction: widget.textInputAction,
       keyboardType: widget.textInputType,
       obscureText: _obscureText,
+      controller: widget.controller,
       decoration: InputDecoration(
-        border: OutlineInputBorder(
+        border: UnderlineInputBorder(
           borderRadius: BorderRadius.circular(10),
           borderSide: BorderSide.none,
         ),
         contentPadding: const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
         labelText: widget.label,
         labelStyle: context.textTheme.bodyLarge,
-        filled: true,
-        suffix: widget.isPassword ? IconButton(
-          onPressed: () => _toggleShowPassword(),
-          icon: Icon(_obscureText ? Icons.visibility_rounded : Icons.visibility_off_rounded),
+        suffix: widget.isPassword ? InkWell(
+          onTap: () => _toggleShowPassword(),
+          child: Icon(_obscureText ? Icons.visibility_rounded : Icons.visibility_off_rounded, size: 20),
         ) : null
       ),
     );

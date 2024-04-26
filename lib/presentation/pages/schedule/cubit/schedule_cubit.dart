@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:schedule_for_ictis_flutter/domain/interactors/schedule_interactor.dart';
-import 'package:schedule_for_ictis_flutter/domain/models/week_number.dart';
+import 'package:schedule_for_ictis_flutter/domain/models/week_number/week_number.dart';
 import 'package:schedule_for_ictis_flutter/presentation/extensions/date_time_ext.dart';
 import 'package:schedule_for_ictis_flutter/presentation/pages/schedule/cubit/schedule_state.dart';
 

@@ -21,7 +21,7 @@ import 'domain/models/note/note.dart';
 import 'domain/models/note_file/note_file.dart';
 import 'domain/models/reminder/reminder.dart';
 import 'domain/models/schedule_subject/schedule_subject.dart';
-import 'domain/models/week_number.dart';
+import 'domain/models/week_number/week_number.dart';
 
 export 'package:objectbox/objectbox.dart'; // so that callers only have to import this file
 

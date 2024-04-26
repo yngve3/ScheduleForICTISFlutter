@@ -7,7 +7,7 @@ import 'package:schedule_for_ictis_flutter/data/repositories/favorite_schedules_
 import 'package:schedule_for_ictis_flutter/data/repositories/week_number_repository.dart';
 
 import 'package:schedule_for_ictis_flutter/domain/models/schedule/day_schedule/day_schedule.dart';
-import 'package:schedule_for_ictis_flutter/domain/models/week_number.dart';
+import 'package:schedule_for_ictis_flutter/domain/models/week_number/week_number.dart';
 import '../../data/models/couple_db.dart';
 import '../../data/models/event_db.dart';
 import '../models/schedule/day_schedule_item.dart';

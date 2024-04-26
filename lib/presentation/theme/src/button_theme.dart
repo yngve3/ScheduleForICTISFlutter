@@ -18,3 +18,9 @@ FloatingActionButtonThemeData floatingActionButtonThemeData(ThemeColors colors) 
       backgroundColor: colors.accent,
       shape: const CircleBorder(),
 );
+
+TextButtonThemeData textButtonThemeData(ThemeColors colors) => TextButtonThemeData(
+      style: TextButton.styleFrom(
+            foregroundColor: colors.text2
+      )
+);

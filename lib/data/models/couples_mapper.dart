@@ -1,6 +1,6 @@
 import 'package:collection/collection.dart';
 import 'package:schedule_for_ictis_flutter/domain/models/schedule_subject/schedule_subject.dart';
-import 'package:schedule_for_ictis_flutter/domain/models/week_number.dart';
+import 'package:schedule_for_ictis_flutter/domain/models/week_number/week_number.dart';
 import 'package:schedule_for_ictis_flutter/presentation/extensions/date_time_ext.dart';
 
 import 'couple_db.dart';

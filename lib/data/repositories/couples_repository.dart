@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:schedule_for_ictis_flutter/domain/models/week_number.dart';
+import 'package:schedule_for_ictis_flutter/domain/models/week_number/week_number.dart';
 import 'package:schedule_for_ictis_flutter/main.dart';
 
 import 'package:http/http.dart' as http;

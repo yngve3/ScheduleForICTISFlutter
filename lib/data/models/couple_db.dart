@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:objectbox/objectbox.dart';
-import 'package:schedule_for_ictis_flutter/domain/models/week_number.dart';
+import 'package:schedule_for_ictis_flutter/domain/models/week_number/week_number.dart';
 import 'package:schedule_for_ictis_flutter/presentation/extensions/time_of_day_ext.dart';
 
 import '../../domain/models/schedule_subject/schedule_subject.dart';

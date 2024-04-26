@@ -1,5 +1,5 @@
 import 'package:schedule_for_ictis_flutter/data/models/event_db.dart';
-import 'package:schedule_for_ictis_flutter/domain/models/week_number.dart';
+import 'package:schedule_for_ictis_flutter/domain/models/week_number/week_number.dart';
 import 'package:schedule_for_ictis_flutter/main.dart';
 
 import '../../objectbox.g.dart';

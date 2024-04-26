@@ -33,6 +33,7 @@ ThemeData lightTheme() {
     splashColor: Colors.transparent,
     floatingActionButtonTheme: floatingActionButtonTheme,
     inputDecorationTheme: inputDecoratorTheme,
-    textTheme: textTheme
+    textTheme: textTheme,
+    textButtonTheme: textButtonThemeData(customColors)
   );
 }

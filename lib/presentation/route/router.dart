@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:schedule_for_ictis_flutter/data/repositories/auth_repository.dart';
+import 'package:schedule_for_ictis_flutter/presentation/pages/auth/registration/registration_page.dart';
 import 'package:schedule_for_ictis_flutter/presentation/pages/home/home_page.dart';
 import 'package:schedule_for_ictis_flutter/presentation/pages/notes/all_notes_list/all_notes_list_page.dart';
 import 'package:schedule_for_ictis_flutter/presentation/pages/notes/note_add/note_add_page.dart';
@@ -20,6 +22,7 @@ import '../pages/schedule/schedule_page.dart';
 abstract class AppRouter {
   static final GlobalKey<NavigatorState> _rootNavigatorKey =
   GlobalKey<NavigatorState>(debugLabel: 'root');
+
   static final GlobalKey<NavigatorState> _shellNavigatorKey =
   GlobalKey<NavigatorState>(debugLabel: 'main_page');
 
@@ -35,7 +38,26 @@ abstract class AppRouter {
                 child: LoginPage()
             );
           },
-          routes: []
+          routes: [
+            GoRoute(
+              path: Routes.registration.lastPathComponent,
+              pageBuilder: (BuildContext context, GoRouterState state) {
+                return const NoTransitionPage(
+                  child: RegistrationPage()
+                );
+              },
+              routes: [
+                GoRoute(
+                  path: Routes.favoriteSchedules.lastPathComponent,
+                  pageBuilder: (BuildContext context, GoRouterState state) {
+                    return const NoTransitionPage(
+                      child: FavoriteSchedulesListPage()
+                    );
+                  },
+                )
+              ]
+            )
+          ]
         ),
         ShellRoute(
             navigatorKey: _shellNavigatorKey,
@@ -152,8 +174,8 @@ abstract class AppRouter {
                   ),
                 ],
               ),
-            ]
-        )
+            ],
+        ),
       ]
   );
 }

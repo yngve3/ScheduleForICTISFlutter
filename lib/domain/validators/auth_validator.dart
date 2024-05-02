@@ -20,13 +20,13 @@ class EmailValidator {
   ValidationError? validate(String email) {
     final RegExp regExp = RegExp(r"^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,253}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,253}[a-zA-Z0-9])?)*$");
     if (regExp.hasMatch(email)) return null;
-    return const ValidationError("Неверный формат email");
+    return const ValidationError("email");
   }
 }
 
 class PasswordValidator {
   ValidationError? validate(String password) {
-    if (password.length < 6) return const ValidationError("Неверный формат пароля");
+    if (password.length < 6) return const ValidationError("password");
     return null;
   }
 }

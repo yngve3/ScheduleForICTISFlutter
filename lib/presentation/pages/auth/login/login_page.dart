@@ -63,7 +63,7 @@ class LoginPage extends StatelessWidget {
                         )
                     ),
                     TextButton(
-                        onPressed: () {},
+                        onPressed: () => context.go(Routes.registration.path),
                         child: Text("Регистирация", style: context.textTheme.bodyLarge)
                     ),
                   ],

@@ -15,6 +15,9 @@ class AuthException implements Exception {
 }
 
 class AuthRepository {
+
+  bool get isLogin => FirebaseAuth.instance.currentUser != null;
+
   Future<void> logInWithEmailAndPassword(AuthModel authModel) async {
     try {
       await FirebaseAuth.instance.signInWithEmailAndPassword(

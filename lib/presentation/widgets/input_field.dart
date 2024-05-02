@@ -11,7 +11,8 @@ class InputField extends StatefulWidget {
     this.textInputAction,
     this.textInputType,
     this.isPassword = false,
-    this.controller
+    this.controller,
+    this.errorText
   });
 
   final String label;
@@ -20,6 +21,7 @@ class InputField extends StatefulWidget {
   final TextInputType? textInputType;
   final bool isPassword;
   final TextEditingController? controller;
+  final String? errorText;
 
   @override
   State<StatefulWidget> createState() => _InputFiledState();
@@ -48,6 +50,7 @@ class _InputFiledState extends State<InputField> {
           borderRadius: BorderRadius.circular(10),
           borderSide: BorderSide.none,
         ),
+        errorText: widget.errorText,
         contentPadding: const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
         labelText: widget.label,
         labelStyle: context.textTheme.bodyLarge,

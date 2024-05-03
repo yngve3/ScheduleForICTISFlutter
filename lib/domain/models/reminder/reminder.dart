@@ -17,4 +17,10 @@ class Reminder {
     if (other.minutesBefore == minutesBefore) return true;
     return false;
   }
+
+  Map<String, dynamic> toJSON() {
+    return {
+      "minutesBefore": minutesBefore
+    };
+  }
 }

@@ -29,4 +29,17 @@ class EventDB {
   }) {
     this.reminders.addAll(reminders ?? []);
   }
+
+  Map<String, dynamic> toJSON() {
+    return {
+      "title": title,
+      "description": description,
+      "dateTimeStart": dateTimeStart.millisecondsSinceEpoch,
+      "dateTimeEnd": dateTimeEnd.millisecondsSinceEpoch,
+      "weekNum": weekNum,
+      "location": location,
+      "userUID": userUID,
+      "reminders": reminders.map((element) => element.toJSON()).toList()
+    };
+  }
 }

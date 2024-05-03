@@ -17,7 +17,7 @@ class ScheduleCubit extends Cubit<ScheduleState> {
   );
 
   ScheduleInteractor interactor = ScheduleInteractor();
-  StreamSubscription<WeekSchedule>? subscription;
+  late StreamSubscription<WeekSchedule> subscription;
 
   void nextDay() {
     emit(state.copyWith(selectedDay: state.selectedDay.add(const Duration(days: 1))));
@@ -35,8 +35,7 @@ class ScheduleCubit extends Cubit<ScheduleState> {
   }
 
   void loadSchedule({WeekNumber? weekNumber}) async {
-    final stream = await interactor.getWeekSchedule(weekNumber: weekNumber);
-    final subscription = stream.listen((event) {
+    subscription = (await interactor.getWeekSchedule(weekNumber: weekNumber)).listen((event) {
       emit(state.copyWith(weekSchedule: event));
     });
   }
@@ -57,7 +56,7 @@ class ScheduleCubit extends Cubit<ScheduleState> {
 
   @override
   Future<void> close() {
-   subscription?.cancel();
+   subscription.cancel();
    return super.close();
   }
 }

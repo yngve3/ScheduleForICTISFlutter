@@ -1,16 +1,16 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:collection/collection.dart';
-import 'package:schedule_for_ictis_flutter/data/repositories/favorite_schedules_repository.dart';
+import 'package:schedule_for_ictis_flutter/domain/interactors/favorite_schedule_interactor.dart';
 import 'package:schedule_for_ictis_flutter/domain/models/schedule_subject/schedule_subject.dart';
 import 'package:schedule_for_ictis_flutter/presentation/pages/favorite_schedules/pages/favorite_schedules_add/cubit/schedule_search_state.dart';
 
 
 class ScheduleSearchCubit extends Cubit<ScheduleSearchState> {
-  ScheduleSearchCubit(this.repository) : super(const ScheduleSearchState(searchResult: []));
-  final FavoriteSchedulesRepository repository;
+  ScheduleSearchCubit() : super(const ScheduleSearchState(searchResult: []));
+  final FavoriteSchedulesInteractor _interactor = FavoriteSchedulesInteractor();
 
   void search(String query) async {
-    final searchResult = await repository.netSearch(query);
+    final searchResult = await _interactor.netSearch(query);
 
     emit(ScheduleSearchState(searchResult: searchResult));
   }
@@ -28,7 +28,7 @@ class ScheduleSearchCubit extends Cubit<ScheduleSearchState> {
     final selected = _findSelectedOrNull(state.searchResult);
 
     if (selected != null) {
-      repository.saveToDB(selected.copyWith(isChosen: false));
+      _interactor.saveToDB(selected.copyWith(isChosen: false));
     }
   }
 

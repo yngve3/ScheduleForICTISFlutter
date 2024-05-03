@@ -41,8 +41,8 @@ class FavoriteSchedulesRepository {
     };
   }
 
-  Stream<List<ScheduleSubject>> getFromDBAll() {
-    QueryBuilder<ScheduleSubject> query = _favoriteSchedulesBox.query();
+  Stream<List<ScheduleSubject>> getFromDBAll({String? userUID}) {
+    QueryBuilder<ScheduleSubject> query = _favoriteSchedulesBox.query(ScheduleSubject_.userUID.equals(userUID ?? ""));
     return query.watch(triggerImmediately: true).map((query) => query.find());
   }
 
@@ -58,9 +58,9 @@ class FavoriteSchedulesRepository {
     _favoriteSchedulesBox.removeManyAsync(ids);
   }
 
-  Future<ScheduleSubject?> getSelectedFavoriteSchedule({bool isVPK = false}) =>
+  Future<ScheduleSubject?> getSelectedFavoriteSchedule({bool isVPK = false, String? userUID}) =>
       _favoriteSchedulesBox
-          .query(ScheduleSubject_.isChosen.equals(true).and(ScheduleSubject_.isVPK.equals(isVPK)))
+          .query(ScheduleSubject_.isChosen.equals(true).and(ScheduleSubject_.isVPK.equals(isVPK).and(ScheduleSubject_.userUID.equals(userUID ?? ""))))
           .build()
           .findFirstAsync();
 

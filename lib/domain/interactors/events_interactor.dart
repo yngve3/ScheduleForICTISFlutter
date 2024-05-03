@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:schedule_for_ictis_flutter/data/repositories/events_repository.dart';
 import 'package:schedule_for_ictis_flutter/data/repositories/reminders_repository.dart';
+import 'package:schedule_for_ictis_flutter/data/repositories/user_repository.dart';
 import 'package:schedule_for_ictis_flutter/presentation/extensions/date_time_ext.dart';
 import 'package:schedule_for_ictis_flutter/utils/reminders_helper.dart';
 
@@ -12,6 +13,7 @@ import '../models/schedule/day_schedule_item.dart';
 class EventsInteractor {
   final EventsRepository _eventsRepository = EventsRepository();
   final RemindersRepository _remindersRepository = RemindersRepository();
+  final UserRepository _userRepository = UserRepository();
 
   void addEvent({
     int? id,
@@ -39,6 +41,7 @@ class EventsInteractor {
       location: toNullIfEmpty(location),
       description: toNullIfEmpty(description),
       reminders: remindersList,
+      userUID: _userRepository.uid ?? ""
     );
 
     _eventsRepository.addEvent(eventDB);

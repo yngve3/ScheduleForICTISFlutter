@@ -11,13 +11,13 @@ class EventsRepository {
     _eventsBox = objectBox.store.box<EventDB>();
   }
 
-  Stream<List<EventDB>> getEventsByWeekNum(WeekNumber weekNumber) {
-    final query = _eventsBox.query(EventDB_.weekNum.equals(weekNumber.calendarWeekNumber));
+  Stream<List<EventDB>> getEventsByWeekNum(WeekNumber weekNumber, String? userUID) {
+    final query = _eventsBox.query(EventDB_.weekNum.equals(weekNumber.calendarWeekNumber).and(EventDB_.userUID.equals(userUID ?? "")));
     return query.watch(triggerImmediately: true).map((event) => event.find());
   }
 
-  List<EventDB> getEventsAfter(DateTime dateTime) {
-    final query = _eventsBox.query(EventDB_.dateTimeEnd.greaterThanDate(dateTime));
+  List<EventDB> getEventsAfter(DateTime dateTime, String? userUID) {
+    final query = _eventsBox.query(EventDB_.dateTimeEnd.greaterThanDate(dateTime).and(EventDB_.userUID.equals(userUID ?? "")));
     return query.build().find();
   }
 

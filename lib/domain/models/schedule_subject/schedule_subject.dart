@@ -6,6 +6,7 @@ class ScheduleSubject {
   final String id;
   final String name;
   final bool isChosen;
+  final String userUID;
 
   final bool isVPK;
   bool get isNotVPK => !isVPK;
@@ -15,6 +16,7 @@ class ScheduleSubject {
     required this.id,
     required this.name,
     required this.isChosen,
+    required this.userUID,
     this.isVPK = false
   });
 
@@ -24,7 +26,8 @@ class ScheduleSubject {
         id: json['group'] as String,
         name: json['name'] as String,
         isChosen: json['isChosen'] as bool? ?? false,
-        isVPK: (json['name'] as String).contains("ВПК")
+        isVPK: (json['name'] as String).contains("ВПК"),
+        userUID: json['userUID'] as String? ?? ""
       );
 
   ScheduleSubject copyWith({
@@ -32,13 +35,15 @@ class ScheduleSubject {
     String? id,
     String? name,
     bool? isChosen,
-    bool? isVPK
+    bool? isVPK,
+    String? userUID
   }) =>
       ScheduleSubject(
         dbId: dbId ?? this.dbId,
         id: id ?? this.id,
         name: name ?? this.name,
         isChosen: isChosen ?? this.isChosen,
-        isVPK: isVPK ?? this.isVPK
+        isVPK: isVPK ?? this.isVPK,
+        userUID: userUID ?? this.userUID
       );
 }

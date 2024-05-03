@@ -72,7 +72,7 @@
     },
     {
       "id": "13:5408297173790329811",
-      "lastPropertyId": "10:5124352015699425989",
+      "lastPropertyId": "11:1630913774793036337",
       "name": "EventDB",
       "properties": [
         {
@@ -110,6 +110,11 @@
           "id": "10:5124352015699425989",
           "name": "dateTimeStart",
           "type": 10
+        },
+        {
+          "id": "11:1630913774793036337",
+          "name": "userUID",
+          "type": 9
         }
       ],
       "relations": [
@@ -122,7 +127,7 @@
     },
     {
       "id": "16:735719639961690522",
-      "lastPropertyId": "6:4414436526303478413",
+      "lastPropertyId": "7:572991563788016919",
       "name": "Note",
       "properties": [
         {
@@ -149,6 +154,11 @@
         {
           "id": "6:4414436526303478413",
           "name": "description",
+          "type": 9
+        },
+        {
+          "id": "7:572991563788016919",
+          "name": "userUID",
           "type": 9
         }
       ],
@@ -254,7 +264,7 @@
     },
     {
       "id": "20:3099322797470029057",
-      "lastPropertyId": "5:746086890089964310",
+      "lastPropertyId": "6:8237943669115334800",
       "name": "ScheduleSubject",
       "properties": [
         {
@@ -282,6 +292,11 @@
           "id": "5:746086890089964310",
           "name": "isVPK",
           "type": 1
+        },
+        {
+          "id": "6:8237943669115334800",
+          "name": "userUID",
+          "type": 9
         }
       ],
       "relations": []

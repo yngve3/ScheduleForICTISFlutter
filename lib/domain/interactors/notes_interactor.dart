@@ -3,6 +3,7 @@ import 'package:schedule_for_ictis_flutter/data/repositories/couples_repository.
 import 'package:schedule_for_ictis_flutter/data/repositories/note_files_repository.dart';
 import 'package:schedule_for_ictis_flutter/data/repositories/notes_repository.dart';
 import 'package:schedule_for_ictis_flutter/data/repositories/reminders_repository.dart';
+import 'package:schedule_for_ictis_flutter/data/repositories/user_repository.dart';
 import 'package:schedule_for_ictis_flutter/domain/models/note/note.dart';
 import 'package:schedule_for_ictis_flutter/utils/reminders_helper.dart';
 import 'package:schedule_for_ictis_flutter/utils/state_list.dart';
@@ -16,6 +17,7 @@ class NotesInteractor {
   final CouplesRepository _couplesRepository = CouplesRepository();
   final NoteFilesRepository _noteFilesRepository = NoteFilesRepository();
   final RemindersRepository _remindersRepository = RemindersRepository();
+  final UserRepository _userRepository = UserRepository();
   
   Future<Couple?> getCoupleByID(String id) async {
     final coupleDB = await _couplesRepository.getCoupleByID(id);
@@ -25,7 +27,7 @@ class NotesInteractor {
   }
 
   Stream<List<Note>> getNotesByCoupleID(String coupleID) {
-    return _notesRepository.getNotesByCoupleID(coupleID);
+    return _notesRepository.getNotesByCoupleID(coupleID, userUID: _userRepository.uid);
   }
   
   Future<Note?> getNoteByID(int id) async {
@@ -66,7 +68,8 @@ class NotesInteractor {
       coupleID: coupleID,
       description: description,
       files: files.elements,
-      reminders: remindersList
+      reminders: remindersList,
+      userUID: _userRepository.uid ?? ""
     );
 
     _notesRepository.addNote(note);

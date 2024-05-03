@@ -1,4 +1,5 @@
 import 'package:collection/collection.dart';
+import 'package:schedule_for_ictis_flutter/data/repositories/user_repository.dart';
 import 'package:stream_transform/stream_transform.dart';
 
 import 'package:schedule_for_ictis_flutter/data/repositories/couples_repository.dart';
@@ -18,15 +19,16 @@ class ScheduleInteractor {
   final FavoriteSchedulesRepository _favoriteSchedulesRepository = FavoriteSchedulesRepository();
   final EventsRepository _eventsRepository = EventsRepository();
   final WeekNumberRepository _weekNumberRepository = WeekNumberRepository();
+  final UserRepository _userRepository = UserRepository();
 
 
   Future<void> loadSchedule(WeekNumber? weekNumber) async {
     weekNumber ??= _weekNumberRepository.getCurrentWeekNumber();
-    final mainScheduleSubject = await _favoriteSchedulesRepository.getSelectedFavoriteSchedule();
+    final mainScheduleSubject = await _favoriteSchedulesRepository.getSelectedFavoriteSchedule(userUID: _userRepository.uid);
     if (mainScheduleSubject != null) {
       await _couplesRepository.loadCouples(mainScheduleSubject, weekNumber);
     }
-    final vpkScheduleSubject = await _favoriteSchedulesRepository.getSelectedFavoriteSchedule(isVPK: true);
+    final vpkScheduleSubject = await _favoriteSchedulesRepository.getSelectedFavoriteSchedule(isVPK: true, userUID: _userRepository.uid);
     if (vpkScheduleSubject != null) {
       await _couplesRepository.loadCouples(vpkScheduleSubject, weekNumber);
     }
@@ -40,13 +42,13 @@ class ScheduleInteractor {
 
     List<Stream<Object>> streams = [];
 
-    streams.add(_eventsRepository.getEventsByWeekNum(weekNumber));
+    streams.add(_eventsRepository.getEventsByWeekNum(weekNumber, _userRepository.uid));
 
-    final mainScheduleSubject = await _favoriteSchedulesRepository.getSelectedFavoriteSchedule();
+    final mainScheduleSubject = await _favoriteSchedulesRepository.getSelectedFavoriteSchedule(userUID: _userRepository.uid);
     if (mainScheduleSubject != null) {
       streams.add(_couplesRepository.getCouples(weekNumber, mainScheduleSubject));
     }
-    final vpkScheduleSubject = await _favoriteSchedulesRepository.getSelectedFavoriteSchedule(isVPK: true);
+    final vpkScheduleSubject = await _favoriteSchedulesRepository.getSelectedFavoriteSchedule(isVPK: true, userUID: _userRepository.uid);
     if (vpkScheduleSubject != null) {
       streams.add(_couplesRepository.getCouples(weekNumber, vpkScheduleSubject));
     }

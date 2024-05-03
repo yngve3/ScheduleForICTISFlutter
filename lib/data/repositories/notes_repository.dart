@@ -9,8 +9,8 @@ class NotesRepository {
     _notesBox = objectBox.store.box<Note>();
   }
 
-  Stream<List<Note>> getNotesByCoupleID(String coupleID) {
-    return _notesBox.query(Note_.coupleID.equals(coupleID))
+  Stream<List<Note>> getNotesByCoupleID(String coupleID, {String? userUID}) {
+    return _notesBox.query(Note_.coupleID.equals(coupleID).and(Note_.userUID.equals(userUID ?? "")))
         .watch(triggerImmediately: true)
         .map((event) => event.find());
   }
@@ -19,13 +19,13 @@ class NotesRepository {
     return _notesBox.getAsync(noteID);
   }
 
-  List<Note> getNotesAfter(DateTime datetime) {
-    final query = _notesBox.query(Note_.date.greaterOrEqualDate(datetime));
+  List<Note> getNotesAfter(DateTime datetime, {String? userUID}) {
+    final query = _notesBox.query(Note_.date.greaterOrEqualDate(datetime).and(Note_.userUID.equals(userUID ?? "")));
     return query.build().find();
   }
 
-  List<Note> getAllNotes() {
-    return _notesBox.getAll();
+  List<Note> getAllNotes({String? userUID}) {
+    return _notesBox.query(Note_.userUID.equals(userUID ?? "")).build().find();
   }
 
   void addNote(Note note) {

@@ -103,7 +103,7 @@ class __$$LoginPageStateImplCopyWithImpl<$Res>
 /// @nodoc
 
 class _$LoginPageStateImpl implements _LoginPageState {
-  const _$LoginPageStateImpl({this.isLogin = true, this.errorMessage = ""});
+  const _$LoginPageStateImpl({this.isLogin = false, this.errorMessage = ""});
 
   @override
   @JsonKey()

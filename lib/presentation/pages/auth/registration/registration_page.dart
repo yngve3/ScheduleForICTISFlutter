@@ -21,7 +21,7 @@ class RegistrationPage extends StatelessWidget {
           if (!state.isRegister && state.errorMessage.isNotEmpty) {
             ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(state.errorMessage)));
           } else if (state.isRegister) {
-            // context.push(Routes.favoriteSchedules.lastPathComponent);
+            context.go(Routes.schedule.path);
           }
         },
         builder: (context, state) {
@@ -55,14 +55,13 @@ class RegistrationPage extends StatelessWidget {
                   ),
                   FilledButton(
                     onPressed: () {
-                      context.push(Routes.favoriteSchedules.lastPathComponent);
-                      // context.read<RegistrationPageCubit>().register(
-                      //     email: emailController.text,
-                      //     password: passwordController.text
-                      // );
+                      context.read<RegistrationPageCubit>().register(
+                          email: emailController.text,
+                          password: passwordController.text
+                      );
                     },
                     child: Text(
-                      "Далее",
+                      "Зарегистрироваться",
                       style: context.textTheme.bodyLarge
                           ?.copyWith(color: context.customColors.background),
                     ),

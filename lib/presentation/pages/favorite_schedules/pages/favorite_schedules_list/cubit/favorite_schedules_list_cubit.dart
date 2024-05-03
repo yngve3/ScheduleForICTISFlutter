@@ -1,22 +1,22 @@
 import 'dart:async';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:schedule_for_ictis_flutter/domain/interactors/favorite_schedule_interactor.dart';
 import 'package:schedule_for_ictis_flutter/domain/models/schedule_subject/schedule_subject.dart';
 import 'package:collection/collection.dart';
 
-import '../../../../../../data/repositories/favorite_schedules_repository.dart';
 import 'favorite_schedules_list_state.dart';
 
 class FavoriteSchedulesListCubit extends Cubit<FavoriteSchedulesListState> {
-  FavoriteSchedulesListCubit(this.repository) : super(FavoriteSchedulesListState());
+  FavoriteSchedulesListCubit() : super(FavoriteSchedulesListState());
 
-  final FavoriteSchedulesRepository repository;
-  List<int> deletionIdsList = [];
+  final FavoriteSchedulesInteractor _interactor = FavoriteSchedulesInteractor();
+  final List<int> deletionIdsList = [];
 
   late StreamSubscription<List<ScheduleSubject>> subscription;
 
   void getFavoriteSchedules() {
-    subscription = repository.getFromDBAll().listen((favoriteSchedules) {
+    subscription = _interactor.getFromDBAll().listen((favoriteSchedules) {
       final mainSchedules = favoriteSchedules.where((element) => element.isNotVPK).toList();
       final vpk = favoriteSchedules.where((element) => element.isVPK).toList();
       emit(FavoriteSchedulesListState(
@@ -47,8 +47,8 @@ class FavoriteSchedulesListCubit extends Cubit<FavoriteSchedulesListState> {
   }
 
   void saveChanges() {
-    repository.saveToDBMany([...state.favoriteVPKs, ...state.favoriteSchedules]);
-    repository.deleteFromDBMany(deletionIdsList);
+    _interactor.saveToDBMany([...state.favoriteVPKs, ...state.favoriteSchedules]);
+    _interactor.deleteFromDBMany(deletionIdsList);
   }
 
   void _unselectSelected(List<ScheduleSubject> list) {

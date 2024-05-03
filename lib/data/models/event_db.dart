@@ -14,6 +14,7 @@ class EventDB {
   final int weekNum;
   final String? location;
   final ToMany<Reminder> reminders = ToMany<Reminder>();
+  final String userUID;
 
   EventDB({
     this.id = 0,
@@ -21,6 +22,7 @@ class EventDB {
     required this.dateTimeStart,
     required this.dateTimeEnd,
     required this.weekNum,
+    required this.userUID,
     this.location,
     this.description,
     List<Reminder>? reminders

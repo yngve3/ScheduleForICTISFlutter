@@ -25,7 +25,7 @@ class FavoriteSchedulesAddPage extends StatelessWidget {
         appBar: AppBar(),
       ),
       body: BlocProvider (
-        create: (context) => ScheduleSearchCubit(FavoriteSchedulesRepository()),
+        create: (context) => ScheduleSearchCubit(),
         child: BlocBuilder<ScheduleSearchCubit, ScheduleSearchState> (
           builder: (context, state) {
             return ScrollableScreen(

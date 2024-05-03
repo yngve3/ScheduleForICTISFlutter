@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:schedule_for_ictis_flutter/data/repositories/auth_repository.dart';
+import 'package:schedule_for_ictis_flutter/data/repositories/user_repository.dart';
 import 'package:schedule_for_ictis_flutter/presentation/pages/auth/registration/registration_page.dart';
 import 'package:schedule_for_ictis_flutter/presentation/pages/home/home_page.dart';
 import 'package:schedule_for_ictis_flutter/presentation/pages/notes/all_notes_list/all_notes_list_page.dart';
@@ -38,6 +39,13 @@ abstract class AppRouter {
                 child: LoginPage()
             );
           },
+          redirect: (BuildContext context, GoRouterState state) {
+            if (UserRepository().isLogin) {
+              return Routes.home.path;
+            } else {
+              return null;
+            }
+          },
           routes: [
             GoRoute(
               path: Routes.registration.lastPathComponent,
@@ -46,18 +54,8 @@ abstract class AppRouter {
                   child: RegistrationPage()
                 );
               },
-              routes: [
-                GoRoute(
-                  path: Routes.favoriteSchedules.lastPathComponent,
-                  pageBuilder: (BuildContext context, GoRouterState state) {
-                    return const NoTransitionPage(
-                      child: FavoriteSchedulesListPage()
-                    );
-                  },
-                )
-              ]
             )
-          ]
+          ],
         ),
         ShellRoute(
             navigatorKey: _shellNavigatorKey,

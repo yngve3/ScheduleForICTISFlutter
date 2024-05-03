@@ -1,4 +1,5 @@
 import 'package:schedule_for_ictis_flutter/data/repositories/notes_repository.dart';
+import 'package:schedule_for_ictis_flutter/data/repositories/user_repository.dart';
 import 'package:schedule_for_ictis_flutter/data/repositories/week_number_repository.dart';
 
 import '../../data/models/couple_db.dart';
@@ -14,10 +15,11 @@ class HomePageInteractor {
   final EventsRepository _eventsRepository = EventsRepository();
   final NotesRepository _notesRepository = NotesRepository();
   final WeekNumberRepository _weekNumberRepository = WeekNumberRepository();
+  final UserRepository _userRepository = UserRepository();
 
   Future<List<DayScheduleItem>> getComingScheduleItems() async {
-    final mainScheduleSubject = await _favoriteSchedulesRepository.getSelectedFavoriteSchedule();
-    final vpkScheduleSubject = await _favoriteSchedulesRepository.getSelectedFavoriteSchedule(isVPK: true);
+    final mainScheduleSubject = await _favoriteSchedulesRepository.getSelectedFavoriteSchedule(userUID: _userRepository.uid);
+    final vpkScheduleSubject = await _favoriteSchedulesRepository.getSelectedFavoriteSchedule(isVPK: true, userUID: _userRepository.uid);
 
     List<CoupleDB> couplesDB = [];
 
@@ -37,7 +39,7 @@ class HomePageInteractor {
       );
     }
 
-    final eventsDB = _eventsRepository.getEventsAfter(DateTime.now());
+    final eventsDB = _eventsRepository.getEventsAfter(DateTime.now(), _userRepository.uid);
 
     List<DayScheduleItem> items = [];
 
@@ -50,7 +52,7 @@ class HomePageInteractor {
   }
 
   List<Note> getComingNotes() {
-    return _notesRepository.getNotesAfter(DateTime.now()).take(5).toList();
+    return _notesRepository.getNotesAfter(DateTime.now(), userUID: _userRepository.uid).take(5).toList();
   }
 
   int? getCurrentStudyWeekNumber() {

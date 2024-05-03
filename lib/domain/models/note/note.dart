@@ -11,6 +11,7 @@ class Note {
   @Property(type: PropertyType.date)
   DateTime date;
   String coupleID;
+  String userUID;
 
   bool get hasFiles => attachedFiles.isNotEmpty;
   bool get isPast => date.isBefore(DateTime.now());
@@ -25,6 +26,7 @@ class Note {
     required this.title,
     required this.date,
     required this.coupleID,
+    required this.userUID,
     this.description,
     List<NoteFile>? files,
     List<Reminder>? reminders

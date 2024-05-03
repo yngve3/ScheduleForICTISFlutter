@@ -31,7 +31,7 @@ class FavoriteSchedulesListPage extends StatelessWidget {
         ],
       ),
       body: BlocProvider (
-        create: (context) => FavoriteSchedulesListCubit(FavoriteSchedulesRepository())..getFavoriteSchedules(),
+        create: (context) => FavoriteSchedulesListCubit()..getFavoriteSchedules(),
         child: BlocBuilder<FavoriteSchedulesListCubit, FavoriteSchedulesListState>(
           builder: (context, state) => ScrollableScreen(
             bottom: FilledButton(

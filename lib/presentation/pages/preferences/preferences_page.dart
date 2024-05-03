@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:schedule_for_ictis_flutter/data/repositories/auth_repository.dart';
 import 'package:schedule_for_ictis_flutter/presentation/extensions/context_ext.dart';
 
 import '../../route/routes.dart';
@@ -39,6 +40,14 @@ class PreferencesList extends StatelessWidget {
           subtitle: "Настройка быстрого доступа к расписаниям",
           onItemTapped: () => context.go(Routes.favoriteSchedules.path)
         ),
+        PreferenceItem(
+          title: "Выход",
+          subtitle: "",
+          onItemTapped: () async {
+            await AuthRepository().logOut();
+            context.go(Routes.login.path);
+          }
+        )
       ],
     );
   }

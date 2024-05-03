@@ -107,7 +107,7 @@ class __$$RegistrationPageStateImplCopyWithImpl<$Res>
 
 class _$RegistrationPageStateImpl implements _RegistrationPageState {
   const _$RegistrationPageStateImpl(
-      {this.isRegister = true, this.errorMessage = ""});
+      {this.isRegister = false, this.errorMessage = ""});
 
   @override
   @JsonKey()

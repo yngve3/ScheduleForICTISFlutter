@@ -2,11 +2,6 @@ import 'package:schedule_for_ictis_flutter/data/repositories/auth_repository.dar
 import 'package:schedule_for_ictis_flutter/domain/models/auth/auth_model.dart';
 import 'package:schedule_for_ictis_flutter/domain/validators/auth_validator.dart';
 
-class ValidationException implements Exception {
-  final ValidationResult validationResult;
-  ValidationException(this.validationResult);
-}
-
 class AuthInteractor {
   final _authRepository = AuthRepository();
 

@@ -3,6 +3,7 @@ import 'package:schedule_for_ictis_flutter/data/repositories/auth_repository.dar
 import 'package:schedule_for_ictis_flutter/domain/interactors/auth_interactor.dart';
 
 import '../../../../../domain/models/auth/auth_model.dart';
+import '../../../../../domain/validators/auth_validator.dart';
 import 'login_page_state.dart';
 
 class LoginPageCubit extends Cubit<LoginPageState> {

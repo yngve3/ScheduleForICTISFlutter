@@ -1,5 +1,10 @@
 import '../models/auth/auth_model.dart';
 
+class ValidationException implements Exception {
+  final ValidationResult validationResult;
+  ValidationException(this.validationResult);
+}
+
 class AuthValidator {
   ValidationResult validate(AuthModel authModel) {
     final emailValidator = EmailValidator();

@@ -14,9 +14,13 @@ class ScheduleCubit extends Cubit<ScheduleState> {
           selectedDay: DateTime.now(),
           weekSchedule: WeekSchedule.empty()
       )
-  );
+  ) {
+    subscription = _interactor.weekSchedule.listen((event) {
+      emit(state.copyWith(weekSchedule: event));
+    });
+  }
 
-  ScheduleInteractor interactor = ScheduleInteractor();
+  final ScheduleInteractor _interactor = ScheduleInteractor();
   late StreamSubscription<WeekSchedule> subscription;
 
   void nextDay() {
@@ -35,9 +39,7 @@ class ScheduleCubit extends Cubit<ScheduleState> {
   }
 
   void loadSchedule({WeekNumber? weekNumber}) async {
-    subscription = (await interactor.getWeekSchedule(weekNumber: weekNumber)).listen((event) {
-      emit(state.copyWith(weekSchedule: event));
-    });
+    _interactor.getWeekSchedule(weekNumber: weekNumber);
   }
 
   void nextOrPreviousDay(int weekDay) {
@@ -56,7 +58,7 @@ class ScheduleCubit extends Cubit<ScheduleState> {
 
   @override
   Future<void> close() {
-   subscription.cancel();
-   return super.close();
+    subscription.cancel();
+    return super.close();
   }
 }

@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:collection/collection.dart';
 import 'package:schedule_for_ictis_flutter/data/repositories/user_repository.dart';
 import 'package:stream_transform/stream_transform.dart';
@@ -21,6 +23,10 @@ class ScheduleInteractor {
   final WeekNumberRepository _weekNumberRepository = WeekNumberRepository();
   final UserRepository _userRepository = UserRepository();
 
+  final _controller = StreamController<WeekSchedule>();
+
+  Stream<WeekSchedule> get weekSchedule => _controller.stream;
+
 
   Future<void> loadSchedule(WeekNumber? weekNumber) async {
     weekNumber ??= _weekNumberRepository.getCurrentWeekNumber();
@@ -34,11 +40,11 @@ class ScheduleInteractor {
     }
   }
 
-  Future<Stream<WeekSchedule>> getWeekSchedule({WeekNumber? weekNumber}) async {
+  Future<void> getWeekSchedule({WeekNumber? weekNumber}) async {
     loadSchedule(weekNumber);
 
     weekNumber ??= _weekNumberRepository.getCurrentWeekNumber();
-    if (weekNumber == null) return const Stream.empty();
+    if (weekNumber == null) return _controller.add(WeekSchedule.empty());
 
     List<Stream<Object>> streams = [];
 
@@ -53,8 +59,9 @@ class ScheduleInteractor {
       streams.add(_couplesRepository.getCouples(weekNumber, vpkScheduleSubject));
     }
 
-    return combineLatest(streams)
-        .map((data) => _create(data: data, weekNumber: weekNumber));
+    combineLatest(streams).map((data) => _create(data: data, weekNumber: weekNumber)).listen((event) {
+      _controller.add(event);
+    });
   }
 
   Stream<List> combineLatest(Iterable<Stream<Object>> streams) {

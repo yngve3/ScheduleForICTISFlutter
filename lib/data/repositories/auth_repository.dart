@@ -2,12 +2,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 
 import '../../domain/models/auth/auth_model.dart';
 
-class UserNotFoundException implements Exception {}
-class WrongPasswordException implements Exception {}
-class WeakPasswordException implements Exception {}
-class EmailAlreadyInUseException implements Exception {}
-class UnknownException implements Exception {}
-
 class AuthException implements Exception {
   final String code;
 
@@ -15,7 +9,6 @@ class AuthException implements Exception {
 }
 
 class AuthRepository {
-
   Future<void> logInWithEmailAndPassword(AuthModel authModel) async {
     try {
       await FirebaseAuth.instance.signInWithEmailAndPassword(

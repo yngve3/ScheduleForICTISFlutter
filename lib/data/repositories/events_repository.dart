@@ -12,8 +12,15 @@ class EventsRepository {
   final UserRepository _userRepository = UserRepository(); //временно
 
   EventsRepository() {
-    _ref = FirebaseDatabase.instance.ref("${_userRepository.uid}/events");
+    _ref = FirebaseDatabase.instance.ref("users/${_userRepository.uid}/events/");
     _eventsBox = objectBox.store.box<EventDB>();
+  }
+
+  Future<void> loadEvents() async {
+    final snapshot = await _ref.get();
+    if (snapshot.exists) {
+      print(snapshot.value);
+    }
   }
 
   Stream<List<EventDB>> getEventsByWeekNum(WeekNumber weekNumber, String? userUID) {
@@ -31,8 +38,8 @@ class EventsRepository {
   }
 
   void addEvent(EventDB event) async {
-    await _ref.push().set(event.toJSON());
-    _eventsBox.put(event);
+    int id = _eventsBox.put(event);
+    await _ref.child(id.toString()).set(event.toJSON());
   }
 
   void deleteEvent(int id) {

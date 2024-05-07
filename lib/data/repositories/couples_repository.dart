@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 
 import 'package:schedule_for_ictis_flutter/domain/models/week_number/week_number.dart';
@@ -16,6 +17,10 @@ class CouplesRepository {
   CouplesRepository() {
     _couplesBox = objectBox.store.box<CoupleDB>();
   }
+
+  final _couplesByWeekNumController = StreamController<List<CoupleDB>>();
+
+  Stream<List<CoupleDB>> get couplesByWeekNum => _couplesByWeekNumController.stream;
 
   Future<void> loadCouples(ScheduleSubject scheduleSubject, WeekNumber? weekNumber) async {
     final id = scheduleSubject.id;
@@ -51,12 +56,12 @@ class CouplesRepository {
         .findFirstAsync();
   }
 
-  Stream<List<CoupleDB>> getCouples(WeekNumber weekNumber, ScheduleSubject scheduleSubject) {
+  void getCouples(WeekNumber weekNumber, List<ScheduleSubject> scheduleSubjects) {
     final query = _couplesBox.query(
-        CoupleDB_.scheduleSubject.equals(scheduleSubject.dbId)
+        CoupleDB_.scheduleSubject.equals(scheduleSubjects[0].dbId)
     );
     query.link(CoupleDB_.weekNumber, WeekNumber_.calendarWeekNumber.equals(weekNumber.calendarWeekNumber));
-    return query.watch(triggerImmediately: true).map((event) => event.find());
+    query.watch(triggerImmediately: true).forEach((event) => _couplesByWeekNumController.add(event.find()));
   }
 
   List<CoupleDB> getCouplesAfter(DateTime dateTime, ScheduleSubject scheduleSubject) {

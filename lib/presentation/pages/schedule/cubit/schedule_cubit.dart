@@ -39,7 +39,7 @@ class ScheduleCubit extends Cubit<ScheduleState> {
   }
 
   void loadSchedule({WeekNumber? weekNumber}) async {
-    _interactor.getWeekSchedule(weekNumber: weekNumber);
+    _interactor.loadSchedule(weekNumber: weekNumber);
   }
 
   void nextOrPreviousDay(int weekDay) {

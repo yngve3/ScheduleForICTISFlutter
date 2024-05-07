@@ -15,6 +15,27 @@ import '../../data/models/couple_db.dart';
 import '../../data/models/event_db.dart';
 import '../models/schedule/day_schedule_item.dart';
 import '../models/schedule/week_schedule/week_schedule.dart';
+import '../models/schedule_subject/schedule_subject.dart';
+
+class ScheduleInteractorState {
+  final List<EventDB> eventsDB = [];
+  final List<CoupleDB> couplesDB = [];
+
+  final _controller = StreamController<ScheduleInteractorState>();
+  Stream<ScheduleInteractorState> get state => _controller.stream;
+
+  void setEventsDB(List<EventDB> eventsDB) {
+    this.eventsDB.clear();
+    this.eventsDB.addAll(eventsDB);
+    _controller.add(this);
+  }
+
+  void setCouplesDB(List<CoupleDB> couplesDB) {
+    this.couplesDB.clear();
+    this.couplesDB.addAll(couplesDB);
+    _controller.add(this);
+  }
+}
 
 class ScheduleInteractor {
   final CouplesRepository _couplesRepository = CouplesRepository();
@@ -26,117 +47,61 @@ class ScheduleInteractor {
   final _controller = StreamController<WeekSchedule>();
 
   Stream<WeekSchedule> get weekSchedule => _controller.stream;
+  ScheduleInteractorState state = ScheduleInteractorState();
 
+  List<ScheduleSubject> favoriteSchedules = [];
+  late WeekNumber weekNumber;
 
-  Future<void> loadSchedule(WeekNumber? weekNumber) async {
-    weekNumber ??= _weekNumberRepository.getCurrentWeekNumber();
-    final mainScheduleSubject = await _favoriteSchedulesRepository.getSelectedFavoriteSchedule(userUID: _userRepository.uid);
-    if (mainScheduleSubject != null) {
-      await _couplesRepository.loadCouples(mainScheduleSubject, weekNumber);
-    }
-    final vpkScheduleSubject = await _favoriteSchedulesRepository.getSelectedFavoriteSchedule(isVPK: true, userUID: _userRepository.uid);
-    if (vpkScheduleSubject != null) {
-      await _couplesRepository.loadCouples(vpkScheduleSubject, weekNumber);
-    }
-  }
-
-  Future<void> getWeekSchedule({WeekNumber? weekNumber}) async {
-    loadSchedule(weekNumber);
-
-    weekNumber ??= _weekNumberRepository.getCurrentWeekNumber();
-    if (weekNumber == null) return _controller.add(WeekSchedule.empty());
-
-    List<Stream<Object>> streams = [];
-
-    streams.add(_eventsRepository.getEventsByWeekNum(weekNumber, _userRepository.uid));
-
-    final mainScheduleSubject = await _favoriteSchedulesRepository.getSelectedFavoriteSchedule(userUID: _userRepository.uid);
-    if (mainScheduleSubject != null) {
-      streams.add(_couplesRepository.getCouples(weekNumber, mainScheduleSubject));
-    }
-    final vpkScheduleSubject = await _favoriteSchedulesRepository.getSelectedFavoriteSchedule(isVPK: true, userUID: _userRepository.uid);
-    if (vpkScheduleSubject != null) {
-      streams.add(_couplesRepository.getCouples(weekNumber, vpkScheduleSubject));
-    }
-
-    combineLatest(streams).map((data) => _create(data: data, weekNumber: weekNumber)).listen((event) {
-      _controller.add(event);
+  ScheduleInteractor() {
+    weekNumber = _weekNumberRepository.getCurrentWeekNumber() ?? WeekNumber.empty();
+    _eventsRepository.eventsByWeekNum.listen((eventsDB) {
+      state.setEventsDB(eventsDB);
+    });
+    _couplesRepository.couplesByWeekNum.listen((couplesDB) {
+      state.setCouplesDB(couplesDB);
+    });
+    state.state.listen((event) {
+      _controller.add(_createWeekSchedule(event));
+    });
+    _favoriteSchedulesRepository.getSelectedFavoriteScheduleStream(userUID: _userRepository.uid).listen((favoriteSchedules) {
+      if (favoriteSchedules.length > 2 || favoriteSchedules.isEmpty) return;
+      this.favoriteSchedules = favoriteSchedules;
+      _couplesRepository.getCouples(weekNumber, favoriteSchedules);
     });
   }
 
-  Stream<List> combineLatest(Iterable<Stream<Object>> streams) {
-    final Stream<Object> first = streams.first.cast<Object>();
-    final List<Stream<Object>> others = [...streams.skip(1)];
-    return first.combineLatestAll(others);
+  void loadSchedule({WeekNumber? weekNumber}) async {
+    weekNumber ??= _weekNumberRepository.getCurrentWeekNumber();
+    if (weekNumber == null || favoriteSchedules.isEmpty) return _controller.add(WeekSchedule.empty());
+    await _couplesRepository.loadCouples(favoriteSchedules[0], weekNumber);
+    _couplesRepository.getCouples(weekNumber, favoriteSchedules);
   }
 
-  WeekSchedule _create({required List<dynamic> data, WeekNumber? weekNumber}) {
-    List<EventDB> eventsDB = [];
-    List<CoupleDB> mainCouplesDB = [];
-    List<CoupleDB> vpkCouplesDB = [];
-
-    if (data.isNotEmpty) {
-      eventsDB = data[0];
-      if (data.length > 1) {
-        mainCouplesDB = data[1];
-        if (data.length == 3) {
-          vpkCouplesDB = data[2];
-        }
-      }
-    }
-
-    return _createWeekSchedule(eventsDB: eventsDB, mainCouplesDB: mainCouplesDB, vpkCouplesDB: vpkCouplesDB, weekNumber: weekNumber);
-  }
-
-  WeekSchedule _createWeekSchedule({
-    required List<EventDB> eventsDB,
-    required List<CoupleDB> mainCouplesDB,
-    required List<CoupleDB> vpkCouplesDB,
-    WeekNumber? weekNumber
-  }) {
+  WeekSchedule _createWeekSchedule(ScheduleInteractorState state) {
     List<DaySchedule> daySchedules = [];
     for (int weekday = 1; weekday <= 7; weekday++) {
       List<DayScheduleItem> items = [];
       items.addAll(
-          eventsDB
+          state.eventsDB
               .where((eventDB) => eventDB.dateTimeEnd.weekday == weekday)
               .map((eventDB) => Event.fromEventDB(eventDB))
               .toList()
       );
-      bool isVPK = false;
 
       if (weekday != 7) {
-        final couplesDBByWeekDay = mainCouplesDB
-            .where((coupleDB) => coupleDB.dateTimeEnd.weekday == weekday).toList();
-
         items.addAll(
-                couplesDBByWeekDay
-                .where((coupleDB) => coupleDB.isNotEmpty && coupleDB.isNotVPKPlaceHolder)
+            state.couplesDB
+                .where((coupleDB) => coupleDB.dateTimeEnd.weekday == weekday && coupleDB.isNotEmpty && coupleDB.isNotVPKPlaceHolder)
                 .map((coupleDB) => Couple.fromCoupleDB(coupleDB))
                 .toList()
         );
-        if (_containsVPKPlaceHolder(couplesDBByWeekDay) && vpkCouplesDB.isNotEmpty) {
-          items.addAll(
-            vpkCouplesDB
-                .where((coupleDB) => coupleDB.dateTimeEnd.weekday == weekday && coupleDB.isNotEmpty)
-                .map((coupleDB) => Couple.fromCoupleDB(coupleDB))
-                .toList()
-          );
-        }
-
-        isVPK = vpkCouplesDB.isEmpty && _containsVPKPlaceHolder(couplesDBByWeekDay);
       }
 
       items.sort((a, b) => a.dateTimeStart.compareTo(b.dateTimeStart));
-
-      daySchedules.add(DaySchedule(items: items, isVPK: isVPK));
+      daySchedules.add(DaySchedule(items: items));
     }
 
-    return WeekSchedule(weekNumber: weekNumber ?? WeekNumber.empty(), daySchedules: daySchedules);
-  }
-
-  bool _containsVPKPlaceHolder(List<CoupleDB> couplesDB) {
-    return couplesDB.firstWhereOrNull((coupleDB) => coupleDB.isVPKPlaceHolder) != null;
+    return WeekSchedule(weekNumber: weekNumber, daySchedules: daySchedules);
   }
 }
 

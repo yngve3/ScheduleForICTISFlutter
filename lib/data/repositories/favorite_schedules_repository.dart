@@ -64,6 +64,12 @@ class FavoriteSchedulesRepository {
           .build()
           .findFirstAsync();
 
+  Stream<List<ScheduleSubject>> getSelectedFavoriteScheduleStream({String? userUID}) =>
+      _favoriteSchedulesBox
+          .query(ScheduleSubject_.isChosen.equals(true).and(ScheduleSubject_.userUID.equals(userUID ?? "")))
+          .watch(triggerImmediately: true)
+          .map((event) => event.find());
+
 
   Future<List<ScheduleSubject>> _handleRequestError() async {
     return const [];

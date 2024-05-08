@@ -13,10 +13,6 @@ class EventsRepository {
   late final DatabaseReference _ref;
   final UserRepository _userRepository = UserRepository(); //временно
 
-  final _eventsByWeekNumController = StreamController<List<EventDB>>();
-
-  Stream<List<EventDB>> get eventsByWeekNum => _eventsByWeekNumController.stream;
-
   EventsRepository() {
     _ref = FirebaseDatabase.instance.ref("users/${_userRepository.uid}/events/");
     _eventsBox = objectBox.store.box<EventDB>();
@@ -29,9 +25,9 @@ class EventsRepository {
     }
   }
 
-  void getEventsByWeekNum(WeekNumber weekNumber, String? userUID) {
+  Stream<List<EventDB>> getEventsByWeekNum(WeekNumber weekNumber, String? userUID) {
     final query = _eventsBox.query(EventDB_.weekNum.equals(weekNumber.calendarWeekNumber).and(EventDB_.userUID.equals(userUID ?? "")));
-    query.watch(triggerImmediately: true).forEach((event) => _eventsByWeekNumController.add(event.find()));
+    return query.watch(triggerImmediately: true).map((event) => event.find());
   }
 
   List<EventDB> getEventsAfter(DateTime dateTime, String? userUID) {

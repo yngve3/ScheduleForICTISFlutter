@@ -7,6 +7,7 @@ import 'package:schedule_for_ictis_flutter/presentation/pages/home/home_page.dar
 import 'package:schedule_for_ictis_flutter/presentation/pages/notes/all_notes_list/all_notes_list_page.dart';
 import 'package:schedule_for_ictis_flutter/presentation/pages/notes/note_add/note_add_page.dart';
 import 'package:schedule_for_ictis_flutter/presentation/pages/notes/note_info/note_info_page.dart';
+import 'package:schedule_for_ictis_flutter/presentation/pages/search_schedule_screen/search_schedule_page.dart';
 import 'package:schedule_for_ictis_flutter/presentation/route/routes.dart';
 
 import '../pages/auth/login/login_page.dart';
@@ -76,6 +77,17 @@ abstract class AppRouter {
                     pageBuilder: (BuildContext context, GoRouterState state) {
                       return const NoTransitionPage(
                           child: AllNotesListPage()
+                      );
+                    },
+                  ),
+                  GoRoute(
+                    path: Routes.searchSchedule.lastPathComponent,
+                    pageBuilder: (BuildContext context, GoRouterState state) {
+                      return CustomTransitionPage(
+                        child: const SearchSchedulePage(),
+                        transitionsBuilder: (context, animation, secondaryAnimation, child) {
+                          return FadeTransition(opacity: animation, child: child);
+                        },
                       );
                     },
                   )

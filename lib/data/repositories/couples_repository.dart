@@ -19,10 +19,9 @@ class CouplesRepository {
   }
 
   final _couplesByWeekNumController = StreamController<List<CoupleDB>>();
-
   Stream<List<CoupleDB>> get couplesByWeekNum => _couplesByWeekNumController.stream;
 
-  Future<void> loadCouples(ScheduleSubject scheduleSubject, WeekNumber? weekNumber) async {
+  Future<void> loadCouplesFromNet(ScheduleSubject scheduleSubject, WeekNumber? weekNumber) async {
     final id = scheduleSubject.id;
     final requestURL =
         '${AppConfig.baseURL}/'
@@ -56,12 +55,31 @@ class CouplesRepository {
         .findFirstAsync();
   }
 
-  void getCouples(WeekNumber weekNumber, List<ScheduleSubject> scheduleSubjects) {
-    final query = _couplesBox.query(
-        CoupleDB_.scheduleSubject.equals(scheduleSubjects[0].dbId)
-    );
-    query.link(CoupleDB_.weekNumber, WeekNumber_.calendarWeekNumber.equals(weekNumber.calendarWeekNumber));
-    query.watch(triggerImmediately: true).forEach((event) => _couplesByWeekNumController.add(event.find()));
+  void loadCouples(WeekNumber weekNumber, List<ScheduleSubject> scheduleSubjects) async {
+    for (final scheduleSubject in scheduleSubjects) {
+      await loadCouplesFromNet(scheduleSubject, weekNumber);
+    }
+    loadCouplesFromDB(weekNumber, scheduleSubjects);
+  }
+
+  void loadCouplesFromDB(WeekNumber weekNumber, List<ScheduleSubject> scheduleSubjects) {
+    final query = _getQuery(weekNumber, scheduleSubjects);
+    query?.link(CoupleDB_.weekNumber, WeekNumber_.calendarWeekNumber.equals(weekNumber.calendarWeekNumber));
+    query?.watch(triggerImmediately: true).forEach((event) => _couplesByWeekNumController.add(event.find()));
+  }
+
+  QueryBuilder<CoupleDB>? _getQuery(WeekNumber weekNumber, List<ScheduleSubject> scheduleSubjects) {
+    if (scheduleSubjects.length == 1) {
+      return _couplesBox.query(
+          CoupleDB_.scheduleSubject.equals(scheduleSubjects[0].dbId)
+      );
+    } else if (scheduleSubjects.length == 2) {
+      return _couplesBox.query(
+          CoupleDB_.scheduleSubject.equals(scheduleSubjects[0].dbId).or(CoupleDB_.scheduleSubject.equals(scheduleSubjects[1].dbId))
+      );
+    }
+
+    return null;
   }
 
   List<CoupleDB> getCouplesAfter(DateTime dateTime, ScheduleSubject scheduleSubject) {
@@ -73,7 +91,7 @@ class CouplesRepository {
     return query.build().find();
   }
 
-  List<CoupleDB> getAll() {
-    return _couplesBox.getAll();
+  void dispose() {
+    _couplesByWeekNumController.close();
   }
 }

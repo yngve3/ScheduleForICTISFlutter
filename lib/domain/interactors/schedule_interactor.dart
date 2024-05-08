@@ -1,8 +1,8 @@
 import 'dart:async';
 
 import 'package:collection/collection.dart';
+import 'package:path/path.dart';
 import 'package:schedule_for_ictis_flutter/data/repositories/user_repository.dart';
-import 'package:stream_transform/stream_transform.dart';
 
 import 'package:schedule_for_ictis_flutter/data/repositories/couples_repository.dart';
 import 'package:schedule_for_ictis_flutter/data/repositories/events_repository.dart';
@@ -45,36 +45,48 @@ class ScheduleInteractor {
   final UserRepository _userRepository = UserRepository();
 
   final _controller = StreamController<WeekSchedule>();
-
   Stream<WeekSchedule> get weekSchedule => _controller.stream;
-  ScheduleInteractorState state = ScheduleInteractorState();
+  List<StreamSubscription> subscriptions = [];
 
+  ScheduleInteractorState state = ScheduleInteractorState();
   List<ScheduleSubject> favoriteSchedules = [];
-  late WeekNumber weekNumber;
+  WeekNumber? weekNumber;
 
   ScheduleInteractor() {
-    weekNumber = _weekNumberRepository.getCurrentWeekNumber() ?? WeekNumber.empty();
-    _eventsRepository.eventsByWeekNum.listen((eventsDB) {
-      state.setEventsDB(eventsDB);
-    });
-    _couplesRepository.couplesByWeekNum.listen((couplesDB) {
-      state.setCouplesDB(couplesDB);
-    });
-    state.state.listen((event) {
-      _controller.add(_createWeekSchedule(event));
-    });
-    _favoriteSchedulesRepository.getSelectedFavoriteScheduleStream(userUID: _userRepository.uid).listen((favoriteSchedules) {
-      if (favoriteSchedules.length > 2 || favoriteSchedules.isEmpty) return;
-      this.favoriteSchedules = favoriteSchedules;
-      _couplesRepository.getCouples(weekNumber, favoriteSchedules);
-    });
+    weekNumber = _weekNumberRepository.getCurrentWeekNumber();
+    subscriptions.add(
+        _couplesRepository.couplesByWeekNum
+            .listen((couplesDB) => state.setCouplesDB(couplesDB))
+    );
+
+    subscriptions.add(
+        _eventsRepository.getEventsByWeekNum(weekNumber ?? WeekNumber.empty(), _userRepository.uid)
+            .listen((eventsDB) => state.setEventsDB(eventsDB))
+    );
+
+    subscriptions.add(
+        _favoriteSchedulesRepository
+            .getSelectedFavoriteScheduleStream(userUID: _userRepository.uid)
+            .listen((favoriteSchedules) {
+              if (favoriteSchedules.length > 2 || favoriteSchedules.isEmpty) return;
+              this.favoriteSchedules = favoriteSchedules;
+              for (final scheduleSubject in favoriteSchedules) {
+                _couplesRepository.loadCouplesFromNet(scheduleSubject, weekNumber);
+              }
+              weekNumber = _weekNumberRepository.getCurrentWeekNumber();
+              _couplesRepository.loadCouplesFromDB(weekNumber!, favoriteSchedules);
+            }
+        )
+    );
+
+    subscriptions.add(state.state.listen((event) =>
+      _controller.add(_createWeekSchedule(event))
+    ));
   }
 
-  void loadSchedule({WeekNumber? weekNumber}) async {
-    weekNumber ??= _weekNumberRepository.getCurrentWeekNumber();
-    if (weekNumber == null || favoriteSchedules.isEmpty) return _controller.add(WeekSchedule.empty());
-    await _couplesRepository.loadCouples(favoriteSchedules[0], weekNumber);
-    _couplesRepository.getCouples(weekNumber, favoriteSchedules);
+  void changeWeek(WeekNumber weekNumber) {
+    this.weekNumber = weekNumber;
+    _couplesRepository.loadCouples(this.weekNumber!, favoriteSchedules);
   }
 
   WeekSchedule _createWeekSchedule(ScheduleInteractorState state) {
@@ -89,8 +101,12 @@ class ScheduleInteractor {
       );
 
       if (weekday != 7) {
+        List<CoupleDB> couplesDB = state.couplesDB;
+        if (couplesDB.firstWhereOrNull((element) => element.isVPKPlaceHolder) == null) {
+          couplesDB = couplesDB.where((element) => element.scheduleSubject.target?.isNotVPK ?? true).toList();
+        }
         items.addAll(
-            state.couplesDB
+            couplesDB
                 .where((coupleDB) => coupleDB.dateTimeEnd.weekday == weekday && coupleDB.isNotEmpty && coupleDB.isNotVPKPlaceHolder)
                 .map((coupleDB) => Couple.fromCoupleDB(coupleDB))
                 .toList()
@@ -101,7 +117,15 @@ class ScheduleInteractor {
       daySchedules.add(DaySchedule(items: items));
     }
 
-    return WeekSchedule(weekNumber: weekNumber, daySchedules: daySchedules);
+    return WeekSchedule(weekNumber: weekNumber!, daySchedules: daySchedules);
+  }
+
+  void dispose() {
+    for (final subscription in subscriptions) {
+      subscription.cancel();
+    }
+    _controller.close();
+    _couplesRepository.dispose();
   }
 }
 

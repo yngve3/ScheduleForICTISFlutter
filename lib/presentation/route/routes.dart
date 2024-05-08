@@ -6,6 +6,7 @@ abstract class Routes {
   static SimpleRoute preferences = const SimpleRoute("/preferences");
   static SimpleRoute home = const SimpleRoute("/home");
 
+  static SimpleRoute searchSchedule = const SimpleRoute("/home/search_schedule");
   static SimpleRoute allNotes = const SimpleRoute("/home/all_notes");
 
   static SimpleRoute favoriteSchedules = const SimpleRoute("/preferences/favorite_schedules");

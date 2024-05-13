@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:schedule_for_ictis_flutter/data/database/object_box.dart';
 import 'package:schedule_for_ictis_flutter/presentation/app/app.dart';
 import 'package:schedule_for_ictis_flutter/utils/reminders_helper.dart';
@@ -14,5 +15,8 @@ Future<void> main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+  SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
+      statusBarColor: Colors.transparent
+  ));
   runApp(const App());
 }

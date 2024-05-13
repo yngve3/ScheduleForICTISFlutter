@@ -39,6 +39,7 @@ class ScrollableScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Screen(
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           top ?? const SizedBox.shrink(),
           SizedBox(height: bottomGap),

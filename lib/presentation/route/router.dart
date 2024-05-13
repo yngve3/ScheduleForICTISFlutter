@@ -30,7 +30,7 @@ abstract class AppRouter {
 
   static final GoRouter router = GoRouter(
       navigatorKey: _rootNavigatorKey,
-      initialLocation: Routes.login.path,
+      initialLocation: Routes.home.path,
       debugLogDiagnostics: true,
       routes: [
         GoRoute(

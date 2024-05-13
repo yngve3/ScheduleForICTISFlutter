@@ -1,9 +1,12 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:schedule_for_ictis_flutter/presentation/extensions/context_ext.dart';
 import 'package:schedule_for_ictis_flutter/presentation/pages/search_schedule_screen/cubit/search_schedule_cubit.dart';
 import 'package:schedule_for_ictis_flutter/presentation/widgets/app_bar.dart';
 import 'package:schedule_for_ictis_flutter/presentation/widgets/input_field.dart';
+import 'package:schedule_for_ictis_flutter/presentation/widgets/schedule_subject_widget.dart';
 import 'package:schedule_for_ictis_flutter/presentation/widgets/screen.dart';
 
 import '../../../domain/models/schedule_subject/schedule_subject.dart';
@@ -18,6 +21,7 @@ class SearchSchedulePage extends StatelessWidget {
       create: (context) => SearchScheduleCubit(),
       child: BlocBuilder<SearchScheduleCubit, SearchScheduleState>(
         builder: (context, state) {
+          const categories = SearchCategory.values;
           return Scaffold(
             appBar: MyAppBar(
               appBar: AppBar(),
@@ -27,25 +31,33 @@ class SearchSchedulePage extends StatelessWidget {
               top: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Hero(
+                  Hero(
                     tag: "searchField",
                     child: InputField(
                       label: "Искать Группы, Преподвателей, Аудитории",
                       textInputAction: TextInputAction.search,
+                      onSubmit: (value) => context.read<SearchScheduleCubit>().search(value),
+                      requestFocus: true,
                     ),
                   ),
-                  Wrap(
-                    spacing: 5.0,
-                    children: SearchCategory.values.map((category) =>
-                        CategoryName(
-                          category: category,
-                          isSelected: category == state.category
-                        )
-                    ).toList(),
+                  SizedBox(
+                    height: 60,
+                    child: ListView.separated(
+                      itemCount: categories.length,
+                      scrollDirection: Axis.horizontal,
+                      separatorBuilder: (context, index) => const SizedBox(width: 5),
+                      itemBuilder: (context, index) => CategoryName(
+                        category: categories[index],
+                        isSelected: categories[index] == state.category
+                      ),
+                    )
                   )
                 ],
               ),
-              scrollable: Placeholder(),
+              scrollable: FilteredSearchResult(
+                title: "Категории",
+                filteredSearchResult: state.searchResults,
+              ),
             ),
           );
         },
@@ -67,10 +79,18 @@ class FilteredSearchResult extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(title, style: context.textTheme.titleLarge),
-        Column(
-          children: filteredSearchResult.map((e) => Text(e.name)).toList(),
+        const SizedBox(height: 10),
+        Wrap(
+          spacing: 5,
+          children: filteredSearchResult.map((element) =>
+              ScheduleSubjectWidget(
+                scheduleSubject: element,
+                callback: (scheduleSubject) {}
+              )
+          ).toList(),
         )
       ],
     );

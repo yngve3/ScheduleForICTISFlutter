@@ -12,7 +12,8 @@ class InputField extends StatefulWidget {
     this.textInputType,
     this.isPassword = false,
     this.controller,
-    this.errorText
+    this.errorText,
+    this.requestFocus = false
   });
 
   final String label;
@@ -22,6 +23,7 @@ class InputField extends StatefulWidget {
   final bool isPassword;
   final TextEditingController? controller;
   final String? errorText;
+  final bool requestFocus;
 
   @override
   State<StatefulWidget> createState() => _InputFiledState();
@@ -29,35 +31,42 @@ class InputField extends StatefulWidget {
 
 class _InputFiledState extends State<InputField> {
   late bool _obscureText;
+  late FocusNode _focusNode;
 
   @override
   void initState() {
+    _focusNode = FocusNode();
     _obscureText = widget.isPassword;
+    if (widget.requestFocus) _focusNode.requestFocus();
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    return TextField(
-      cursorColor: context.customColors.text1,
-      onSubmitted: (value) => widget.onSubmit?.call(value),
-      textInputAction: widget.textInputAction,
-      keyboardType: widget.textInputType,
-      obscureText: _obscureText,
-      controller: widget.controller,
-      decoration: InputDecoration(
-        border: UnderlineInputBorder(
-          borderRadius: BorderRadius.circular(10),
-          borderSide: BorderSide.none,
+    return Container(
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(10),
+        color: context.customColors.card
+      ),
+      padding: const EdgeInsets.symmetric(horizontal: 15),
+      child: TextField(
+        cursorColor: context.customColors.text1,
+        onSubmitted: (value) => widget.onSubmit?.call(value),
+        textInputAction: widget.textInputAction,
+        keyboardType: widget.textInputType,
+        obscureText: _obscureText,
+        controller: widget.controller,
+        focusNode: _focusNode,
+        decoration: InputDecoration(
+          contentPadding: const EdgeInsets.symmetric(vertical: 15),
+          errorText: widget.errorText,
+          labelText: widget.label,
+          labelStyle: context.textTheme.bodyLarge,
+          suffix: widget.isPassword ? InkWell(
+            onTap: () => _toggleShowPassword(),
+            child: Icon(_obscureText ? Icons.visibility_rounded : Icons.visibility_off_rounded, size: 20),
+          ) : null,
         ),
-        errorText: widget.errorText,
-        contentPadding: const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
-        labelText: widget.label,
-        labelStyle: context.textTheme.bodyLarge,
-        suffix: widget.isPassword ? InkWell(
-          onTap: () => _toggleShowPassword(),
-          child: Icon(_obscureText ? Icons.visibility_rounded : Icons.visibility_off_rounded, size: 20),
-        ) : null
       ),
     );
   }

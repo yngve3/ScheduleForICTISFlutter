@@ -38,7 +38,7 @@ class ItemCouple extends StatelessWidget {
           children: [
             Row(
               children: [
-                Text(couple.audiences, style: context.textTheme.bodyLarge),
+                Text(couple.audiences.split(",")[0], style: context.textTheme.bodyLarge),
                 SizedBox(width: couple.audiences.isNotEmpty ? 8 : 0),
                 Icon(Icons.circle, color: _getCircleColor(context)),
                 const SizedBox(width: 8),

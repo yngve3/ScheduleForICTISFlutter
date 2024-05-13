@@ -18,7 +18,7 @@ class WeekNumber {
   WeekNumber plus(int weekCount) {
     final newDate = switch(weekCount) {
       > 0 => weekStartDate.add(Duration(days: 7 * weekCount)),
-      < 0 => weekStartDate.subtract(Duration(days: 7 * weekCount)),
+      < 0 => weekStartDate.subtract(Duration(days: (7 * weekCount).abs())),
       _ => weekStartDate
     };
     return WeekNumber(

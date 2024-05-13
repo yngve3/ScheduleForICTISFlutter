@@ -20,6 +20,8 @@ import '../models/schedule_subject/schedule_subject.dart';
 class ScheduleInteractorState {
   final List<EventDB> eventsDB = [];
   final List<CoupleDB> couplesDB = [];
+  final List<ScheduleSubject> favoriteSchedules = [];
+  WeekNumber? weekNumber;
 
   final _controller = StreamController<ScheduleInteractorState>();
   Stream<ScheduleInteractorState> get state => _controller.stream;
@@ -33,7 +35,17 @@ class ScheduleInteractorState {
   void setCouplesDB(List<CoupleDB> couplesDB) {
     this.couplesDB.clear();
     this.couplesDB.addAll(couplesDB);
+    if (couplesDB.isNotEmpty) weekNumber = couplesDB.first.weekNumber.target;
     _controller.add(this);
+  }
+
+  void setFavoriteSchedules(List<ScheduleSubject> favoriteSchedules) {
+    this.favoriteSchedules.clear();
+    this.favoriteSchedules.addAll(favoriteSchedules);
+  }
+
+  void setWeekNumber(WeekNumber? weekNumber) {
+    this.weekNumber = weekNumber;
   }
 }
 
@@ -49,18 +61,15 @@ class ScheduleInteractor {
   List<StreamSubscription> subscriptions = [];
 
   ScheduleInteractorState state = ScheduleInteractorState();
-  List<ScheduleSubject> favoriteSchedules = [];
-  WeekNumber? weekNumber;
 
   ScheduleInteractor() {
-    weekNumber = _weekNumberRepository.getCurrentWeekNumber();
     subscriptions.add(
         _couplesRepository.couplesByWeekNum
             .listen((couplesDB) => state.setCouplesDB(couplesDB))
     );
 
     subscriptions.add(
-        _eventsRepository.getEventsByWeekNum(weekNumber ?? WeekNumber.empty(), _userRepository.uid)
+        _eventsRepository.eventsByWeekNum
             .listen((eventsDB) => state.setEventsDB(eventsDB))
     );
 
@@ -69,12 +78,9 @@ class ScheduleInteractor {
             .getSelectedFavoriteScheduleStream(userUID: _userRepository.uid)
             .listen((favoriteSchedules) {
               if (favoriteSchedules.length > 2 || favoriteSchedules.isEmpty) return;
-              this.favoriteSchedules = favoriteSchedules;
-              for (final scheduleSubject in favoriteSchedules) {
-                _couplesRepository.loadCouplesFromNet(scheduleSubject, weekNumber);
-              }
-              weekNumber = _weekNumberRepository.getCurrentWeekNumber();
-              _couplesRepository.loadCouplesFromDB(weekNumber!, favoriteSchedules);
+              state.setFavoriteSchedules(favoriteSchedules);
+              state.setWeekNumber(_weekNumberRepository.getCurrentWeekNumber());
+              _couplesRepository.loadCouples(state.weekNumber, favoriteSchedules);
             }
         )
     );
@@ -82,11 +88,14 @@ class ScheduleInteractor {
     subscriptions.add(state.state.listen((event) =>
       _controller.add(_createWeekSchedule(event))
     ));
+
+    _eventsRepository.getEventsByWeekNum(state.weekNumber ?? WeekNumber.empty(), _userRepository.uid);
   }
 
   void changeWeek(WeekNumber weekNumber) {
-    this.weekNumber = weekNumber;
-    _couplesRepository.loadCouples(this.weekNumber!, favoriteSchedules);
+    state.setWeekNumber(weekNumber);
+    _couplesRepository.loadCouples(weekNumber, state.favoriteSchedules);
+    _eventsRepository.getEventsByWeekNum(weekNumber, _userRepository.uid);
   }
 
   WeekSchedule _createWeekSchedule(ScheduleInteractorState state) {
@@ -117,7 +126,7 @@ class ScheduleInteractor {
       daySchedules.add(DaySchedule(items: items));
     }
 
-    return WeekSchedule(weekNumber: weekNumber!, daySchedules: daySchedules);
+    return WeekSchedule(weekNumber: state.weekNumber ?? WeekNumber.empty(), daySchedules: daySchedules);
   }
 
   void dispose() {
@@ -126,6 +135,7 @@ class ScheduleInteractor {
     }
     _controller.close();
     _couplesRepository.dispose();
+    _eventsRepository.dispose();
   }
 }
 

@@ -55,11 +55,12 @@ class CouplesRepository {
         .findFirstAsync();
   }
 
-  void loadCouples(WeekNumber weekNumber, List<ScheduleSubject> scheduleSubjects) async {
+  void loadCouples(WeekNumber? weekNumber, List<ScheduleSubject> scheduleSubjects) {
     for (final scheduleSubject in scheduleSubjects) {
-      await loadCouplesFromNet(scheduleSubject, weekNumber);
+      loadCouplesFromNet(scheduleSubject, weekNumber);
     }
-    loadCouplesFromDB(weekNumber, scheduleSubjects);
+
+    loadCouplesFromDB(weekNumber ?? WeekNumber.empty(), scheduleSubjects);
   }
 
   void loadCouplesFromDB(WeekNumber weekNumber, List<ScheduleSubject> scheduleSubjects) {

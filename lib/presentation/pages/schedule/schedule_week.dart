@@ -10,11 +10,13 @@ class WeekScheduleWidget extends StatefulWidget {
   const WeekScheduleWidget({
     super.key,
     required this.selectedDay,
-    required this.weekSchedule
+    required this.weekSchedule,
+    this.isTouchable = true
   });
 
   final DateTime selectedDay;
   final WeekSchedule weekSchedule;
+  final bool isTouchable;
 
   @override
   State<StatefulWidget> createState() => _WeekSchedule();
@@ -64,9 +66,10 @@ class _WeekSchedule extends State<WeekScheduleWidget> {
 
                 context.read<ScheduleCubit>().nextOrPreviousDay(pageNum + 1);
               },
-              children: widget.weekSchedule.daySchedules.map((e) =>
+              children: widget.weekSchedule.daySchedules.map((element) =>
                   DayScheduleWidget(
-                      daySchedule: e
+                    daySchedule: element,
+                    isTouchable: widget.isTouchable,
                   )
               ).toList()
           ),

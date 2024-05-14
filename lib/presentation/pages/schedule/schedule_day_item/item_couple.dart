@@ -12,17 +12,19 @@ class ItemCouple extends StatelessWidget {
     super.key,
     required this.couple,
     this.showIndicator = false,
-    this.onIndicatorEnd
+    this.onIndicatorEnd,
+    this.isTouchable = true
   });
 
   final Couple couple;
   final bool showIndicator;
   final VoidCallback? onIndicatorEnd;
+  final bool isTouchable;
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () => context.go(Routes.coupleNotesList.path({"couple_id": couple.id})),
+      onTap: () => isTouchable ? context.go(Routes.coupleNotesList.path({"couple_id": couple.id})) : null,
       child: CardWithTimeOnLeft(
         indicatorDuration: couple.duration,
         indicatorInitPercentage: couple.percent,

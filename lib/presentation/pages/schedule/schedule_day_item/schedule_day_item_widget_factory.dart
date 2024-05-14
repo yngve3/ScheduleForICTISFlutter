@@ -8,10 +8,11 @@ import 'item_unknown.dart';
 class ScheduleDayItemWidgetFactory {
   static Widget create(DayScheduleItem dayScheduleItem, {
     VoidCallback? onIndicatorEnd,
-    bool showIndicator = false
+    bool showIndicator = false,
+    bool isTouchable = true
   }) {
     return switch (dayScheduleItem) {
-      Couple _=> ItemCouple(couple: dayScheduleItem, showIndicator: showIndicator, onIndicatorEnd: onIndicatorEnd),
+      Couple _=> ItemCouple(couple: dayScheduleItem, showIndicator: showIndicator, onIndicatorEnd: onIndicatorEnd, isTouchable: isTouchable),
       Event _=> ItemEvent(event: dayScheduleItem, showIndicator: showIndicator, onIndicatorEnd: onIndicatorEnd),
       _=> const ItemUnknown()
     };

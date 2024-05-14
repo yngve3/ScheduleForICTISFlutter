@@ -27,7 +27,7 @@ class SearchScheduleResultPage extends StatelessWidget {
               appBar: AppBar(),
               title: scheduleSubject.name
             ),
-            body: const Schedule(),
+            body: const Schedule(isTouchable: false),
           );
         }
       ),

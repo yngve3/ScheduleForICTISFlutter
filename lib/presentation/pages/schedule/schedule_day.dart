@@ -7,10 +7,12 @@ import '../../../domain/models/schedule/day_schedule/day_schedule.dart';
 class DayScheduleWidget extends StatefulWidget {
   const DayScheduleWidget({
     super.key,
-    required this.daySchedule
+    required this.daySchedule,
+    this.isTouchable = true
   });
 
   final DaySchedule daySchedule;
+  final bool isTouchable;
 
   @override
   State<StatefulWidget> createState() => _DaySchedule();
@@ -37,7 +39,7 @@ class _DaySchedule extends State<DayScheduleWidget> with AutomaticKeepAliveClien
     }
 
     items.addAll(widget.daySchedule.items.map((element) =>
-        ScheduleDayItemWidgetFactory.create(element))
+        ScheduleDayItemWidgetFactory.create(element, isTouchable: widget.isTouchable))
     );
 
     return items;

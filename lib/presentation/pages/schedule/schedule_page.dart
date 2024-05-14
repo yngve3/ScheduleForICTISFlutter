@@ -54,7 +54,12 @@ class SchedulePage extends StatelessWidget {
 }
 
 class Schedule extends StatefulWidget {
-  const Schedule({super.key});
+  const Schedule({
+    super.key,
+    this.isTouchable = true
+  });
+
+  final bool isTouchable;
 
   @override
   State<StatefulWidget> createState() => _Schedule();
@@ -119,6 +124,7 @@ class _Schedule extends State<Schedule> {
               WeekScheduleWidget(
                 selectedDay: state.selectedDay,
                 weekSchedule: state.weekSchedule,
+                isTouchable: widget.isTouchable,
               )
             ],
           );

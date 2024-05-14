@@ -1,20 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:schedule_for_ictis_flutter/utils/constants/callbacks.dart';
 
 import '../../domain/models/schedule_subject/schedule_subject.dart';
-
-typedef ScheduleSubjectTappedCallback = Function(ScheduleSubject scheduleSubject);
 
 class ScheduleSubjectWidget extends StatelessWidget {
   const ScheduleSubjectWidget({
     super.key,
     required this.scheduleSubject,
-    required this.callback,
+    required this.onTap,
     this.padding = 20
   });
 
   final ScheduleSubject scheduleSubject;
   final double padding;
-  final ScheduleSubjectTappedCallback callback;
+  final ScheduleSubjectCallback onTap;
 
   TextStyle? _getTextStyle(BuildContext context) {
     if (!scheduleSubject.isChosen) {
@@ -36,7 +35,7 @@ class ScheduleSubjectWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () => callback(scheduleSubject),
+      onTap: () => onTap(scheduleSubject),
       child: Card(
         color: _getCardColor(context),
         child: Padding(

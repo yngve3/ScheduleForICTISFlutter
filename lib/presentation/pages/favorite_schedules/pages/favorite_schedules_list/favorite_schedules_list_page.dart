@@ -74,7 +74,7 @@ class FavoriteSchedulesList extends StatelessWidget {
               },
               child: ScheduleSubjectWidget(
                   scheduleSubject: element,
-                  callback: (scheduleSubject) {
+                  onTap: (scheduleSubject) {
                     context.read<FavoriteSchedulesListCubit>().select(scheduleSubject);
                   }
               )

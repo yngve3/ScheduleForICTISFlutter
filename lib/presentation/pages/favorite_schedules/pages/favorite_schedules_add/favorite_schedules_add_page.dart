@@ -1,18 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:schedule_for_ictis_flutter/presentation/pages/favorite_schedules/pages/favorite_schedules_add/cubit/schedule_search_cubit.dart';
+import 'package:schedule_for_ictis_flutter/presentation/pages/favorite_schedules/pages/favorite_schedules_add/cubit/favorite_schedules_add_cubit.dart';
 import 'package:schedule_for_ictis_flutter/presentation/widgets/app_bar.dart';
-import '../../../../widgets/schedule_subject_widget.dart';
+import 'package:schedule_for_ictis_flutter/presentation/widgets/search_field.dart';
 import '../../../../widgets/screen.dart';
-import '../../../../widgets/input_field.dart';
-import 'cubit/schedule_search_state.dart';
+import '../../../search_schedule_screen/cubit/search_schedule_state.dart';
+import 'cubit/favorite_schedules_add_state.dart';
 
 class FavoriteSchedulesAddPage extends StatelessWidget {
   const FavoriteSchedulesAddPage({super.key});
 
   void _handleSave(BuildContext context) {
-    context.read<ScheduleSearchCubit>().saveSelectedToDB();
+    context.read<FavoriteSchedulesAddCubit>().saveSelectedToDB();
     context.pop();
   }
 
@@ -24,29 +24,21 @@ class FavoriteSchedulesAddPage extends StatelessWidget {
         appBar: AppBar(),
       ),
       body: BlocProvider (
-        create: (context) => ScheduleSearchCubit(),
-        child: BlocBuilder<ScheduleSearchCubit, ScheduleSearchState> (
+        create: (context) => FavoriteSchedulesAddCubit(),
+        child: BlocBuilder<FavoriteSchedulesAddCubit, FavoriteScheduleAddState> (
           builder: (context, state) {
+            final cubit = BlocProvider.of<FavoriteSchedulesAddCubit>(context);
             return ScrollableScreen(
-              top: InputField(
-                label: "Введите группу, впк, преподавателя или аудиторию",
-                onSubmit: (value) => context.read<ScheduleSearchCubit>().search(value),
-                textInputAction: TextInputAction.search,
+              top: SearchField(
+                categories: SearchCategory.values,
+                selectedCategory: state.category,
+                onChanged: (value) => cubit.search(value),
+                categoryChanged: (category) => cubit.changeCategory(category),
               ),
-              scrollable: Align(
-                alignment: Alignment.topLeft,
-                child: Wrap(
-                  alignment: WrapAlignment.start,
-                  spacing: 8,
-                  runSpacing: 5,
-                  direction: Axis.horizontal,
-                  children: state.searchResult.map((e) => ScheduleSubjectWidget(
-                    scheduleSubject: e,
-                    callback: (scheduleSubject) => context.read<ScheduleSearchCubit>().select(scheduleSubject),
-                    padding: 15,
-                  )
-                  ).toList(),
-                ),
+              scrollable: SearchResult(
+                onSelected: (scheduleSubject) => cubit.select(scheduleSubject),
+                searchResult: state.filteredSearchResult,
+                query: state.query,
               ),
               bottom: FilledButton(
                 onPressed: state.isSaveButtonEnabled ? () => _handleSave(context) : null,

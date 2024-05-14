@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:schedule_for_ictis_flutter/data/repositories/auth_repository.dart';
 import 'package:schedule_for_ictis_flutter/data/repositories/user_repository.dart';
+import 'package:schedule_for_ictis_flutter/domain/models/schedule_subject/schedule_subject.dart';
 import 'package:schedule_for_ictis_flutter/presentation/pages/auth/registration/registration_page.dart';
 import 'package:schedule_for_ictis_flutter/presentation/pages/home/home_page.dart';
 import 'package:schedule_for_ictis_flutter/presentation/pages/notes/all_notes_list/all_notes_list_page.dart';
 import 'package:schedule_for_ictis_flutter/presentation/pages/notes/note_add/note_add_page.dart';
 import 'package:schedule_for_ictis_flutter/presentation/pages/notes/note_info/note_info_page.dart';
 import 'package:schedule_for_ictis_flutter/presentation/pages/search_schedule_screen/search_schedule_page.dart';
+import 'package:schedule_for_ictis_flutter/presentation/pages/search_schedule_screen/search_schedule_result_page.dart';
 import 'package:schedule_for_ictis_flutter/presentation/route/routes.dart';
 
 import '../pages/auth/login/login_page.dart';
@@ -90,6 +91,18 @@ abstract class AppRouter {
                         },
                       );
                     },
+                    routes: [
+                      GoRoute(
+                        path: Routes.searchScheduleResult.lastPathComponent,
+                        pageBuilder: (context, state) {
+                          return NoTransitionPage(
+                            child: SearchScheduleResultPage(
+                              scheduleSubject: state.extra as ScheduleSubject
+                            )
+                          );
+                        },
+                      )
+                    ]
                   )
                 ]
               ),

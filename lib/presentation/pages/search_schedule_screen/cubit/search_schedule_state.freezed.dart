@@ -17,7 +17,10 @@ final _privateConstructorUsedError = UnsupportedError(
 /// @nodoc
 mixin _$SearchScheduleState {
   List<ScheduleSubject> get searchResults => throw _privateConstructorUsedError;
+  List<ScheduleSubject> get filteredSearchResult =>
+      throw _privateConstructorUsedError;
   SearchCategory get category => throw _privateConstructorUsedError;
+  String get query => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $SearchScheduleStateCopyWith<SearchScheduleState> get copyWith =>
@@ -30,7 +33,11 @@ abstract class $SearchScheduleStateCopyWith<$Res> {
           SearchScheduleState value, $Res Function(SearchScheduleState) then) =
       _$SearchScheduleStateCopyWithImpl<$Res, SearchScheduleState>;
   @useResult
-  $Res call({List<ScheduleSubject> searchResults, SearchCategory category});
+  $Res call(
+      {List<ScheduleSubject> searchResults,
+      List<ScheduleSubject> filteredSearchResult,
+      SearchCategory category,
+      String query});
 }
 
 /// @nodoc
@@ -47,17 +54,27 @@ class _$SearchScheduleStateCopyWithImpl<$Res, $Val extends SearchScheduleState>
   @override
   $Res call({
     Object? searchResults = null,
+    Object? filteredSearchResult = null,
     Object? category = null,
+    Object? query = null,
   }) {
     return _then(_value.copyWith(
       searchResults: null == searchResults
           ? _value.searchResults
           : searchResults // ignore: cast_nullable_to_non_nullable
               as List<ScheduleSubject>,
+      filteredSearchResult: null == filteredSearchResult
+          ? _value.filteredSearchResult
+          : filteredSearchResult // ignore: cast_nullable_to_non_nullable
+              as List<ScheduleSubject>,
       category: null == category
           ? _value.category
           : category // ignore: cast_nullable_to_non_nullable
               as SearchCategory,
+      query: null == query
+          ? _value.query
+          : query // ignore: cast_nullable_to_non_nullable
+              as String,
     ) as $Val);
   }
 }
@@ -70,7 +87,11 @@ abstract class _$$SearchScheduleStateImplCopyWith<$Res>
       __$$SearchScheduleStateImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({List<ScheduleSubject> searchResults, SearchCategory category});
+  $Res call(
+      {List<ScheduleSubject> searchResults,
+      List<ScheduleSubject> filteredSearchResult,
+      SearchCategory category,
+      String query});
 }
 
 /// @nodoc
@@ -85,17 +106,27 @@ class __$$SearchScheduleStateImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? searchResults = null,
+    Object? filteredSearchResult = null,
     Object? category = null,
+    Object? query = null,
   }) {
     return _then(_$SearchScheduleStateImpl(
       searchResults: null == searchResults
           ? _value._searchResults
           : searchResults // ignore: cast_nullable_to_non_nullable
               as List<ScheduleSubject>,
+      filteredSearchResult: null == filteredSearchResult
+          ? _value._filteredSearchResult
+          : filteredSearchResult // ignore: cast_nullable_to_non_nullable
+              as List<ScheduleSubject>,
       category: null == category
           ? _value.category
           : category // ignore: cast_nullable_to_non_nullable
               as SearchCategory,
+      query: null == query
+          ? _value.query
+          : query // ignore: cast_nullable_to_non_nullable
+              as String,
     ));
   }
 }
@@ -105,8 +136,11 @@ class __$$SearchScheduleStateImplCopyWithImpl<$Res>
 class _$SearchScheduleStateImpl implements _SearchScheduleState {
   const _$SearchScheduleStateImpl(
       {final List<ScheduleSubject> searchResults = const [],
-      this.category = SearchCategory.all})
-      : _searchResults = searchResults;
+      final List<ScheduleSubject> filteredSearchResult = const [],
+      this.category = SearchCategory.all,
+      this.query = ""})
+      : _searchResults = searchResults,
+        _filteredSearchResult = filteredSearchResult;
 
   final List<ScheduleSubject> _searchResults;
   @override
@@ -117,13 +151,26 @@ class _$SearchScheduleStateImpl implements _SearchScheduleState {
     return EqualUnmodifiableListView(_searchResults);
   }
 
+  final List<ScheduleSubject> _filteredSearchResult;
+  @override
+  @JsonKey()
+  List<ScheduleSubject> get filteredSearchResult {
+    if (_filteredSearchResult is EqualUnmodifiableListView)
+      return _filteredSearchResult;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_filteredSearchResult);
+  }
+
   @override
   @JsonKey()
   final SearchCategory category;
+  @override
+  @JsonKey()
+  final String query;
 
   @override
   String toString() {
-    return 'SearchScheduleState(searchResults: $searchResults, category: $category)';
+    return 'SearchScheduleState(searchResults: $searchResults, filteredSearchResult: $filteredSearchResult, category: $category, query: $query)';
   }
 
   @override
@@ -133,13 +180,20 @@ class _$SearchScheduleStateImpl implements _SearchScheduleState {
             other is _$SearchScheduleStateImpl &&
             const DeepCollectionEquality()
                 .equals(other._searchResults, _searchResults) &&
+            const DeepCollectionEquality()
+                .equals(other._filteredSearchResult, _filteredSearchResult) &&
             (identical(other.category, category) ||
-                other.category == category));
+                other.category == category) &&
+            (identical(other.query, query) || other.query == query));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType,
-      const DeepCollectionEquality().hash(_searchResults), category);
+  int get hashCode => Object.hash(
+      runtimeType,
+      const DeepCollectionEquality().hash(_searchResults),
+      const DeepCollectionEquality().hash(_filteredSearchResult),
+      category,
+      query);
 
   @JsonKey(ignore: true)
   @override
@@ -152,12 +206,18 @@ class _$SearchScheduleStateImpl implements _SearchScheduleState {
 abstract class _SearchScheduleState implements SearchScheduleState {
   const factory _SearchScheduleState(
       {final List<ScheduleSubject> searchResults,
-      final SearchCategory category}) = _$SearchScheduleStateImpl;
+      final List<ScheduleSubject> filteredSearchResult,
+      final SearchCategory category,
+      final String query}) = _$SearchScheduleStateImpl;
 
   @override
   List<ScheduleSubject> get searchResults;
   @override
+  List<ScheduleSubject> get filteredSearchResult;
+  @override
   SearchCategory get category;
+  @override
+  String get query;
   @override
   @JsonKey(ignore: true)
   _$$SearchScheduleStateImplCopyWith<_$SearchScheduleStateImpl> get copyWith =>

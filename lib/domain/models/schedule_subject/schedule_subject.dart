@@ -1,5 +1,7 @@
 import 'package:objectbox/objectbox.dart';
 
+import '../../../utils/constants/reg_exp.dart';
+
 @Entity()
 class ScheduleSubject {
   @Id() int dbId;
@@ -10,6 +12,10 @@ class ScheduleSubject {
 
   final bool isVPK;
   bool get isNotVPK => !isVPK;
+
+  bool get isGroup => RegExpressions.groupExp.hasMatch(name);
+  bool get isAudience => RegExpressions.audienceExp.hasMatch(name);
+  bool get isLector => RegExpressions.lectorExp.hasMatch(name);
 
   ScheduleSubject({
     this.dbId = 0,

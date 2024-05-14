@@ -1,7 +1,6 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:schedule_for_ictis_flutter/presentation/extensions/context_ext.dart';
 import 'package:schedule_for_ictis_flutter/presentation/pages/search_schedule_screen/cubit/search_schedule_cubit.dart';
 import 'package:schedule_for_ictis_flutter/presentation/widgets/app_bar.dart';
@@ -10,6 +9,7 @@ import 'package:schedule_for_ictis_flutter/presentation/widgets/schedule_subject
 import 'package:schedule_for_ictis_flutter/presentation/widgets/screen.dart';
 
 import '../../../domain/models/schedule_subject/schedule_subject.dart';
+import '../../route/routes.dart';
 import 'cubit/search_schedule_state.dart';
 
 class SearchSchedulePage extends StatelessWidget {
@@ -36,8 +36,8 @@ class SearchSchedulePage extends StatelessWidget {
                     child: InputField(
                       label: "Искать Группы, Преподвателей, Аудитории",
                       textInputAction: TextInputAction.search,
-                      onSubmit: (value) => context.read<SearchScheduleCubit>().search(value),
                       requestFocus: true,
+                      onChanged: (value) => context.read<SearchScheduleCubit>().search(value)
                     ),
                   ),
                   SizedBox(
@@ -54,46 +54,35 @@ class SearchSchedulePage extends StatelessWidget {
                   )
                 ],
               ),
-              scrollable: FilteredSearchResult(
-                title: "Категории",
-                filteredSearchResult: state.searchResults,
-              ),
+              scrollable: _getSearchResult(state.filteredSearchResult, state.query, context),
             ),
           );
         },
       ),
     );
   }
-}
 
-class FilteredSearchResult extends StatelessWidget {
-  const FilteredSearchResult({
-    super.key,
-    required this.title,
-    required this.filteredSearchResult
-  });
-
-  final String title;
-  final List<ScheduleSubject> filteredSearchResult;
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(title, style: context.textTheme.titleLarge),
-        const SizedBox(height: 10),
-        Wrap(
-          spacing: 5,
-          children: filteredSearchResult.map((element) =>
-              ScheduleSubjectWidget(
-                scheduleSubject: element,
-                callback: (scheduleSubject) {}
-              )
-          ).toList(),
-        )
-      ],
-    );
+  Widget _getSearchResult(List<ScheduleSubject> results, String query, BuildContext context) {
+    if (results.isEmpty && query.isNotEmpty) {
+      return Center(
+        child: Text("По вашему запросу ничего не найдено", style: context.textTheme.titleLarge),
+      );
+    } else if (results.isEmpty && query.isEmpty) {
+      return Center(
+        child: Text("Введите текст, чтобы начать поиск", style: context.textTheme.titleLarge),
+      );
+    } else {
+      return Wrap(
+        spacing: 10,
+        children: results.map((element) =>
+            ScheduleSubjectWidget(
+              padding: 15,
+              scheduleSubject: element,
+              callback: (scheduleSubject) => context.go(Routes.searchScheduleResult.path, extra: scheduleSubject),
+            )
+        ).toList(),
+      );
+    }
   }
 }
 
@@ -133,7 +122,8 @@ class CategoryName extends StatelessWidget {
         SearchCategory.all => "Все категории",
         SearchCategory.groups => "Группы",
         SearchCategory.lectors => "Преподаватели",
-        SearchCategory.audiences => "Аудитории"
+        SearchCategory.audiences => "Аудитории",
+        SearchCategory.vpks => "ВПК"
       };
 }
 

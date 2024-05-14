@@ -21,6 +21,34 @@ class CouplesRepository {
   final _couplesByWeekNumController = StreamController<List<CoupleDB>>();
   Stream<List<CoupleDB>> get couplesByWeekNum => _couplesByWeekNumController.stream;
 
+  Future<List<CoupleDB>> getCouplesFromNet(ScheduleSubject scheduleSubject, WeekNumber? weekNumber) async {
+    final id = scheduleSubject.id;
+    final requestURL =
+        '${AppConfig.baseURL}/'
+        '?group=$id'
+        '${weekNumber != null && weekNumber.studyWeekNumber != null ? '&week=${weekNumber.studyWeekNumber}' : ""}';
+
+    try {
+      final response = await http.get(Uri.parse(requestURL));
+
+      if (response.statusCode == 200) {
+        final Map<String, dynamic> json = jsonDecode(response.body);
+
+        final couplesDB = CouplesMapper.fromJSON(
+            json,
+            weekNumber: weekNumber,
+            scheduleSubject: scheduleSubject
+        );
+
+        return couplesDB;
+      }
+    } catch (e) {
+      print(e);
+    }
+
+    return const [];
+  }
+
   Future<void> loadCouplesFromNet(ScheduleSubject scheduleSubject, WeekNumber? weekNumber) async {
     final id = scheduleSubject.id;
     final requestURL =
@@ -43,8 +71,8 @@ class CouplesRepository {
         _couplesBox.putMany(couplesDB);
 
       }
-    } catch (e) {
-      print(e);
+    } catch (_) {
+
     }
   }
 

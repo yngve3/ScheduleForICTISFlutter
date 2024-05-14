@@ -13,7 +13,8 @@ class InputField extends StatefulWidget {
     this.isPassword = false,
     this.controller,
     this.errorText,
-    this.requestFocus = false
+    this.requestFocus = false,
+    this.onChanged
   });
 
   final String label;
@@ -24,6 +25,7 @@ class InputField extends StatefulWidget {
   final TextEditingController? controller;
   final String? errorText;
   final bool requestFocus;
+  final SubmitCallback? onChanged;
 
   @override
   State<StatefulWidget> createState() => _InputFiledState();
@@ -35,10 +37,16 @@ class _InputFiledState extends State<InputField> {
 
   @override
   void initState() {
+    super.initState();
     _focusNode = FocusNode();
     _obscureText = widget.isPassword;
     if (widget.requestFocus) _focusNode.requestFocus();
-    super.initState();
+  }
+
+  @override
+  void dispose() {
+    _focusNode.dispose();
+    super.dispose();
   }
 
   @override
@@ -52,6 +60,7 @@ class _InputFiledState extends State<InputField> {
       child: TextField(
         cursorColor: context.customColors.text1,
         onSubmitted: (value) => widget.onSubmit?.call(value),
+        onChanged: (value) => widget.onChanged?.call(value),
         textInputAction: widget.textInputAction,
         keyboardType: widget.textInputType,
         obscureText: _obscureText,

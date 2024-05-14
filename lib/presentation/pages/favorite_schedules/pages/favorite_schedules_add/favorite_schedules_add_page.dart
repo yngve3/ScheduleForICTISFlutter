@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:schedule_for_ictis_flutter/data/repositories/favorite_schedules_repository.dart';
 import 'package:schedule_for_ictis_flutter/presentation/pages/favorite_schedules/pages/favorite_schedules_add/cubit/schedule_search_cubit.dart';
 import 'package:schedule_for_ictis_flutter/presentation/widgets/app_bar.dart';
 import '../../../../widgets/schedule_subject_widget.dart';

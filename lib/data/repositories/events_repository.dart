@@ -24,7 +24,7 @@ class EventsRepository {
   Future<void> loadEvents() async {
     final snapshot = await _ref.get();
     if (snapshot.exists) {
-      print(snapshot.value);
+
     }
   }
 

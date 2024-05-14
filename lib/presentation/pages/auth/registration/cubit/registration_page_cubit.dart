@@ -15,7 +15,7 @@ class RegistrationPageCubit extends Cubit<RegistrationPageState> {
     try {
       await _interactor.register(AuthModel(email: email, password: password));
       emit(state.copyWith(isRegister: true));
-    } on ValidationException catch (e) {
+    } on ValidationException catch (_) {
       emit(const RegistrationPageState(isRegister: false, errorMessage: "Неправильное имя пользователя или пароль"));
     } on AuthException catch (e) {
       if (e.code == "network-request-failed") {

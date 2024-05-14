@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:schedule_for_ictis_flutter/domain/interactors/schedule_interactor.dart';
 import 'package:schedule_for_ictis_flutter/presentation/extensions/context_ext.dart';
 import 'package:schedule_for_ictis_flutter/presentation/pages/schedule/cubit/schedule_cubit.dart';
 
@@ -44,7 +45,7 @@ class MainPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: BlocProvider(
-        create: (context) => ScheduleCubit(),
+        create: (context) => ScheduleCubit(ScheduleInteractor()),
         child: child,
       ),
       bottomNavigationBar: BottomNavigationBar(

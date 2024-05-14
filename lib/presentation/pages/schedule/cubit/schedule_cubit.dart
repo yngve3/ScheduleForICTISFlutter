@@ -9,7 +9,7 @@ import 'package:schedule_for_ictis_flutter/presentation/pages/schedule/cubit/sch
 import '../../../../domain/models/schedule/week_schedule/week_schedule.dart';
 
 class ScheduleCubit extends Cubit<ScheduleState> {
-  ScheduleCubit() : super(
+  ScheduleCubit(this._interactor) : super(
       ScheduleState(
           selectedDay: DateTime.now(),
           weekSchedule: WeekSchedule.empty()
@@ -20,7 +20,7 @@ class ScheduleCubit extends Cubit<ScheduleState> {
     });
   }
 
-  final ScheduleInteractor _interactor = ScheduleInteractor();
+  final ScheduleInteractor _interactor;
   late StreamSubscription<WeekSchedule> subscription;
 
   void nextDay() {
@@ -37,11 +37,11 @@ class ScheduleCubit extends Cubit<ScheduleState> {
     final weekNumDifference = _weekNumDifference(date);
     emit(state.copyWith(selectedDay: date));
     if (weekNumDifference == 0) return;
-    changeWeek(state.weekSchedule.weekNumber.plus(weekNumDifference));
+    changeWeek(weekNumber: state.weekSchedule.weekNumber.plus(weekNumDifference));
   }
 
-  void changeWeek(WeekNumber weekNumber) {
-    _interactor.changeWeek(weekNumber);
+  void changeWeek({WeekNumber? weekNumber}) {
+    _interactor.changeWeek(weekNumber: weekNumber);
   }
 
   void nextOrPreviousDay(int weekDay) {

@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:collection/collection.dart';
-import 'package:path/path.dart';
 import 'package:schedule_for_ictis_flutter/data/repositories/user_repository.dart';
 
 import 'package:schedule_for_ictis_flutter/data/repositories/couples_repository.dart';
@@ -58,43 +57,44 @@ class ScheduleInteractor {
 
   final _controller = StreamController<WeekSchedule>();
   Stream<WeekSchedule> get weekSchedule => _controller.stream;
-  List<StreamSubscription> subscriptions = [];
+  final List<StreamSubscription> _subscriptions = [];
 
-  ScheduleInteractorState state = ScheduleInteractorState();
+  final ScheduleInteractorState _state = ScheduleInteractorState();
 
   ScheduleInteractor() {
-    subscriptions.add(
+    _subscriptions.add(
         _couplesRepository.couplesByWeekNum
-            .listen((couplesDB) => state.setCouplesDB(couplesDB))
+            .listen((couplesDB) => _state.setCouplesDB(couplesDB))
     );
 
-    subscriptions.add(
+    _subscriptions.add(
         _eventsRepository.eventsByWeekNum
-            .listen((eventsDB) => state.setEventsDB(eventsDB))
+            .listen((eventsDB) => _state.setEventsDB(eventsDB))
     );
 
-    subscriptions.add(
+    _subscriptions.add(
         _favoriteSchedulesRepository
             .getSelectedFavoriteScheduleStream(userUID: _userRepository.uid)
             .listen((favoriteSchedules) {
               if (favoriteSchedules.length > 2 || favoriteSchedules.isEmpty) return;
-              state.setFavoriteSchedules(favoriteSchedules);
-              state.setWeekNumber(_weekNumberRepository.getCurrentWeekNumber());
-              _couplesRepository.loadCouples(state.weekNumber, favoriteSchedules);
+              _state.setFavoriteSchedules(favoriteSchedules);
+              _state.setWeekNumber(_weekNumberRepository.getCurrentWeekNumber());
+              _couplesRepository.loadCouples(_state.weekNumber, favoriteSchedules);
             }
         )
     );
 
-    subscriptions.add(state.state.listen((event) =>
+    _subscriptions.add(_state.state.listen((event) =>
       _controller.add(_createWeekSchedule(event))
     ));
 
-    _eventsRepository.getEventsByWeekNum(state.weekNumber ?? WeekNumber.empty(), _userRepository.uid);
+    _eventsRepository.getEventsByWeekNum(_state.weekNumber ?? WeekNumber.empty(), _userRepository.uid);
   }
 
-  void changeWeek(WeekNumber weekNumber) {
-    state.setWeekNumber(weekNumber);
-    _couplesRepository.loadCouples(weekNumber, state.favoriteSchedules);
+  void changeWeek({WeekNumber? weekNumber}) {
+    if (weekNumber == null) return;
+    _state.setWeekNumber(weekNumber);
+    _couplesRepository.loadCouples(weekNumber, _state.favoriteSchedules);
     _eventsRepository.getEventsByWeekNum(weekNumber, _userRepository.uid);
   }
 
@@ -130,7 +130,7 @@ class ScheduleInteractor {
   }
 
   void dispose() {
-    for (final subscription in subscriptions) {
+    for (final subscription in _subscriptions) {
       subscription.cancel();
     }
     _controller.close();

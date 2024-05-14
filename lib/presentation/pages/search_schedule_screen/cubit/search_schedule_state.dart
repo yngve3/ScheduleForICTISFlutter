@@ -8,13 +8,16 @@ part 'search_schedule_state.freezed.dart';
 class SearchScheduleState with _$SearchScheduleState {
   const factory SearchScheduleState({
     @Default([]) List<ScheduleSubject> searchResults,
-    @Default(SearchCategory.all) SearchCategory category
+    @Default([]) List<ScheduleSubject> filteredSearchResult,
+    @Default(SearchCategory.all) SearchCategory category,
+    @Default("") String query
   }) = _SearchScheduleState;
 }
 
 enum SearchCategory {
   all,
   groups,
+  vpks,
   lectors,
   audiences
 }

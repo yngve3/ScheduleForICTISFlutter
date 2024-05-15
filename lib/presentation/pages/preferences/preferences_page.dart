@@ -38,7 +38,7 @@ class PreferencesList extends StatelessWidget {
         PreferenceItem(
           title: "Избранные расписания",
           subtitle: "Настройка быстрого доступа к расписаниям",
-          onItemTapped: () => context.go(Routes.favoriteSchedules.path)
+          onItemTapped: () => context.push(Routes.favoriteSchedules.path)
         ),
         PreferenceItem(
           title: "Выход",

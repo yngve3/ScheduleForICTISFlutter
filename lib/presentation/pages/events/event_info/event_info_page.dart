@@ -44,7 +44,7 @@ class EventInfoPage extends StatelessWidget {
                   IconButton(
                       onPressed: () {
                         context.pop();
-                        context.go(Routes.addEvent.path, extra: eventID);
+                        context.push(Routes.addEvent.path, extra: eventID);
                       },
                       icon: Assets.icons.icEdit.image()
                   )

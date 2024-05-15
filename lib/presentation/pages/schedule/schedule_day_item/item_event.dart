@@ -21,7 +21,7 @@ class ItemEvent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () => context.go(Routes.eventInfo.path({"event_id": event.id})),
+      onTap: () => context.push(Routes.eventInfo.path({"event_id": event.id})),
       child: CardWithTimeOnLeft(
         indicatorDuration: event.duration,
         indicatorInitPercentage: event.percent,

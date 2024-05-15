@@ -38,7 +38,7 @@ class SchedulePage extends StatelessWidget {
         children: [
           FloatingActionButton.small(
             heroTag: null,
-            onPressed: () => context.go(Routes.addEvent.path),
+            onPressed: () => context.push(Routes.addEvent.path),
             child: Assets.icons.icEvent.image(color: context.customColors.background),
           ),
           FloatingActionButton.small(

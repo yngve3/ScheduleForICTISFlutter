@@ -26,14 +26,11 @@ class SearchField extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Hero(
-          tag: "searchField",
-          child: InputField(
-              label: "Искать Группы, Преподвателей, Аудитории",
-              textInputAction: TextInputAction.search,
-              requestFocus: true,
-              onChanged: (value) => onChanged(value)
-          ),
+        InputField(
+            label: "Искать Группы, Преподвателей, Аудитории",
+            textInputAction: TextInputAction.search,
+            requestFocus: true,
+            onChanged: (value) => onChanged(value)
         ),
         SizedBox(
             height: 60,

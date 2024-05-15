@@ -13,7 +13,7 @@ class Screen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: padding ?? const EdgeInsets.symmetric(horizontal: 15),
+      padding: padding ?? const EdgeInsets.only(left: 15, right: 15, bottom: 15),
       child: child
     );
   }

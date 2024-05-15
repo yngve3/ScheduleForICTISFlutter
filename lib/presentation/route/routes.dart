@@ -10,15 +10,15 @@ abstract class Routes {
   static SimpleRoute searchScheduleResult = const SimpleRoute("/home/search_schedule/schedule");
   static SimpleRoute allNotes = const SimpleRoute("/home/all_notes");
 
-  static SimpleRoute favoriteSchedules = const SimpleRoute("/preferences/favorite_schedules");
-  static SimpleRoute addFavoriteSchedule = const SimpleRoute("/preferences/favorite_schedules/add");
+  static SimpleRoute favoriteSchedules = const SimpleRoute("/favorite_schedules");
+  static SimpleRoute addFavoriteSchedule = const SimpleRoute("/favorite_schedules/add");
 
-  static SimpleRoute addEvent = const SimpleRoute("/schedule/events/add");
-  static RouteWithParameters eventInfo = RouteWithParameters("/schedule/events/:event_id");
+  static SimpleRoute addEvent = const SimpleRoute("/events/add");
+  static RouteWithParameters eventInfo = RouteWithParameters("/events/:event_id");
 
-  static RouteWithParameters coupleNotesList = RouteWithParameters("/schedule/couples/:couple_id");
-  static RouteWithParameters addNote = RouteWithParameters("/schedule/couples/:couple_id/notes/add");
-  static RouteWithParameters noteInfo = RouteWithParameters("/schedule/couples/:couple_id/notes/:note_id");
+  static RouteWithParameters coupleNotesList = RouteWithParameters("/couples/:couple_id");
+  static RouteWithParameters addNote = RouteWithParameters("/couples/:couple_id/notes/add");
+  static RouteWithParameters noteInfo = RouteWithParameters("/couples/:couple_id/notes/:note_id");
 }
 
 abstract class Route {
@@ -49,4 +49,6 @@ class RouteWithParameters extends Route{
 
     return path;
   }
+
+  String get fullPath => _path;
 }

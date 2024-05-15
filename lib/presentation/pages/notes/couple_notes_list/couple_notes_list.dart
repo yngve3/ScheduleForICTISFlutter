@@ -53,7 +53,7 @@ class CoupleNotesListPage extends StatelessWidget {
                 )).toList(),
               ),
               bottom: FilledButton(
-                onPressed: () => context.go(Routes.addNote.path({"couple_id": coupleID})),
+                onPressed: () => context.push(Routes.addNote.path({"couple_id": coupleID})),
                 child: const Text("Добавить задание"),
               ),
             )

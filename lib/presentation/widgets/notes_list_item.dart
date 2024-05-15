@@ -22,7 +22,7 @@ class NotesListItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () => context.go(Routes.noteInfo.path({"couple_id": coupleID, "note_id": note.id})),
+      onTap: () => context.push(Routes.noteInfo.path({"couple_id": coupleID, "note_id": note.id})),
       child: Card(
         child: Padding(
           padding: const EdgeInsets.all(20),

@@ -46,7 +46,7 @@ class NoteInfoPage extends StatelessWidget {
                 IconButton(
                     onPressed: () {
                       context.pop();
-                      context.go(Routes.addNote.path({"couple_id": coupleID}), extra: noteID);
+                      context.push(Routes.addNote.path({"couple_id": coupleID}), extra: noteID);
                     },
                     icon: Assets.icons.icEdit.image()
                 )

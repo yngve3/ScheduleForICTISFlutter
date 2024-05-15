@@ -32,32 +32,29 @@ class HomePage extends StatelessWidget {
             scrollable: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Hero(
-                  tag: "searchField",
-                  child: GestureDetector(
+                GestureDetector(
                     onTap: () => context.go(Routes.searchSchedule.path),
-                      child: Container(
-                          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(10),
-                              border: Border.all(width: 2, color: context.customColors.card)
-                          ),
-                          child: Row(
-                            children: [
-                              Assets.icons.icSearch.image(height: 25, width: 25),
-                              const SizedBox(width: 10),
-                              Expanded(
-                                child: Text(
-                                  "Искать Группы, Преподвателей, Аудитории",
-                                  style: context.textTheme.bodyLarge,
-                                  overflow: TextOverflow.fade,
-                                  softWrap: false,
-                                ),
-                              )
-                            ],
-                          )
-                      )
-                  ),
+                    child: Container(
+                        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10),
+                            border: Border.all(width: 2, color: context.customColors.card)
+                        ),
+                        child: Row(
+                          children: [
+                            Assets.icons.icSearch.image(height: 25, width: 25),
+                            const SizedBox(width: 10),
+                            Expanded(
+                              child: Text(
+                                "Искать Группы, Преподвателей, Аудитории",
+                                style: context.textTheme.bodyLarge,
+                                overflow: TextOverflow.fade,
+                                softWrap: false,
+                              ),
+                            )
+                          ],
+                        )
+                    )
                 ),
                 const SizedBox(height: 10),
                 Text("Ближайшие события", style: context.textTheme.headlineMedium),

@@ -54,8 +54,8 @@ class NoteInfoPage extends StatelessWidget {
             ),
             body: ScrollableScreen(
               top: DisciplineAndDate(
-                discipline: state.discipline,
-                date: state.date ?? DateTime.now(),
+                discipline: state.coupleDB?.discipline ?? "",
+                date: state.coupleDB?.dateTimeStart ?? DateTime.now(),
               ),
               scrollable: Column(
                 children: [

@@ -9,16 +9,15 @@ class NoteInfoCubit extends Cubit<NoteInfoState> {
 
   void loadNote(int noteID, String coupleID) async {
     final note = await _notesInteractor.getNoteByID(noteID);
-    final couple = await _notesInteractor.getCoupleByID(coupleID);
+    final coupleDB = await _notesInteractor.getCoupleByID(coupleID);
 
-    if (note == null || couple == null) return;
+    if (note == null || coupleDB == null) return;
 
     emit(NoteInfoState(
+      coupleDB: coupleDB,
       noteID: note.id,
       title: note.title,
       description: note.description,
-      date: couple.dateTimeEnd,
-      discipline: couple.discipline,
       files: note.attachedFiles,
       reminders: note.reminders
     ));

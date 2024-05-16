@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:schedule_for_ictis_flutter/domain/interactors/notes_interactor.dart';
 
@@ -19,12 +18,10 @@ class NoteAddCubit extends Cubit<NoteAddState> {
     _interactor.saveNote(
       noteID: state.noteID,
       title: state.title,
-      date: state.date ?? DateTime.now(),
-      coupleID: state.coupleID,
+      coupleDB: state.coupleDB,
       description: state.description,
       files: state.files,
       reminders: state.reminders,
-      time: state.time ?? TimeOfDay.now()
     );
   }
 
@@ -54,14 +51,11 @@ class NoteAddCubit extends Cubit<NoteAddState> {
 
   void loadFromCouple(String? coupleID) async {
     if (coupleID == null) return;
-    final couple = await _interactor.getCoupleByID(coupleID);
-    if (couple == null) return;
+    final coupleDB = await _interactor.getCoupleByID(coupleID);
+    if (coupleDB == null) return;
     
     emit(state.copyWith(
-      coupleID: couple.id,
-      date: couple.dateTimeEnd,
-      discipline: couple.discipline,
-      time: TimeOfDay.fromDateTime(couple.dateTimeStart)
+      coupleDB: coupleDB
     ));
   }
 
@@ -95,6 +89,6 @@ class NoteAddCubit extends Cubit<NoteAddState> {
   }
 
   bool _isFieldsNotEmpty() {
-    return state.title.isNotEmpty && state.date != null;
+    return state.title.isNotEmpty;
   }
 }

@@ -14,10 +14,10 @@ class CoupleNotesListCubit extends Cubit<CoupleNotesListState> {
 
   void loadState(String? coupleID) async {
     if (coupleID == null) return;
-    final couple = await _notesInteractor.getCoupleByID(coupleID);
+    final coupleDB = await _notesInteractor.getCoupleByID(coupleID);
     subscription = _notesInteractor.getNotesByCoupleID(coupleID).listen((notes) {
       emit(CoupleNotesListState(
-          couple: couple,
+          coupleDB: coupleDB,
           notes: notes
       ));
     });

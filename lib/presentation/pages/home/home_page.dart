@@ -20,14 +20,14 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => HomePageCubit()..loadState(),
+      create: (context) => HomePageCubit(),
       child: BlocBuilder<HomePageCubit, HomePageState>(
         builder: (context, state) {
           return ScrollableScreen(
             top: DateHeader(
               date: DateTime.now(),
               buttonIsVisible: false,
-              studyWeek: state.studyWeekNumber,
+              studyWeek: state.weekSchedule?.weekNumber.studyWeekNumber,
             ),
             scrollable: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -60,7 +60,7 @@ class HomePage extends StatelessWidget {
                 Text("Ближайшие события", style: context.textTheme.headlineMedium),
                 Column(
                   children: state.scheduleItems
-                      .map((element) => ScheduleDayItemWidgetFactory.create(element, showIndicator: true, onIndicatorEnd: () => context.read<HomePageCubit>().loadState()))
+                      .map((element) => ScheduleDayItemWidgetFactory.create(element, showIndicator: true, onIndicatorEnd: () => context.read<HomePageCubit>().update()))
                       .toList(),
                 ),
                 Row(

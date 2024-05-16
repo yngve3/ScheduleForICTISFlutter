@@ -42,7 +42,7 @@ class FavoriteSchedulesRepository {
   }
 
   Stream<List<ScheduleSubject>> getFromDBAll({String? userUID}) {
-    QueryBuilder<ScheduleSubject> query = _favoriteSchedulesBox.query(ScheduleSubject_.userUID.equals(userUID ?? ""));
+    final query = _favoriteSchedulesBox.query(ScheduleSubject_.userUID.equals(userUID ?? ""));
     return query.watch(triggerImmediately: true).map((query) => query.find());
   }
 

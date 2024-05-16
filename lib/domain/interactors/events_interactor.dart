@@ -28,8 +28,7 @@ class EventsInteractor {
     final remindersList = _remindersRepository.processReminders(reminders,
       isEdit: id != null,
       title: title,
-      date: date,
-      timeStart: timeStart
+      dateTime: DateTime(date.year, date.month, date.day, timeStart.hour, timeStart.minute)
     );
 
     final eventDB = EventDB(

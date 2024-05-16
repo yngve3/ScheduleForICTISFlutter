@@ -16,11 +16,10 @@ final _privateConstructorUsedError = UnsupportedError(
 
 /// @nodoc
 mixin _$NoteInfoState {
+  CoupleDB? get coupleDB => throw _privateConstructorUsedError;
   int get noteID => throw _privateConstructorUsedError;
   String get title => throw _privateConstructorUsedError;
   String? get description => throw _privateConstructorUsedError;
-  DateTime? get date => throw _privateConstructorUsedError;
-  String get discipline => throw _privateConstructorUsedError;
   List<NoteFile> get files => throw _privateConstructorUsedError;
   List<Reminder> get reminders => throw _privateConstructorUsedError;
 
@@ -36,11 +35,10 @@ abstract class $NoteInfoStateCopyWith<$Res> {
       _$NoteInfoStateCopyWithImpl<$Res, NoteInfoState>;
   @useResult
   $Res call(
-      {int noteID,
+      {CoupleDB? coupleDB,
+      int noteID,
       String title,
       String? description,
-      DateTime? date,
-      String discipline,
       List<NoteFile> files,
       List<Reminder> reminders});
 }
@@ -58,15 +56,18 @@ class _$NoteInfoStateCopyWithImpl<$Res, $Val extends NoteInfoState>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
+    Object? coupleDB = freezed,
     Object? noteID = null,
     Object? title = null,
     Object? description = freezed,
-    Object? date = freezed,
-    Object? discipline = null,
     Object? files = null,
     Object? reminders = null,
   }) {
     return _then(_value.copyWith(
+      coupleDB: freezed == coupleDB
+          ? _value.coupleDB
+          : coupleDB // ignore: cast_nullable_to_non_nullable
+              as CoupleDB?,
       noteID: null == noteID
           ? _value.noteID
           : noteID // ignore: cast_nullable_to_non_nullable
@@ -79,14 +80,6 @@ class _$NoteInfoStateCopyWithImpl<$Res, $Val extends NoteInfoState>
           ? _value.description
           : description // ignore: cast_nullable_to_non_nullable
               as String?,
-      date: freezed == date
-          ? _value.date
-          : date // ignore: cast_nullable_to_non_nullable
-              as DateTime?,
-      discipline: null == discipline
-          ? _value.discipline
-          : discipline // ignore: cast_nullable_to_non_nullable
-              as String,
       files: null == files
           ? _value.files
           : files // ignore: cast_nullable_to_non_nullable
@@ -108,11 +101,10 @@ abstract class _$$NoteInfoStateImplCopyWith<$Res>
   @override
   @useResult
   $Res call(
-      {int noteID,
+      {CoupleDB? coupleDB,
+      int noteID,
       String title,
       String? description,
-      DateTime? date,
-      String discipline,
       List<NoteFile> files,
       List<Reminder> reminders});
 }
@@ -128,15 +120,18 @@ class __$$NoteInfoStateImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
+    Object? coupleDB = freezed,
     Object? noteID = null,
     Object? title = null,
     Object? description = freezed,
-    Object? date = freezed,
-    Object? discipline = null,
     Object? files = null,
     Object? reminders = null,
   }) {
     return _then(_$NoteInfoStateImpl(
+      coupleDB: freezed == coupleDB
+          ? _value.coupleDB
+          : coupleDB // ignore: cast_nullable_to_non_nullable
+              as CoupleDB?,
       noteID: null == noteID
           ? _value.noteID
           : noteID // ignore: cast_nullable_to_non_nullable
@@ -149,14 +144,6 @@ class __$$NoteInfoStateImplCopyWithImpl<$Res>
           ? _value.description
           : description // ignore: cast_nullable_to_non_nullable
               as String?,
-      date: freezed == date
-          ? _value.date
-          : date // ignore: cast_nullable_to_non_nullable
-              as DateTime?,
-      discipline: null == discipline
-          ? _value.discipline
-          : discipline // ignore: cast_nullable_to_non_nullable
-              as String,
       files: null == files
           ? _value._files
           : files // ignore: cast_nullable_to_non_nullable
@@ -173,16 +160,17 @@ class __$$NoteInfoStateImplCopyWithImpl<$Res>
 
 class _$NoteInfoStateImpl implements _NoteInfoState {
   const _$NoteInfoStateImpl(
-      {this.noteID = 0,
+      {this.coupleDB,
+      this.noteID = 0,
       this.title = "",
       this.description,
-      this.date,
-      this.discipline = "",
       final List<NoteFile> files = const [],
       final List<Reminder> reminders = const []})
       : _files = files,
         _reminders = reminders;
 
+  @override
+  final CoupleDB? coupleDB;
   @override
   @JsonKey()
   final int noteID;
@@ -191,11 +179,6 @@ class _$NoteInfoStateImpl implements _NoteInfoState {
   final String title;
   @override
   final String? description;
-  @override
-  final DateTime? date;
-  @override
-  @JsonKey()
-  final String discipline;
   final List<NoteFile> _files;
   @override
   @JsonKey()
@@ -216,7 +199,7 @@ class _$NoteInfoStateImpl implements _NoteInfoState {
 
   @override
   String toString() {
-    return 'NoteInfoState(noteID: $noteID, title: $title, description: $description, date: $date, discipline: $discipline, files: $files, reminders: $reminders)';
+    return 'NoteInfoState(coupleDB: $coupleDB, noteID: $noteID, title: $title, description: $description, files: $files, reminders: $reminders)';
   }
 
   @override
@@ -224,13 +207,12 @@ class _$NoteInfoStateImpl implements _NoteInfoState {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$NoteInfoStateImpl &&
+            (identical(other.coupleDB, coupleDB) ||
+                other.coupleDB == coupleDB) &&
             (identical(other.noteID, noteID) || other.noteID == noteID) &&
             (identical(other.title, title) || other.title == title) &&
             (identical(other.description, description) ||
                 other.description == description) &&
-            (identical(other.date, date) || other.date == date) &&
-            (identical(other.discipline, discipline) ||
-                other.discipline == discipline) &&
             const DeepCollectionEquality().equals(other._files, _files) &&
             const DeepCollectionEquality()
                 .equals(other._reminders, _reminders));
@@ -239,11 +221,10 @@ class _$NoteInfoStateImpl implements _NoteInfoState {
   @override
   int get hashCode => Object.hash(
       runtimeType,
+      coupleDB,
       noteID,
       title,
       description,
-      date,
-      discipline,
       const DeepCollectionEquality().hash(_files),
       const DeepCollectionEquality().hash(_reminders));
 
@@ -256,24 +237,21 @@ class _$NoteInfoStateImpl implements _NoteInfoState {
 
 abstract class _NoteInfoState implements NoteInfoState {
   const factory _NoteInfoState(
-      {final int noteID,
+      {final CoupleDB? coupleDB,
+      final int noteID,
       final String title,
       final String? description,
-      final DateTime? date,
-      final String discipline,
       final List<NoteFile> files,
       final List<Reminder> reminders}) = _$NoteInfoStateImpl;
 
+  @override
+  CoupleDB? get coupleDB;
   @override
   int get noteID;
   @override
   String get title;
   @override
   String? get description;
-  @override
-  DateTime? get date;
-  @override
-  String get discipline;
   @override
   List<NoteFile> get files;
   @override

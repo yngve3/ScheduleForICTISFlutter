@@ -1,6 +1,7 @@
 import 'package:objectbox/objectbox.dart';
 import 'package:schedule_for_ictis_flutter/domain/models/note_file/note_file.dart';
 
+import '../../../data/models/couple_db.dart';
 import '../reminder/reminder.dart';
 
 @Entity()
@@ -10,7 +11,6 @@ class Note {
   String? description;
   @Property(type: PropertyType.date)
   DateTime date;
-  String coupleID;
   String userUID;
 
   bool get hasFiles => attachedFiles.isNotEmpty;
@@ -21,15 +21,20 @@ class Note {
   final ToMany<NoteFile> attachedFiles = ToMany<NoteFile>();
   final ToMany<Reminder> reminders = ToMany<Reminder>();
 
+  final String coupleID;
+  final String scheduleSubjectID;
+
   Note({
-    required this.id,
     required this.title,
+    required this.id,
     required this.date,
-    required this.coupleID,
     required this.userUID,
+    required this.coupleID,
+    required this.scheduleSubjectID,
     this.description,
     List<NoteFile>? files,
-    List<Reminder>? reminders
+    List<Reminder>? reminders,
+    CoupleDB? coupleDB
   }) {
     attachedFiles.addAll(files ?? []);
     this.reminders.addAll(reminders ?? []);

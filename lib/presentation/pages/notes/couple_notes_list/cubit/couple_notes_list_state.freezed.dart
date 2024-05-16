@@ -17,7 +17,7 @@ final _privateConstructorUsedError = UnsupportedError(
 /// @nodoc
 mixin _$CoupleNotesListState {
   List<Note> get notes => throw _privateConstructorUsedError;
-  Couple? get couple => throw _privateConstructorUsedError;
+  CoupleDB? get coupleDB => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $CoupleNotesListStateCopyWith<CoupleNotesListState> get copyWith =>
@@ -30,7 +30,7 @@ abstract class $CoupleNotesListStateCopyWith<$Res> {
           $Res Function(CoupleNotesListState) then) =
       _$CoupleNotesListStateCopyWithImpl<$Res, CoupleNotesListState>;
   @useResult
-  $Res call({List<Note> notes, Couple? couple});
+  $Res call({List<Note> notes, CoupleDB? coupleDB});
 }
 
 /// @nodoc
@@ -48,17 +48,17 @@ class _$CoupleNotesListStateCopyWithImpl<$Res,
   @override
   $Res call({
     Object? notes = null,
-    Object? couple = freezed,
+    Object? coupleDB = freezed,
   }) {
     return _then(_value.copyWith(
       notes: null == notes
           ? _value.notes
           : notes // ignore: cast_nullable_to_non_nullable
               as List<Note>,
-      couple: freezed == couple
-          ? _value.couple
-          : couple // ignore: cast_nullable_to_non_nullable
-              as Couple?,
+      coupleDB: freezed == coupleDB
+          ? _value.coupleDB
+          : coupleDB // ignore: cast_nullable_to_non_nullable
+              as CoupleDB?,
     ) as $Val);
   }
 }
@@ -71,7 +71,7 @@ abstract class _$$CoupleNotesListStateImplCopyWith<$Res>
       __$$CoupleNotesListStateImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({List<Note> notes, Couple? couple});
+  $Res call({List<Note> notes, CoupleDB? coupleDB});
 }
 
 /// @nodoc
@@ -86,17 +86,17 @@ class __$$CoupleNotesListStateImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? notes = null,
-    Object? couple = freezed,
+    Object? coupleDB = freezed,
   }) {
     return _then(_$CoupleNotesListStateImpl(
       notes: null == notes
           ? _value._notes
           : notes // ignore: cast_nullable_to_non_nullable
               as List<Note>,
-      couple: freezed == couple
-          ? _value.couple
-          : couple // ignore: cast_nullable_to_non_nullable
-              as Couple?,
+      coupleDB: freezed == coupleDB
+          ? _value.coupleDB
+          : coupleDB // ignore: cast_nullable_to_non_nullable
+              as CoupleDB?,
     ));
   }
 }
@@ -105,7 +105,7 @@ class __$$CoupleNotesListStateImplCopyWithImpl<$Res>
 
 class _$CoupleNotesListStateImpl implements _CoupleNotesListState {
   const _$CoupleNotesListStateImpl(
-      {final List<Note> notes = const [], this.couple})
+      {final List<Note> notes = const [], this.coupleDB})
       : _notes = notes;
 
   final List<Note> _notes;
@@ -118,11 +118,11 @@ class _$CoupleNotesListStateImpl implements _CoupleNotesListState {
   }
 
   @override
-  final Couple? couple;
+  final CoupleDB? coupleDB;
 
   @override
   String toString() {
-    return 'CoupleNotesListState(notes: $notes, couple: $couple)';
+    return 'CoupleNotesListState(notes: $notes, coupleDB: $coupleDB)';
   }
 
   @override
@@ -131,12 +131,13 @@ class _$CoupleNotesListStateImpl implements _CoupleNotesListState {
         (other.runtimeType == runtimeType &&
             other is _$CoupleNotesListStateImpl &&
             const DeepCollectionEquality().equals(other._notes, _notes) &&
-            (identical(other.couple, couple) || other.couple == couple));
+            (identical(other.coupleDB, coupleDB) ||
+                other.coupleDB == coupleDB));
   }
 
   @override
   int get hashCode => Object.hash(
-      runtimeType, const DeepCollectionEquality().hash(_notes), couple);
+      runtimeType, const DeepCollectionEquality().hash(_notes), coupleDB);
 
   @JsonKey(ignore: true)
   @override
@@ -150,12 +151,12 @@ class _$CoupleNotesListStateImpl implements _CoupleNotesListState {
 abstract class _CoupleNotesListState implements CoupleNotesListState {
   const factory _CoupleNotesListState(
       {final List<Note> notes,
-      final Couple? couple}) = _$CoupleNotesListStateImpl;
+      final CoupleDB? coupleDB}) = _$CoupleNotesListStateImpl;
 
   @override
   List<Note> get notes;
   @override
-  Couple? get couple;
+  CoupleDB? get coupleDB;
   @override
   @JsonKey(ignore: true)
   _$$CoupleNotesListStateImplCopyWith<_$CoupleNotesListStateImpl>

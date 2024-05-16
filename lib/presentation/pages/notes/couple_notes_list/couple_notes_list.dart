@@ -35,8 +35,8 @@ class CoupleNotesListPage extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   DisciplineAndDate(
-                    discipline: state.couple?.discipline ?? "",
-                    date: state.couple?.dateTimeEnd ?? DateTime.now(),
+                    discipline: state.coupleDB?.discipline ?? "",
+                    date: state.coupleDB?.dateTimeEnd ?? DateTime.now(),
                   ),
                   const SizedBox(height: 5),
                   Text(
@@ -49,7 +49,7 @@ class CoupleNotesListPage extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: state.notes.map((element) => NotesListItem(
                   note: element,
-                  coupleID: state.couple?.id ?? "",
+                  coupleID: state.coupleDB?.id ?? "",
                 )).toList(),
               ),
               bottom: FilledButton(

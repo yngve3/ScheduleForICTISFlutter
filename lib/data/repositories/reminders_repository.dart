@@ -1,6 +1,5 @@
 import 'dart:math';
 
-import 'package:flutter/material.dart';
 import 'package:schedule_for_ictis_flutter/main.dart';
 
 import '../../domain/models/reminder/reminder.dart';
@@ -26,8 +25,7 @@ class RemindersRepository {
   List<Reminder> processReminders(StateList<Reminder> reminders, {
     required bool isEdit,
     required String title,
-    required DateTime date,
-    required TimeOfDay timeStart
+    required DateTime dateTime
   }) {
     if (isEdit) {
       final deletedRemindersIds = reminders.deletedElements.map((e) => e.id!).toList();
@@ -44,7 +42,7 @@ class RemindersRepository {
 
     RemindersHelper.createReminders(
         remindersList,
-        DateTime(date.year, date.month, date.day, timeStart.hour, timeStart.minute),
+        dateTime,
         title: title
     );
 

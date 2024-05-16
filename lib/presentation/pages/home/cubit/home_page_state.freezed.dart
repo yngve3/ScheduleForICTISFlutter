@@ -18,7 +18,7 @@ final _privateConstructorUsedError = UnsupportedError(
 mixin _$HomePageState {
   List<DayScheduleItem> get scheduleItems => throw _privateConstructorUsedError;
   List<Note> get notes => throw _privateConstructorUsedError;
-  int? get studyWeekNumber => throw _privateConstructorUsedError;
+  WeekSchedule? get weekSchedule => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $HomePageStateCopyWith<HomePageState> get copyWith =>
@@ -34,7 +34,7 @@ abstract class $HomePageStateCopyWith<$Res> {
   $Res call(
       {List<DayScheduleItem> scheduleItems,
       List<Note> notes,
-      int? studyWeekNumber});
+      WeekSchedule? weekSchedule});
 }
 
 /// @nodoc
@@ -52,7 +52,7 @@ class _$HomePageStateCopyWithImpl<$Res, $Val extends HomePageState>
   $Res call({
     Object? scheduleItems = null,
     Object? notes = null,
-    Object? studyWeekNumber = freezed,
+    Object? weekSchedule = freezed,
   }) {
     return _then(_value.copyWith(
       scheduleItems: null == scheduleItems
@@ -63,10 +63,10 @@ class _$HomePageStateCopyWithImpl<$Res, $Val extends HomePageState>
           ? _value.notes
           : notes // ignore: cast_nullable_to_non_nullable
               as List<Note>,
-      studyWeekNumber: freezed == studyWeekNumber
-          ? _value.studyWeekNumber
-          : studyWeekNumber // ignore: cast_nullable_to_non_nullable
-              as int?,
+      weekSchedule: freezed == weekSchedule
+          ? _value.weekSchedule
+          : weekSchedule // ignore: cast_nullable_to_non_nullable
+              as WeekSchedule?,
     ) as $Val);
   }
 }
@@ -82,7 +82,7 @@ abstract class _$$HomePageStateImplCopyWith<$Res>
   $Res call(
       {List<DayScheduleItem> scheduleItems,
       List<Note> notes,
-      int? studyWeekNumber});
+      WeekSchedule? weekSchedule});
 }
 
 /// @nodoc
@@ -98,7 +98,7 @@ class __$$HomePageStateImplCopyWithImpl<$Res>
   $Res call({
     Object? scheduleItems = null,
     Object? notes = null,
-    Object? studyWeekNumber = freezed,
+    Object? weekSchedule = freezed,
   }) {
     return _then(_$HomePageStateImpl(
       scheduleItems: null == scheduleItems
@@ -109,10 +109,10 @@ class __$$HomePageStateImplCopyWithImpl<$Res>
           ? _value._notes
           : notes // ignore: cast_nullable_to_non_nullable
               as List<Note>,
-      studyWeekNumber: freezed == studyWeekNumber
-          ? _value.studyWeekNumber
-          : studyWeekNumber // ignore: cast_nullable_to_non_nullable
-              as int?,
+      weekSchedule: freezed == weekSchedule
+          ? _value.weekSchedule
+          : weekSchedule // ignore: cast_nullable_to_non_nullable
+              as WeekSchedule?,
     ));
   }
 }
@@ -123,7 +123,7 @@ class _$HomePageStateImpl implements _HomePageState {
   const _$HomePageStateImpl(
       {final List<DayScheduleItem> scheduleItems = const [],
       final List<Note> notes = const [],
-      this.studyWeekNumber})
+      this.weekSchedule})
       : _scheduleItems = scheduleItems,
         _notes = notes;
 
@@ -146,11 +146,11 @@ class _$HomePageStateImpl implements _HomePageState {
   }
 
   @override
-  final int? studyWeekNumber;
+  final WeekSchedule? weekSchedule;
 
   @override
   String toString() {
-    return 'HomePageState(scheduleItems: $scheduleItems, notes: $notes, studyWeekNumber: $studyWeekNumber)';
+    return 'HomePageState(scheduleItems: $scheduleItems, notes: $notes, weekSchedule: $weekSchedule)';
   }
 
   @override
@@ -161,8 +161,8 @@ class _$HomePageStateImpl implements _HomePageState {
             const DeepCollectionEquality()
                 .equals(other._scheduleItems, _scheduleItems) &&
             const DeepCollectionEquality().equals(other._notes, _notes) &&
-            (identical(other.studyWeekNumber, studyWeekNumber) ||
-                other.studyWeekNumber == studyWeekNumber));
+            (identical(other.weekSchedule, weekSchedule) ||
+                other.weekSchedule == weekSchedule));
   }
 
   @override
@@ -170,7 +170,7 @@ class _$HomePageStateImpl implements _HomePageState {
       runtimeType,
       const DeepCollectionEquality().hash(_scheduleItems),
       const DeepCollectionEquality().hash(_notes),
-      studyWeekNumber);
+      weekSchedule);
 
   @JsonKey(ignore: true)
   @override
@@ -183,14 +183,14 @@ abstract class _HomePageState implements HomePageState {
   const factory _HomePageState(
       {final List<DayScheduleItem> scheduleItems,
       final List<Note> notes,
-      final int? studyWeekNumber}) = _$HomePageStateImpl;
+      final WeekSchedule? weekSchedule}) = _$HomePageStateImpl;
 
   @override
   List<DayScheduleItem> get scheduleItems;
   @override
   List<Note> get notes;
   @override
-  int? get studyWeekNumber;
+  WeekSchedule? get weekSchedule;
   @override
   @JsonKey(ignore: true)
   _$$HomePageStateImplCopyWith<_$HomePageStateImpl> get copyWith =>

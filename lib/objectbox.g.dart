@@ -147,7 +147,7 @@ final _entities = <obx_int.ModelEntity>[
   obx_int.ModelEntity(
       id: const obx_int.IdUid(16, 735719639961690522),
       name: 'Note',
-      lastPropertyId: const obx_int.IdUid(7, 572991563788016919),
+      lastPropertyId: const obx_int.IdUid(10, 2170643725672088205),
       flags: 0,
       properties: <obx_int.ModelProperty>[
         obx_int.ModelProperty(
@@ -159,11 +159,6 @@ final _entities = <obx_int.ModelEntity>[
             id: const obx_int.IdUid(3, 6181180344952142219),
             name: 'date',
             type: 10,
-            flags: 0),
-        obx_int.ModelProperty(
-            id: const obx_int.IdUid(4, 8692498959326071911),
-            name: 'coupleID',
-            type: 9,
             flags: 0),
         obx_int.ModelProperty(
             id: const obx_int.IdUid(5, 8343189923104370040),
@@ -178,6 +173,16 @@ final _entities = <obx_int.ModelEntity>[
         obx_int.ModelProperty(
             id: const obx_int.IdUid(7, 572991563788016919),
             name: 'userUID',
+            type: 9,
+            flags: 0),
+        obx_int.ModelProperty(
+            id: const obx_int.IdUid(9, 543216453361891142),
+            name: 'coupleID',
+            type: 9,
+            flags: 0),
+        obx_int.ModelProperty(
+            id: const obx_int.IdUid(10, 2170643725672088205),
+            name: 'scheduleSubjectID',
             type: 9,
             flags: 0)
       ],
@@ -358,7 +363,7 @@ obx_int.ModelDefinition getObjectBoxModel() {
   final model = obx_int.ModelInfo(
       entities: _entities,
       lastEntityId: const obx_int.IdUid(20, 3099322797470029057),
-      lastIndexId: const obx_int.IdUid(21, 4695460110029072893),
+      lastIndexId: const obx_int.IdUid(23, 6955382620716974349),
       lastRelationId: const obx_int.IdUid(3, 7580521061366540174),
       lastSequenceId: const obx_int.IdUid(0, 0),
       retiredEntityUids: const [
@@ -381,7 +386,9 @@ obx_int.ModelDefinition getObjectBoxModel() {
         6702232084178333351,
         5695844585636368914,
         7434552496165741410,
-        905497168917521630
+        905497168917521630,
+        6390834597951895379,
+        6955382620716974349
       ],
       retiredPropertyUids: const [
         8531280715951716256,
@@ -451,7 +458,9 @@ obx_int.ModelDefinition getObjectBoxModel() {
         5630191814713138280,
         605446746748711282,
         1760040761526889768,
-        4075190789421474376
+        4075190789421474376,
+        8692498959326071911,
+        970962328811868607
       ],
       retiredRelationUids: const [7624436913426914363],
       modelVersion: 5,
@@ -600,44 +609,51 @@ obx_int.ModelDefinition getObjectBoxModel() {
           object.id = id;
         },
         objectToFB: (Note object, fb.Builder fbb) {
-          final coupleIDOffset = fbb.writeString(object.coupleID);
           final titleOffset = fbb.writeString(object.title);
           final descriptionOffset = object.description == null
               ? null
               : fbb.writeString(object.description!);
           final userUIDOffset = fbb.writeString(object.userUID);
-          fbb.startTable(8);
+          final coupleIDOffset = fbb.writeString(object.coupleID);
+          final scheduleSubjectIDOffset =
+              fbb.writeString(object.scheduleSubjectID);
+          fbb.startTable(11);
           fbb.addInt64(0, object.id);
           fbb.addInt64(2, object.date.millisecondsSinceEpoch);
-          fbb.addOffset(3, coupleIDOffset);
           fbb.addOffset(4, titleOffset);
           fbb.addOffset(5, descriptionOffset);
           fbb.addOffset(6, userUIDOffset);
+          fbb.addOffset(8, coupleIDOffset);
+          fbb.addOffset(9, scheduleSubjectIDOffset);
           fbb.finish(fbb.endTable());
           return object.id;
         },
         objectFromFB: (obx.Store store, ByteData fbData) {
           final buffer = fb.BufferContext(fbData);
           final rootOffset = buffer.derefObject(0);
-          final idParam =
-              const fb.Int64Reader().vTableGet(buffer, rootOffset, 4, 0);
           final titleParam = const fb.StringReader(asciiOptimization: true)
               .vTableGet(buffer, rootOffset, 12, '');
+          final idParam =
+              const fb.Int64Reader().vTableGet(buffer, rootOffset, 4, 0);
           final dateParam = DateTime.fromMillisecondsSinceEpoch(
               const fb.Int64Reader().vTableGet(buffer, rootOffset, 8, 0));
-          final coupleIDParam = const fb.StringReader(asciiOptimization: true)
-              .vTableGet(buffer, rootOffset, 10, '');
           final userUIDParam = const fb.StringReader(asciiOptimization: true)
               .vTableGet(buffer, rootOffset, 16, '');
+          final coupleIDParam = const fb.StringReader(asciiOptimization: true)
+              .vTableGet(buffer, rootOffset, 20, '');
+          final scheduleSubjectIDParam =
+              const fb.StringReader(asciiOptimization: true)
+                  .vTableGet(buffer, rootOffset, 22, '');
           final descriptionParam =
               const fb.StringReader(asciiOptimization: true)
                   .vTableGetNullable(buffer, rootOffset, 14);
           final object = Note(
-              id: idParam,
               title: titleParam,
+              id: idParam,
               date: dateParam,
-              coupleID: coupleIDParam,
               userUID: userUIDParam,
+              coupleID: coupleIDParam,
+              scheduleSubjectID: scheduleSubjectIDParam,
               description: descriptionParam);
           obx_int.InternalToManyAccess.setRelInfo<Note>(object.reminders, store,
               obx_int.RelInfo<Note>.toMany(3, object.id));
@@ -892,21 +908,25 @@ class Note_ {
   /// see [Note.date]
   static final date = obx.QueryDateProperty<Note>(_entities[2].properties[1]);
 
-  /// see [Note.coupleID]
-  static final coupleID =
-      obx.QueryStringProperty<Note>(_entities[2].properties[2]);
-
   /// see [Note.title]
   static final title =
-      obx.QueryStringProperty<Note>(_entities[2].properties[3]);
+      obx.QueryStringProperty<Note>(_entities[2].properties[2]);
 
   /// see [Note.description]
   static final description =
-      obx.QueryStringProperty<Note>(_entities[2].properties[4]);
+      obx.QueryStringProperty<Note>(_entities[2].properties[3]);
 
   /// see [Note.userUID]
   static final userUID =
+      obx.QueryStringProperty<Note>(_entities[2].properties[4]);
+
+  /// see [Note.coupleID]
+  static final coupleID =
       obx.QueryStringProperty<Note>(_entities[2].properties[5]);
+
+  /// see [Note.scheduleSubjectID]
+  static final scheduleSubjectID =
+      obx.QueryStringProperty<Note>(_entities[2].properties[6]);
 
   /// see [Note.reminders]
   static final reminders =

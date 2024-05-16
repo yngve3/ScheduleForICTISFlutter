@@ -1,7 +1,7 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 
+import '../../../../../data/models/couple_db.dart';
 import '../../../../../domain/models/note/note.dart';
-import '../../../../../domain/models/schedule/day_schedule_item.dart';
 
 part 'couple_notes_list_state.freezed.dart';
 
@@ -9,6 +9,6 @@ part 'couple_notes_list_state.freezed.dart';
 class CoupleNotesListState with _$CoupleNotesListState {
   const factory CoupleNotesListState({
     @Default([]) List<Note> notes,
-    Couple? couple
+    CoupleDB? coupleDB
   }) = _CoupleNotesListState;
 }

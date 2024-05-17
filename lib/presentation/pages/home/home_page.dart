@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:path/path.dart';
 import 'package:schedule_for_ictis_flutter/presentation/extensions/context_ext.dart';
 import 'package:schedule_for_ictis_flutter/presentation/pages/home/cubit/home_page_cubit.dart';
 import 'package:schedule_for_ictis_flutter/presentation/pages/schedule/schedule_day_item/schedule_day_item_widget_factory.dart';
 import 'package:schedule_for_ictis_flutter/presentation/widgets/date_header.dart';
 import 'package:schedule_for_ictis_flutter/presentation/widgets/screen.dart';
+import 'package:schedule_for_ictis_flutter/utils/minutes_to_string.dart';
 
+import '../../../domain/models/schedule/day_schedule_item.dart';
 import '../../../gen/assets.gen.dart';
 import '../../route/routes.dart';
 import '../../widgets/notes_list_item.dart';
@@ -19,11 +22,9 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => HomePageCubit(),
-      child: BlocBuilder<HomePageCubit, HomePageState>(
-        builder: (context, state) {
-          return ScrollableScreen(
+    return BlocBuilder<HomePageCubit, HomePageState>(
+      builder: (context, state) {
+        return ScrollableScreen(
             top: DateHeader(
               date: DateTime.now(),
               buttonIsVisible: false,
@@ -58,6 +59,7 @@ class HomePage extends StatelessWidget {
                 ),
                 const SizedBox(height: 10),
                 Text("Ближайшие события", style: context.textTheme.headlineMedium),
+                Text(_getTimeToComingEvent(state.scheduleItems), style: context.textTheme.bodyMedium),
                 Column(
                   children: state.scheduleItems
                       .map((element) => ScheduleDayItemWidgetFactory.create(element, showIndicator: true, onIndicatorEnd: () => context.read<HomePageCubit>().update()))
@@ -68,19 +70,25 @@ class HomePage extends StatelessWidget {
                   children: [
                     Text("Задания", style: context.textTheme.headlineMedium),
                     TextButton(
-                      onPressed: () => context.go(Routes.allNotes.path),
-                      child: Text("ПОКАЗАТЬ ВСЕ", style: context.textTheme.bodyLarge?.copyWith(color: context.customColors.accent))
+                        onPressed: () => context.go(Routes.allNotes.path),
+                        child: Text("ПОКАЗАТЬ ВСЕ", style: context.textTheme.bodyLarge?.copyWith(color: context.customColors.accent))
                     ),
                   ],
                 ),
                 Column(
-                  children: state.notes.map((note) => NotesListItem(note: note, coupleID: note.coupleID, showDate: true)).toList()
+                    children: state.notes.map((note) => NotesListItem(note: note, coupleID: note.coupleID, showDate: true)).toList()
                 )
               ],
             )
-          );
-        },
-      ),
+        );
+      },
     );
+  }
+
+  String _getTimeToComingEvent(List<DayScheduleItem> items) {
+    if (items.isEmpty) return "На ближайшую неделю ничего не запланировано";
+    final dateDiff = items.first.dateTimeStart.difference(DateTime.now()).inMinutes;
+    if (dateDiff <= 0) return "Сегодняшние события";
+    return "${MinutesToString.minutesToString(dateDiff)} до:";
   }
 }

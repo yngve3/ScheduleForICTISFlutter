@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:schedule_for_ictis_flutter/domain/interactors/schedule_interactor.dart';
 import 'package:schedule_for_ictis_flutter/presentation/extensions/context_ext.dart';
+import 'package:schedule_for_ictis_flutter/presentation/pages/home/cubit/home_page_cubit.dart';
 import 'package:schedule_for_ictis_flutter/presentation/pages/schedule/cubit/schedule_cubit.dart';
 
 import '../../../gen/assets.gen.dart';
@@ -44,9 +45,16 @@ class MainPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: BlocProvider(
-        create: (context) => ScheduleCubit(ScheduleInteractor()),
-        child: child,
+      body: MultiBlocProvider(
+        providers: [
+          BlocProvider(
+            create: (context) => ScheduleCubit(ScheduleInteractor())
+          ),
+          BlocProvider(
+            create: (context) => HomePageCubit(),
+          ),
+        ],
+        child: child
       ),
       bottomNavigationBar: BottomNavigationBar(
         showSelectedLabels: false,

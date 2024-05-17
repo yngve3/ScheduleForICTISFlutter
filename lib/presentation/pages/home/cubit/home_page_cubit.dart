@@ -1,40 +1,33 @@
 import 'dart:async';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:schedule_for_ictis_flutter/domain/interactors/schedule_interactor.dart';
-import 'package:schedule_for_ictis_flutter/domain/models/schedule/week_schedule/week_schedule.dart';
+import 'package:schedule_for_ictis_flutter/domain/interactors/home_page_interactor.dart';
 
-import '../../../../domain/models/schedule/day_schedule_item.dart';
 import 'home_page_state.dart';
 
 class HomePageCubit extends Cubit<HomePageState> {
   HomePageCubit() : super(const HomePageState()) {
-    subscription = _interactor.weekSchedule.listen((weekSchedule) {
-      final items = _getComingItems(weekSchedule);
-      emit(state.copyWith(scheduleItems: items, weekSchedule: weekSchedule));
-    });
+    subscriptions.add(_interactor.items.listen((items) {
+      emit(state.copyWith(scheduleItems: items));
+    }));
+
+    subscriptions.add(_interactor.notes.listen((notes) {
+      emit(state.copyWith(notes: notes));
+    }));
   }
-  late StreamSubscription subscription;
-  final _interactor = ScheduleInteractor();
+  List<StreamSubscription> subscriptions = [];
+  final _interactor = HomePageInteractor();
 
   void update() {
-    final items = _getComingItems(state.weekSchedule);
-    emit(state.copyWith(scheduleItems: items));
-  }
 
-  List<DayScheduleItem> _getComingItems(WeekSchedule? weekSchedule) {
-    if (weekSchedule == null) return [];
-    final nowDate = DateTime.now();
-    final items = weekSchedule.daySchedules[nowDate.weekday - 1].items
-        .where((element) => element.dateTimeEnd.isAfter(nowDate))
-        .toList();
-
-    return items;
   }
 
   @override
   Future<void> close() {
-    subscription.cancel();
+    for (var element in subscriptions) {
+      element.cancel();
+    }
+    _interactor.dispose();
     return super.close();
   }
 }

@@ -93,10 +93,10 @@ class EventInfoPage extends StatelessWidget {
                       icon: Assets.icons.icLocation.image(),
                       context: context
                     ),
-                    RemindersProperty(
+                    state.reminders?.isNotEmpty ?? [].isNotEmpty ? RemindersProperty(
                       reminders: state.reminders ?? [],
                       readOnly: true,
-                    )
+                    ) : const SizedBox.shrink()
                   ],
                 ),
               )

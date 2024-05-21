@@ -39,14 +39,16 @@ class HomePageInteractor {
             .listen((favoriteSchedules) {
               if (favoriteSchedules.length > 2 || favoriteSchedules.isEmpty) return;
               _state.setFavoriteSchedules(favoriteSchedules);
-              List<CoupleDB> couplesDB = [];
-              for (final favoriteSchedule in favoriteSchedules) {
-                couplesDB.addAll(_couplesRepository.getCouplesAfter(DateTime.now(), favoriteSchedule));
-              }
-              _state.setCouplesDB(couplesDB);
               _notesRepository.getNotesAfter(DateTime.now(), scheduleSubjects: favoriteSchedules);
+              _couplesRepository.getCouplesAfter(DateTime.now(), favoriteSchedules);
             }
         )
+    );
+
+    _subscriptions.add(
+      _couplesRepository.couples.listen((event) {
+        _state.setCouplesDB(event);
+      })
     );
 
     _subscriptions.add(

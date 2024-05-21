@@ -91,32 +91,34 @@ class CouplesRepository {
   }
 
   void loadCouplesFromDB(WeekNumber weekNumber, List<ScheduleSubject> scheduleSubjects) {
-    final query = _getQuery(weekNumber, scheduleSubjects);
+    final query = _getQuery(scheduleSubjects);
     query?.link(CoupleDB_.weekNumber, WeekNumber_.calendarWeekNumber.equals(weekNumber.calendarWeekNumber));
     query?.watch(triggerImmediately: true).forEach((event) => _couplesController.add(event.find()));
   }
 
-  QueryBuilder<CoupleDB>? _getQuery(WeekNumber weekNumber, List<ScheduleSubject> scheduleSubjects) {
+  QueryBuilder<CoupleDB>? _getQuery(List<ScheduleSubject> scheduleSubjects) {
     if (scheduleSubjects.length == 1) {
       return _couplesBox.query(
           CoupleDB_.scheduleSubject.equals(scheduleSubjects[0].dbId)
       );
     } else if (scheduleSubjects.length == 2) {
       return _couplesBox.query(
-          CoupleDB_.scheduleSubject.equals(scheduleSubjects[0].dbId).or(CoupleDB_.scheduleSubject.equals(scheduleSubjects[1].dbId))
+          CoupleDB_.scheduleSubject.equals(scheduleSubjects[0].dbId)
+              .or(CoupleDB_.scheduleSubject.equals(scheduleSubjects[1].dbId))
       );
     }
 
     return null;
   }
 
-  List<CoupleDB> getCouplesAfter(DateTime dateTime, ScheduleSubject scheduleSubject) {
-    final query = _couplesBox.query(
-        CoupleDB_.scheduleSubject.equals(scheduleSubject.dbId)
-            .and(CoupleDB_.dateTimeEnd.greaterOrEqualDate(dateTime))
-    );
-
-    return query.build().find();
+  void getCouplesAfter(DateTime dateTime, List<ScheduleSubject> scheduleSubjects) {
+    if (_couplesBox.count(limit: 1) == 0) {
+      for (final scheduleSubject in scheduleSubjects) {
+        loadCouplesFromNetToDB(scheduleSubject, null);
+      }
+    }
+    final query = _getQuery(scheduleSubjects);
+    query?.watch(triggerImmediately: true).forEach((element) => _couplesController.add(element.find().where((element) => element.dateTimeEnd.isAfter(dateTime)).toList()));
   }
 
   void dispose() {

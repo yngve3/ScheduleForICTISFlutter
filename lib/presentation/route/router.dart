@@ -31,7 +31,7 @@ abstract class AppRouter {
 
   static final GoRouter router = GoRouter(
       navigatorKey: _rootNavigatorKey,
-      initialLocation: Routes.home.path,
+      initialLocation: Routes.login.path,
       debugLogDiagnostics: true,
       routes: [
         GoRoute(
@@ -42,7 +42,8 @@ abstract class AppRouter {
             );
           },
           redirect: (BuildContext context, GoRouterState state) {
-            if (UserRepository().isLogin) {
+            final t = state.fullPath;
+            if (UserRepository().isLogin && state.fullPath != Routes.favoriteSchedules.path) {
               return Routes.home.path;
             } else {
               return null;
@@ -56,6 +57,20 @@ abstract class AppRouter {
                   child: RegistrationPage()
                 );
               },
+            ),
+            GoRoute(
+              path: Routes.favoriteSchedules.lastPathComponent,
+              builder: (BuildContext context, GoRouterState state) {
+                return const FavoriteSchedulesListPage();
+              },
+              routes: [
+                GoRoute(
+                  path: Routes.addFavoriteSchedule.lastPathComponent,
+                  builder: (BuildContext context, GoRouterState state) {
+                    return const FavoriteSchedulesAddPage();
+                  },
+                ),
+              ],
             )
           ],
         ),
@@ -157,20 +172,6 @@ abstract class AppRouter {
                   }
               )
             ]
-        ),
-        GoRoute(
-          path: Routes.favoriteSchedules.path,
-          builder: (BuildContext context, GoRouterState state) {
-            return const FavoriteSchedulesListPage();
-          },
-          routes: [
-            GoRoute(
-              path: Routes.addFavoriteSchedule.lastPathComponent,
-              builder: (BuildContext context, GoRouterState state) {
-                return const FavoriteSchedulesAddPage();
-              },
-            ),
-          ],
         ),
         GoRoute(
           path: Routes.addEvent.path,

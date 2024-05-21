@@ -10,8 +10,8 @@ abstract class Routes {
   static SimpleRoute searchScheduleResult = const SimpleRoute("/home/search_schedule/schedule");
   static SimpleRoute allNotes = const SimpleRoute("/home/all_notes");
 
-  static SimpleRoute favoriteSchedules = const SimpleRoute("/favorite_schedules");
-  static SimpleRoute addFavoriteSchedule = const SimpleRoute("/favorite_schedules/add");
+  static SimpleRoute favoriteSchedules = const SimpleRoute("/login/favorite_schedules");
+  static SimpleRoute addFavoriteSchedule = const SimpleRoute("/login/favorite_schedules/add");
 
   static SimpleRoute addEvent = const SimpleRoute("/events/add");
   static RouteWithParameters eventInfo = RouteWithParameters("/events/:event_id");

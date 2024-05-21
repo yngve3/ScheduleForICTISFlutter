@@ -38,7 +38,7 @@ class SchedulePage extends StatelessWidget {
         children: [
           FloatingActionButton.small(
             heroTag: null,
-            onPressed: () => context.push(Routes.addEvent.path),
+            onPressed: () => context.push(Routes.addEvent.path, extra: {"initialDate": BlocProvider.of<ScheduleCubit>(context).state.selectedDay}),
             child: Assets.icons.icEvent.image(color: context.customColors.background),
           ),
           FloatingActionButton.small(
@@ -96,8 +96,8 @@ class _Schedule extends State<Schedule> {
                 headerVisible: headerVisible,
                 locale: 'ru_RU',
 
-                firstDay: DateTime.utc(2010, 10, 16),
-                lastDay: DateTime.utc(2030, 3, 14),
+                firstDay: DateTime.utc(1970, 1, 1),
+                lastDay: DateTime.utc(2100, 12, 31),
                 focusedDay: state.selectedDay,
                 calendarFormat: _calendarFormat,
 

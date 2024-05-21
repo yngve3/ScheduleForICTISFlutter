@@ -1,8 +1,8 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:schedule_for_ictis_flutter/domain/models/schedule/week_schedule/week_schedule.dart';
 
 import '../../../../domain/models/note/note.dart';
 import '../../../../domain/models/schedule/day_schedule_item.dart';
+import '../../../../domain/models/week_number/week_number.dart';
 
 part 'home_page_state.freezed.dart';
 
@@ -11,6 +11,6 @@ class HomePageState with _$HomePageState {
   const factory HomePageState({
     @Default([]) List<DayScheduleItem> scheduleItems,
     @Default([]) List<Note> notes,
-    WeekSchedule? weekSchedule
+    WeekNumber? weekNumber
   }) = _HomePageState;
 }

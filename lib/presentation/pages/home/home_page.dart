@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:path/path.dart';
 import 'package:schedule_for_ictis_flutter/presentation/extensions/context_ext.dart';
 import 'package:schedule_for_ictis_flutter/presentation/pages/home/cubit/home_page_cubit.dart';
 import 'package:schedule_for_ictis_flutter/presentation/pages/schedule/schedule_day_item/schedule_day_item_widget_factory.dart';
@@ -28,7 +27,7 @@ class HomePage extends StatelessWidget {
             top: DateHeader(
               date: DateTime.now(),
               buttonIsVisible: false,
-              studyWeek: state.weekSchedule?.weekNumber.studyWeekNumber,
+              studyWeek: state.weekNumber?.studyWeekNumber,
             ),
             scrollable: Column(
               crossAxisAlignment: CrossAxisAlignment.start,

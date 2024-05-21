@@ -1,8 +1,11 @@
 import 'dart:async';
 
+import 'package:collection/collection.dart';
+import 'package:flutter/material.dart';
 import 'package:schedule_for_ictis_flutter/data/repositories/notes_repository.dart';
 import 'package:schedule_for_ictis_flutter/domain/interactors/schedule_interactor.dart';
 
+import '../../data/models/couple_db.dart';
 import '../../data/repositories/couples_repository.dart';
 import '../../data/repositories/events_repository.dart';
 import '../../data/repositories/favorite_schedules_repository.dart';
@@ -31,61 +34,60 @@ class HomePageInteractor {
   
   HomePageInteractor() {
     _subscriptions.add(
-        _couplesRepository.couplesByWeekNum
-            .listen((couplesDB) => _state.setCouplesDB(couplesDB))
-    );
-
-    _subscriptions.add(
-        _eventsRepository.eventsByWeekNum
-            .listen((eventsDB) => _state.setEventsDB(eventsDB))
-    );
-
-    _subscriptions.add(
         _favoriteSchedulesRepository
             .getSelectedFavoriteScheduleStream(userUID: _userRepository.uid)
             .listen((favoriteSchedules) {
               if (favoriteSchedules.length > 2 || favoriteSchedules.isEmpty) return;
               _state.setFavoriteSchedules(favoriteSchedules);
-              _state.setWeekNumber(_weekNumberRepository.getCurrentWeekNumber());
-              _couplesRepository.loadCouples(_state.weekNumber, favoriteSchedules);
-              List<Note> notes = [];
+              List<CoupleDB> couplesDB = [];
               for (final favoriteSchedule in favoriteSchedules) {
-                notes.addAll(_notesRepository.getNotesAfter(DateTime.now(), scheduleSubject: favoriteSchedule));
+                couplesDB.addAll(_couplesRepository.getCouplesAfter(DateTime.now(), favoriteSchedule));
               }
-              _notesController.add(notes);
+              _state.setCouplesDB(couplesDB);
+              _notesRepository.getNotesAfter(DateTime.now(), scheduleSubjects: favoriteSchedules);
             }
         )
     );
 
+    _subscriptions.add(
+      _notesRepository.notes.listen((event) {
+        _notesController.add(event);
+      })
+    );
+
+    _subscriptions.add(
+      _eventsRepository.events.listen((eventsDB) {
+        _state.setEventsDB(eventsDB);
+      })
+    );
+
     _subscriptions.add(_state.state.listen((event) =>
-        _itemsController.add(_createCouples(event))
+        _itemsController.add(_createItems(event))
     ));
 
-    _eventsRepository.getEventsByWeekNum(_state.weekNumber ?? WeekNumber.empty(), _userRepository.uid);
+    _eventsRepository.getEventsAfter(DateTime.now(), _userRepository.uid);
   }
 
-  List<DayScheduleItem> _createCouples(ScheduleInteractorState state) {
-    DateTime dateTime = DateTime.now();
+  void update() {
+    _itemsController.add(_createItems(_state));
+    _notesRepository.getNotesAfter(DateTime.now().add(const Duration(seconds: 1)), scheduleSubjects: _state.favoriteSchedules);
+  }
+
+  WeekNumber get currentWeekNumber => _weekNumberRepository.getCurrentWeekNumber() ?? WeekNumber.empty();
+
+  List<DayScheduleItem> _createItems(ScheduleInteractorState state) {
     List<DayScheduleItem> items = [];
-    for (int i = 0; i < 7; i++) {
-      items.addAll(state.couplesDB
-          .where((element) => element.dateTimeEnd.isAfter(DateTime.now().add(const Duration(seconds: 1))))
-          .where((element) => element.dateTimeStart.weekday == dateTime.weekday)
-          .where((element) => element.isNotEmpty && element.isNotVPKPlaceHolder)
-          .map((coupleDB) => Couple.fromCoupleDB(coupleDB))
-          .toList());
-
-      items.addAll(state.eventsDB
-          .where((element) => element.dateTimeEnd.isAfter(DateTime.now().add(const Duration(seconds: 1))) && element.dateTimeStart.weekday == dateTime.weekday)
-          .map((eventDB) => Event.fromEventDB(eventDB))
-          .toList());
-
-      if (items.isNotEmpty) break;
-
-      dateTime = dateTime.add(const Duration(days: 1));
+    List<CoupleDB> couplesDB = state.couplesDB;
+    if (couplesDB.firstWhereOrNull((element) => element.isVPKPlaceHolder) == null) {
+      couplesDB = couplesDB.where((element) => element.scheduleSubject.target?.isNotVPK ?? true).toList();
     }
+    items.addAll(couplesDB.where((element) => element.isNotEmpty && element.isNotVPKPlaceHolder).map((e) => Couple.fromCoupleDB(e)).toList());
+    items.addAll(state.eventsDB.map((e) => Event.fromEventDB(e)));
+    items.sort((a, b) => a.dateTimeStart.compareTo(b.dateTimeStart));
 
-    return items;
+    final date = items.first.dateTimeStart;
+
+    return items.where((element) => DateUtils.isSameDay(element.dateTimeStart, date) && element.dateTimeEnd.isAfter(DateTime.now().add(const Duration(seconds: 1)))).toList();
   }
 
   void dispose() {

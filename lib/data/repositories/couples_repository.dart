@@ -18,8 +18,8 @@ class CouplesRepository {
     _couplesBox = objectBox.store.box<CoupleDB>();
   }
 
-  final _couplesByWeekNumController = StreamController<List<CoupleDB>>();
-  Stream<List<CoupleDB>> get couplesByWeekNum => _couplesByWeekNumController.stream;
+  final _couplesController = StreamController<List<CoupleDB>>();
+  Stream<List<CoupleDB>> get couples => _couplesController.stream;
 
   Future<List<CoupleDB>> getCouplesFromNet(ScheduleSubject scheduleSubject, WeekNumber? weekNumber) async {
     final id = scheduleSubject.id;
@@ -49,7 +49,7 @@ class CouplesRepository {
     return const [];
   }
 
-  Future<void> loadCouplesFromNet(ScheduleSubject scheduleSubject, WeekNumber? weekNumber) async {
+  Future<void> loadCouplesFromNetToDB(ScheduleSubject scheduleSubject, WeekNumber? weekNumber) async {
     final id = scheduleSubject.id;
     final requestURL =
         '${AppConfig.baseURL}/'
@@ -69,7 +69,6 @@ class CouplesRepository {
         );
 
         _couplesBox.putMany(couplesDB);
-
       }
     } catch (_) {
 
@@ -85,7 +84,7 @@ class CouplesRepository {
 
   void loadCouples(WeekNumber? weekNumber, List<ScheduleSubject> scheduleSubjects) {
     for (final scheduleSubject in scheduleSubjects) {
-      loadCouplesFromNet(scheduleSubject, weekNumber);
+      loadCouplesFromNetToDB(scheduleSubject, weekNumber);
     }
 
     loadCouplesFromDB(weekNumber ?? WeekNumber.empty(), scheduleSubjects);
@@ -94,7 +93,7 @@ class CouplesRepository {
   void loadCouplesFromDB(WeekNumber weekNumber, List<ScheduleSubject> scheduleSubjects) {
     final query = _getQuery(weekNumber, scheduleSubjects);
     query?.link(CoupleDB_.weekNumber, WeekNumber_.calendarWeekNumber.equals(weekNumber.calendarWeekNumber));
-    query?.watch(triggerImmediately: true).forEach((event) => _couplesByWeekNumController.add(event.find()));
+    query?.watch(triggerImmediately: true).forEach((event) => _couplesController.add(event.find()));
   }
 
   QueryBuilder<CoupleDB>? _getQuery(WeekNumber weekNumber, List<ScheduleSubject> scheduleSubjects) {
@@ -121,6 +120,6 @@ class CouplesRepository {
   }
 
   void dispose() {
-    _couplesByWeekNumController.close();
+    _couplesController.close();
   }
 }

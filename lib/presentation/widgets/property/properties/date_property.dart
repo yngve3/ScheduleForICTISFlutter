@@ -20,9 +20,10 @@ class DateProperty extends StatelessWidget {
 
   Future<DateTime?> _showDatePicker(BuildContext context) {
     return showDatePicker(
-        context: context,
-        firstDate: DateTime(2000),
-        lastDate: DateTime(2100)
+      context: context,
+      firstDate: DateTime(1970),
+      lastDate: DateTime(2100),
+      initialDate: date
     );
   }
 

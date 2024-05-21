@@ -14,12 +14,13 @@ class HomePageCubit extends Cubit<HomePageState> {
     subscriptions.add(_interactor.notes.listen((notes) {
       emit(state.copyWith(notes: notes));
     }));
+    emit(state.copyWith(weekNumber: _interactor.currentWeekNumber));
   }
   List<StreamSubscription> subscriptions = [];
   final _interactor = HomePageInteractor();
 
   void update() {
-
+    _interactor.update();
   }
 
   @override

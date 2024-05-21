@@ -175,13 +175,14 @@ abstract class AppRouter {
         GoRoute(
           path: Routes.addEvent.path,
           pageBuilder: (BuildContext context, GoRouterState state) {
+            final data = state.extra as Map<String, dynamic>;
             return NoTransitionPage(
                 child: EventAddPage(
-                    eventID: state.extra as int?
+                  eventID: data["eventID"],
+                  initialDate: data["initialDate"],
                 )
             );
           },
-          routes: const [],
         ),
         GoRoute(
             path: Routes.eventInfo.fullPath,
@@ -192,7 +193,6 @@ abstract class AppRouter {
                   )
               );
             },
-            routes: const []
         ),
       ]
   );

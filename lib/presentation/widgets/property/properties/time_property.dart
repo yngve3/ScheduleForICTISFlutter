@@ -21,10 +21,10 @@ class TimeProperty extends StatelessWidget {
   final OnTimeChosenCallback onTimeStartChosen;
   final OnTimeChosenCallback onTimeEndChosen;
 
-  Future<TimeOfDay?> _showTimePicker(BuildContext context) {
+  Future<TimeOfDay?> _showTimePicker(BuildContext context, TimeOfDay? initialTime) {
     return showTimePicker(
-        context: context,
-        initialTime: TimeOfDay.now()
+      context: context,
+      initialTime: initialTime ?? TimeOfDay.now(),
     );
   }
 
@@ -43,7 +43,7 @@ class TimeProperty extends StatelessWidget {
               style: context.textTheme.bodyMedium,
             ),
             onTileClicked: () async {
-              final time = await _showTimePicker(context);
+              final time = await _showTimePicker(context, timeStart);
               onTimeStartChosen(time);
             }
         ),
@@ -57,7 +57,7 @@ class TimeProperty extends StatelessWidget {
               style: context.textTheme.bodyMedium,
             ),
             onTileClicked: () async {
-              final time = await _showTimePicker(context);
+              final time = await _showTimePicker(context, timeEnd);
               onTimeEndChosen(time);
             }
         )

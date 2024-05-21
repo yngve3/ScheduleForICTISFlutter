@@ -63,12 +63,12 @@ class ScheduleInteractor {
 
   ScheduleInteractor() {
     _subscriptions.add(
-        _couplesRepository.couplesByWeekNum
+        _couplesRepository.couples
             .listen((couplesDB) => _state.setCouplesDB(couplesDB))
     );
 
     _subscriptions.add(
-        _eventsRepository.eventsByWeekNum
+        _eventsRepository.events
             .listen((eventsDB) => _state.setEventsDB(eventsDB))
     );
 

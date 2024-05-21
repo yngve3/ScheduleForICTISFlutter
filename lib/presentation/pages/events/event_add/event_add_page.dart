@@ -17,9 +17,11 @@ import 'cubit/event_add_state.dart';
 class EventAddPage extends StatelessWidget {
   const EventAddPage({
     super.key,
-    required this.eventID
+    required this.eventID,
+    this.initialDate
   });
 
+  final DateTime? initialDate;
   final int? eventID;
 
   @override
@@ -30,7 +32,7 @@ class EventAddPage extends StatelessWidget {
         title: "Мероприятие",
       ),
       body: BlocProvider(
-          create: (context) => EventAddCubit()..loadStateFromEvent(eventID),
+          create: (context) => EventAddCubit(initialDate)..loadStateFromEvent(eventID),
           child: const EventAdd()
       ),
     );

@@ -21,6 +21,7 @@ class FavoriteSchedulesInteractor {
 
   void saveToDBMany(List<ScheduleSubject> scheduleSubjects) {
     _favoriteSchedulesRepository.saveToDBMany(scheduleSubjects);
+
   }
 
   void deleteFromDBMany(List<int> ids) {

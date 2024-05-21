@@ -13,6 +13,10 @@ extension TimeOfDayExtension on TimeOfDay {
     return "$hour:$minute";
   }
 
+  TimeOfDay plus(TimeOfDay timeOfDay) {
+    return TimeOfDay(hour: hour + timeOfDay.hour, minute: minute + timeOfDay.minute);
+  }
+
   int compareTo(TimeOfDay other) {
     if (hour < other.hour) return -1;
     if (hour > other.hour) return 1;

@@ -1,13 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:schedule_for_ictis_flutter/domain/interactors/events_interactor.dart';
+import 'package:schedule_for_ictis_flutter/presentation/extensions/time_of_day_ext.dart';
 
 import '../../../../../domain/models/reminder/reminder.dart';
 import '../../../../../utils/state_list.dart';
 import 'event_add_state.dart';
 
 class EventAddCubit extends Cubit<EventAddState> {
-  EventAddCubit(): super(EventAddState(reminders: StateList([])));
+  EventAddCubit(DateTime? initialDate): super(
+      EventAddState(
+        reminders: StateList([]),
+        timeStart: TimeOfDay.now(),
+        timeEnd: TimeOfDay.now().plus(const TimeOfDay(hour: 1, minute: 0)),
+        date: initialDate
+      )
+  );
   final EventsInteractor _interactor = EventsInteractor();
 
   void saveEvent() {

@@ -38,8 +38,8 @@ class EventsRepository {
     query.watch(triggerImmediately: true).forEach((event) => _eventsController.add(event.find()));
   }
 
-  Future<EventDB?> getEventById(int id) {
-    return _eventsBox.getAsync(id);
+  EventDB? getEventById(int id) {
+    return _eventsBox.get(id);
   }
 
   void addEvent(EventDB event) async {

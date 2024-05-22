@@ -46,8 +46,8 @@ class EventsInteractor {
     _eventsRepository.addEvent(eventDB);
   }
 
-  Future<Event?> getEventById(int id) async  {
-    final eventDB = await _eventsRepository.getEventById(id);
+  Event? getEventById(int id) {
+    final eventDB = _eventsRepository.getEventById(id);
     if (eventDB == null) return null;
     return Event.fromEventDB(eventDB);
   }

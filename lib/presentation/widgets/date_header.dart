@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:schedule_for_ictis_flutter/presentation/extensions/context_ext.dart';
 import 'package:schedule_for_ictis_flutter/presentation/widgets/date_text.dart';
 
 import '../../gen/assets.gen.dart';
@@ -19,8 +20,11 @@ class DateHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Row(
+    return AppBar(
+      centerTitle: false,
+      automaticallyImplyLeading: false,
+      titleSpacing: 0,
+      title: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
@@ -28,8 +32,8 @@ class DateHeader extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              DateText(date: date, style: Theme.of(context).textTheme.headlineLarge),
-              Text(_getSubtitle()),
+              DateText(date: date, style: context.textTheme.headlineLarge),
+              Text(_getSubtitle(), style: context.textTheme.bodyMedium),
             ],
           ),
           _getButton()

@@ -8,9 +8,9 @@ class EventInfoCubit extends Cubit<EventInfoState> {
   EventInfoCubit() : super(const EventInfoState());
   final EventsInteractor _interactor = EventsInteractor();
 
-  void loadEvent(int? eventID) async {
+  void loadEvent(int? eventID) {
     if (eventID == null) return;
-    final event = await _interactor.getEventById(eventID);
+    final event = _interactor.getEventById(eventID);
     if (event == null) return;
 
     emit(EventInfoState(

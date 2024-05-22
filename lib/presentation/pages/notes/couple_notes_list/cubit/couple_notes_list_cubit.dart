@@ -12,9 +12,9 @@ class CoupleNotesListCubit extends Cubit<CoupleNotesListState> {
   final NotesInteractor _notesInteractor = NotesInteractor();
   late StreamSubscription<List<Note>> subscription;
 
-  void loadState(String? coupleID) async {
+  void loadState(String? coupleID) {
     if (coupleID == null) return;
-    final coupleDB = await _notesInteractor.getCoupleByID(coupleID);
+    final coupleDB = _notesInteractor.getCoupleByID(coupleID);
     subscription = _notesInteractor.getNotesByCoupleID(coupleID).listen((notes) {
       emit(CoupleNotesListState(
           coupleDB: coupleDB,

@@ -24,8 +24,8 @@ class NotesRepository {
         .map((event) => event.find());
   }
 
-  Future<Note?> getNote(int noteID) {
-    return _notesBox.getAsync(noteID);
+  Note? getNote(int noteID) {
+    return _notesBox.get(noteID);
   }
 
   void getNotesAfter(DateTime dateTime, {String? userUID, required List<ScheduleSubject> scheduleSubjects}) {

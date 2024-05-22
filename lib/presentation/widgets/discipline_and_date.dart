@@ -20,7 +20,13 @@ class DisciplineAndDate extends StatelessWidget {
       children: [
         const SizedBox(height: 5),
         Text(discipline, style: context.textTheme.headlineMedium),
-        DateText(date: date, style: context.textTheme.bodyLarge!.copyWith(color: context.customColors.accent)),
+        Row(
+          children: [
+            DateText(date: date, style: context.textTheme.bodyLarge!.copyWith(color: context.customColors.accent)),
+            const SizedBox(width: 5),
+            Text("${date.hour}:${date.minute}", style: context.textTheme.bodyLarge!.copyWith(color: context.customColors.accent))
+          ],
+        )
       ],
     );
   }

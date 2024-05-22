@@ -22,6 +22,7 @@ class FavoriteSchedulesListCubit extends Cubit<FavoriteSchedulesListState> {
       emit(FavoriteSchedulesListState(
         favoriteSchedules: mainSchedules,
         favoriteVPKs: vpk,
+        isButtonSaveEnabled: favoriteSchedules.isNotEmpty
       ));
     });
   }
@@ -44,6 +45,7 @@ class FavoriteSchedulesListCubit extends Cubit<FavoriteSchedulesListState> {
     list.remove(scheduleSubject);
     deletionIdsList.add(scheduleSubject.dbId);
     emit(state.byScheduleSubject(list));
+    emit(state.copyWith(isButtonSaveEnabled: _isListsNotEmpty()));
   }
 
   void saveChanges() {
@@ -61,6 +63,8 @@ class FavoriteSchedulesListCubit extends Cubit<FavoriteSchedulesListState> {
 
   ScheduleSubject? _findSelectedOrNull(List<ScheduleSubject> list) =>
     list.firstWhereOrNull((element) => element.isChosen);
+
+  bool _isListsNotEmpty() => state.favoriteVPKs.isNotEmpty || state.favoriteVPKs.isNotEmpty;
 
   @override
   Future<void> close() {

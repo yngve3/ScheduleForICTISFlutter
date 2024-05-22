@@ -31,9 +31,9 @@ class EventAddCubit extends Cubit<EventAddState> {
     );
   }
 
-  void loadStateFromEvent(int? eventID) async {
+  void loadStateFromEvent(int? eventID) {
     if (eventID == null) return;
-    final event = await _interactor.getEventById(eventID);
+    final event = _interactor.getEventById(eventID);
     if (event == null) return;
 
     emit(EventAddState(

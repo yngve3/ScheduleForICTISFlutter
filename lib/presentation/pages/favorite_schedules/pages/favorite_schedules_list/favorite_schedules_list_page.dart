@@ -13,43 +13,52 @@ import '../../../../route/routes.dart';
 import '../../../../widgets/schedule_subject_widget.dart';
 
 class FavoriteSchedulesListPage extends StatelessWidget {
-  const FavoriteSchedulesListPage({super.key});
+  const FavoriteSchedulesListPage({
+    super.key,
+    this.afterRegistration = false
+  });
+
+  final bool afterRegistration;
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: MyAppBar(
-        appBar: AppBar(),
-        title: "Расписания",
-        actions: [
-          IconButton(
-              onPressed: () =>
-                context.push(Routes.addFavoriteSchedule.path),
-              icon: Assets.icons.icAdd.image(color: context.customColors.text1)
-          )
-        ],
-      ),
-      body: BlocProvider (
+    return BlocProvider (
         create: (context) => FavoriteSchedulesListCubit()..getFavoriteSchedules(),
         child: BlocBuilder<FavoriteSchedulesListCubit, FavoriteSchedulesListState>(
-          builder: (context, state) => ScrollableScreen(
-            bottom: FilledButton(
-              onPressed: () {
-                context.read<FavoriteSchedulesListCubit>().saveChanges();
-                context.pop();
-              },
-              child: const Text("Готово"),
-            ),
-            scrollable: Column(
-              children: [
-                FavoriteSchedulesList(favoriteSchedules: state.favoriteSchedules),
-                const Divider(),
-                FavoriteSchedulesList(favoriteSchedules: state.favoriteVPKs),
-              ],
-            ),
-          )
+          builder: (context, state) {
+            return Scaffold(
+                appBar: MyAppBar(
+                  appBar: AppBar(),
+                  title: "Расписания",
+                  showBackArrow: !afterRegistration,
+                  actions: [
+                    IconButton(
+                      onPressed: () {
+                        context.push(Routes.addFavoriteSchedule.path);
+                      },
+                      icon: Assets.icons.icAdd.image(color: context.customColors.text1),
+                    )
+                  ],
+                ),
+                body: ScrollableScreen(
+                  bottom: FilledButton(
+                    onPressed: state.isButtonSaveEnabled ? () {
+                      context.read<FavoriteSchedulesListCubit>().saveChanges();
+                      afterRegistration ? context.go(Routes.home.path) : context.pop();
+                    } : null,
+                    child: const Text("Готово"),
+                  ),
+                  scrollable: Column(
+                    children: [
+                      FavoriteSchedulesList(favoriteSchedules: state.favoriteSchedules),
+                      const Divider(),
+                      FavoriteSchedulesList(favoriteSchedules: state.favoriteVPKs),
+                    ],
+                  ),
+                )
+            );
+          },
         )
-      )
     );
   }
 }

@@ -49,9 +49,9 @@ class NoteAddCubit extends Cubit<NoteAddState> {
     emit(state.copyWith(reminders: reminders));
   }
 
-  void loadFromCouple(String? coupleID) async {
+  void loadFromCouple(String? coupleID) {
     if (coupleID == null) return;
-    final coupleDB = await _interactor.getCoupleByID(coupleID);
+    final coupleDB = _interactor.getCoupleByID(coupleID);
     if (coupleDB == null) return;
     
     emit(state.copyWith(
@@ -59,9 +59,9 @@ class NoteAddCubit extends Cubit<NoteAddState> {
     ));
   }
 
-  void loadFromNote(int? noteID) async {
+  void loadFromNote(int? noteID) {
     if (noteID == null) return;
-    final note = await _interactor.getNoteByID(noteID);
+    final note = _interactor.getNoteByID(noteID);
     if (note == null) return;
     
     emit(state.copyWith(

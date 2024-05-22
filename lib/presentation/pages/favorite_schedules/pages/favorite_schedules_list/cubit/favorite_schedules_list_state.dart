@@ -9,7 +9,8 @@ class FavoriteSchedulesListState with _$FavoriteSchedulesListState {
   FavoriteSchedulesListState._();
   factory FavoriteSchedulesListState({
     @Default([]) List<ScheduleSubject> favoriteSchedules,
-    @Default([]) List<ScheduleSubject> favoriteVPKs
+    @Default([]) List<ScheduleSubject> favoriteVPKs,
+    @Default(false) isButtonSaveEnabled
   }) = _FavoriteSchedulesListState;
 
   byScheduleSubject(List<ScheduleSubject> subjects) {

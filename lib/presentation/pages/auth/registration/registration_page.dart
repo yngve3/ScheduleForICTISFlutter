@@ -21,7 +21,7 @@ class RegistrationPage extends StatelessWidget {
           if (!state.isRegister && state.errorMessage.isNotEmpty) {
             ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(state.errorMessage)));
           } else if (state.isRegister) {
-            context.go(Routes.favoriteSchedules.path);
+            context.push(Routes.favoriteSchedules.path, extra: {"afterRegistration": true});
           }
         },
         builder: (context, state) {

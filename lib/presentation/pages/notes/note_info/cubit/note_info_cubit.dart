@@ -7,9 +7,9 @@ class NoteInfoCubit extends Cubit<NoteInfoState> {
   NoteInfoCubit() : super(const NoteInfoState());
   final NotesInteractor _notesInteractor = NotesInteractor();
 
-  void loadNote(int noteID, String coupleID) async {
-    final note = await _notesInteractor.getNoteByID(noteID);
-    final coupleDB = await _notesInteractor.getCoupleByID(coupleID);
+  void loadNote(int noteID, String coupleID) {
+    final note = _notesInteractor.getNoteByID(noteID);
+    final coupleDB = _notesInteractor.getCoupleByID(coupleID);
 
     if (note == null || coupleDB == null) return;
 

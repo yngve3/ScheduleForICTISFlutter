@@ -75,11 +75,11 @@ class CouplesRepository {
     }
   }
 
-  Future<CoupleDB?> getCoupleByID(String id) {
+  CoupleDB? getCoupleByID(String id) {
     return _couplesBox
         .query(CoupleDB_.id.equals(id))
         .build()
-        .findFirstAsync();
+        .findFirst();
   }
 
   void loadCouples(WeekNumber? weekNumber, List<ScheduleSubject> scheduleSubjects) {

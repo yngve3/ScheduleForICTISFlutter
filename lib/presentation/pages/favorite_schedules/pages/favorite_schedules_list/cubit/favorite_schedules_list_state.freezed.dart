@@ -19,6 +19,7 @@ mixin _$FavoriteSchedulesListState {
   List<ScheduleSubject> get favoriteSchedules =>
       throw _privateConstructorUsedError;
   List<ScheduleSubject> get favoriteVPKs => throw _privateConstructorUsedError;
+  dynamic get isButtonSaveEnabled => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $FavoriteSchedulesListStateCopyWith<FavoriteSchedulesListState>
@@ -34,7 +35,8 @@ abstract class $FavoriteSchedulesListStateCopyWith<$Res> {
   @useResult
   $Res call(
       {List<ScheduleSubject> favoriteSchedules,
-      List<ScheduleSubject> favoriteVPKs});
+      List<ScheduleSubject> favoriteVPKs,
+      dynamic isButtonSaveEnabled});
 }
 
 /// @nodoc
@@ -53,6 +55,7 @@ class _$FavoriteSchedulesListStateCopyWithImpl<$Res,
   $Res call({
     Object? favoriteSchedules = null,
     Object? favoriteVPKs = null,
+    Object? isButtonSaveEnabled = freezed,
   }) {
     return _then(_value.copyWith(
       favoriteSchedules: null == favoriteSchedules
@@ -63,6 +66,10 @@ class _$FavoriteSchedulesListStateCopyWithImpl<$Res,
           ? _value.favoriteVPKs
           : favoriteVPKs // ignore: cast_nullable_to_non_nullable
               as List<ScheduleSubject>,
+      isButtonSaveEnabled: freezed == isButtonSaveEnabled
+          ? _value.isButtonSaveEnabled
+          : isButtonSaveEnabled // ignore: cast_nullable_to_non_nullable
+              as dynamic,
     ) as $Val);
   }
 }
@@ -78,7 +85,8 @@ abstract class _$$FavoriteSchedulesListStateImplCopyWith<$Res>
   @useResult
   $Res call(
       {List<ScheduleSubject> favoriteSchedules,
-      List<ScheduleSubject> favoriteVPKs});
+      List<ScheduleSubject> favoriteVPKs,
+      dynamic isButtonSaveEnabled});
 }
 
 /// @nodoc
@@ -96,6 +104,7 @@ class __$$FavoriteSchedulesListStateImplCopyWithImpl<$Res>
   $Res call({
     Object? favoriteSchedules = null,
     Object? favoriteVPKs = null,
+    Object? isButtonSaveEnabled = freezed,
   }) {
     return _then(_$FavoriteSchedulesListStateImpl(
       favoriteSchedules: null == favoriteSchedules
@@ -106,6 +115,9 @@ class __$$FavoriteSchedulesListStateImplCopyWithImpl<$Res>
           ? _value._favoriteVPKs
           : favoriteVPKs // ignore: cast_nullable_to_non_nullable
               as List<ScheduleSubject>,
+      isButtonSaveEnabled: freezed == isButtonSaveEnabled
+          ? _value.isButtonSaveEnabled!
+          : isButtonSaveEnabled,
     ));
   }
 }
@@ -115,7 +127,8 @@ class __$$FavoriteSchedulesListStateImplCopyWithImpl<$Res>
 class _$FavoriteSchedulesListStateImpl extends _FavoriteSchedulesListState {
   _$FavoriteSchedulesListStateImpl(
       {final List<ScheduleSubject> favoriteSchedules = const [],
-      final List<ScheduleSubject> favoriteVPKs = const []})
+      final List<ScheduleSubject> favoriteVPKs = const [],
+      this.isButtonSaveEnabled = false})
       : _favoriteSchedules = favoriteSchedules,
         _favoriteVPKs = favoriteVPKs,
         super._();
@@ -140,8 +153,12 @@ class _$FavoriteSchedulesListStateImpl extends _FavoriteSchedulesListState {
   }
 
   @override
+  @JsonKey()
+  final dynamic isButtonSaveEnabled;
+
+  @override
   String toString() {
-    return 'FavoriteSchedulesListState(favoriteSchedules: $favoriteSchedules, favoriteVPKs: $favoriteVPKs)';
+    return 'FavoriteSchedulesListState(favoriteSchedules: $favoriteSchedules, favoriteVPKs: $favoriteVPKs, isButtonSaveEnabled: $isButtonSaveEnabled)';
   }
 
   @override
@@ -152,14 +169,17 @@ class _$FavoriteSchedulesListStateImpl extends _FavoriteSchedulesListState {
             const DeepCollectionEquality()
                 .equals(other._favoriteSchedules, _favoriteSchedules) &&
             const DeepCollectionEquality()
-                .equals(other._favoriteVPKs, _favoriteVPKs));
+                .equals(other._favoriteVPKs, _favoriteVPKs) &&
+            const DeepCollectionEquality()
+                .equals(other.isButtonSaveEnabled, isButtonSaveEnabled));
   }
 
   @override
   int get hashCode => Object.hash(
       runtimeType,
       const DeepCollectionEquality().hash(_favoriteSchedules),
-      const DeepCollectionEquality().hash(_favoriteVPKs));
+      const DeepCollectionEquality().hash(_favoriteVPKs),
+      const DeepCollectionEquality().hash(isButtonSaveEnabled));
 
   @JsonKey(ignore: true)
   @override
@@ -171,15 +191,17 @@ class _$FavoriteSchedulesListStateImpl extends _FavoriteSchedulesListState {
 
 abstract class _FavoriteSchedulesListState extends FavoriteSchedulesListState {
   factory _FavoriteSchedulesListState(
-          {final List<ScheduleSubject> favoriteSchedules,
-          final List<ScheduleSubject> favoriteVPKs}) =
-      _$FavoriteSchedulesListStateImpl;
+      {final List<ScheduleSubject> favoriteSchedules,
+      final List<ScheduleSubject> favoriteVPKs,
+      final dynamic isButtonSaveEnabled}) = _$FavoriteSchedulesListStateImpl;
   _FavoriteSchedulesListState._() : super._();
 
   @override
   List<ScheduleSubject> get favoriteSchedules;
   @override
   List<ScheduleSubject> get favoriteVPKs;
+  @override
+  dynamic get isButtonSaveEnabled;
   @override
   @JsonKey(ignore: true)
   _$$FavoriteSchedulesListStateImplCopyWith<_$FavoriteSchedulesListStateImpl>

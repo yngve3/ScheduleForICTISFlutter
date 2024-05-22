@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:schedule_for_ictis_flutter/presentation/extensions/context_ext.dart';
 
 class Screen extends StatelessWidget {
   const Screen({
@@ -12,9 +14,12 @@ class Screen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: padding ?? const EdgeInsets.only(left: 15, right: 15, bottom: 15),
-      child: child
+    return AnnotatedRegion<SystemUiOverlayStyle>(
+      value: SystemUiOverlayStyle.light.copyWith(statusBarColor: context.customColors.background, systemNavigationBarColor: context.customColors.background),
+      child: Padding(
+          padding: padding ?? const EdgeInsets.only(left: 15, right: 15, bottom: 15),
+          child: child
+      ),
     );
   }
 }

@@ -58,6 +58,14 @@ class FavoriteSchedulesRepository {
     _favoriteSchedulesBox.removeManyAsync(ids);
   }
 
+  bool isNotEmpty(String userUID, bool isVPK) {
+    final query = _favoriteSchedulesBox.query(
+        ScheduleSubject_.userUID.equals(userUID)
+            .and(ScheduleSubject_.isVPK.equals(isVPK))
+    );
+    return query.build().count() != 0;
+  }
+
   Future<ScheduleSubject?> getSelectedFavoriteSchedule({bool isVPK = false, String? userUID}) =>
       _favoriteSchedulesBox
           .query(ScheduleSubject_.isChosen.equals(true).and(ScheduleSubject_.isVPK.equals(isVPK).and(ScheduleSubject_.userUID.equals(userUID ?? ""))))

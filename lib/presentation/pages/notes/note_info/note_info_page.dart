@@ -69,10 +69,10 @@ class NoteInfoPage extends StatelessWidget {
                       style: context.textTheme.bodyLarge,
                       icon: Assets.icons.icList.image()
                   ),
-                  RemindersProperty(
+                  state.reminders.isNotEmpty ? RemindersProperty(
                     reminders: state.reminders,
                     readOnly: true,
-                  ),
+                  ): const SizedBox.shrink(),
                   state.files.isNotEmpty ? FilesProperty(
                     files: state.files,
                     isEditPossible: false,

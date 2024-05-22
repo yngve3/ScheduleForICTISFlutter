@@ -87,6 +87,7 @@ class HomePageInteractor {
     items.addAll(state.eventsDB.map((e) => Event.fromEventDB(e)));
     items.sort((a, b) => a.dateTimeStart.compareTo(b.dateTimeStart));
 
+    if (items.isEmpty) return const [];
     final date = items.first.dateTimeStart;
 
     return items.where((element) => DateUtils.isSameDay(element.dateTimeStart, date) && element.dateTimeEnd.isAfter(DateTime.now().add(const Duration(seconds: 1)))).toList();

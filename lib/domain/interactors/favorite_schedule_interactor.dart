@@ -16,12 +16,17 @@ class FavoriteSchedulesInteractor {
   }
 
   void saveToDB(ScheduleSubject scheduleSubject) {
-    _favoriteSchedulesRepository.saveToDB(scheduleSubject.copyWith(userUID: _userRepository.uid));
+    final vpkIsNotEmpty = _favoriteSchedulesRepository.isNotEmpty(_userRepository.uid ?? "", true);
+    final mainIsNotEmpty = _favoriteSchedulesRepository.isNotEmpty(_userRepository.uid ?? "", false);
+    bool isChosen = false;
+
+    if (!vpkIsNotEmpty && scheduleSubject.isVPK) isChosen = true;
+    if (!mainIsNotEmpty && scheduleSubject.isNotVPK) isChosen = true;
+    _favoriteSchedulesRepository.saveToDB(scheduleSubject.copyWith(userUID: _userRepository.uid, isChosen: isChosen));
   }
 
   void saveToDBMany(List<ScheduleSubject> scheduleSubjects) {
     _favoriteSchedulesRepository.saveToDBMany(scheduleSubjects);
-
   }
 
   void deleteFromDBMany(List<int> ids) {

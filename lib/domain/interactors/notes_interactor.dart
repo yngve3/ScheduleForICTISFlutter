@@ -18,16 +18,16 @@ class NotesInteractor {
   final RemindersRepository _remindersRepository = RemindersRepository();
   final UserRepository _userRepository = UserRepository();
   
-  Future<CoupleDB?> getCoupleByID(String id) async {
-    return (await _couplesRepository.getCoupleByID(id));
+  CoupleDB? getCoupleByID(String id) {
+    return _couplesRepository.getCoupleByID(id);
   }
 
   Stream<List<Note>> getNotesByCoupleID(String coupleID) {
     return _notesRepository.getNotesByCoupleID(coupleID, userUID: _userRepository.uid);
   }
   
-  Future<Note?> getNoteByID(int id) async {
-    return await _notesRepository.getNote(id);
+  Note? getNoteByID(int id) {
+    return _notesRepository.getNote(id);
   }
 
   Stream<List<NoteFile>> getNoteFiles(int noteID) {

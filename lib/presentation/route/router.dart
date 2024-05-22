@@ -41,37 +41,19 @@ abstract class AppRouter {
                 child: LoginPage()
             );
           },
-          redirect: (BuildContext context, GoRouterState state) {
-            final t = state.fullPath;
-            if (UserRepository().isLogin && state.fullPath != Routes.favoriteSchedules.path) {
+          redirect: (context, state) {
+            if (UserRepository().isLogin) {
               return Routes.home.path;
-            } else {
-              return null;
             }
+            return null;
           },
           routes: [
             GoRoute(
               path: Routes.registration.lastPathComponent,
-              pageBuilder: (BuildContext context, GoRouterState state) {
-                return const NoTransitionPage(
-                  child: RegistrationPage()
-                );
+              builder: (BuildContext context, GoRouterState state) {
+                return const RegistrationPage();
               },
             ),
-            GoRoute(
-              path: Routes.favoriteSchedules.lastPathComponent,
-              builder: (BuildContext context, GoRouterState state) {
-                return const FavoriteSchedulesListPage();
-              },
-              routes: [
-                GoRoute(
-                  path: Routes.addFavoriteSchedule.lastPathComponent,
-                  builder: (BuildContext context, GoRouterState state) {
-                    return const FavoriteSchedulesAddPage();
-                  },
-                ),
-              ],
-            )
           ],
         ),
         ShellRoute(
@@ -90,14 +72,14 @@ abstract class AppRouter {
                 routes: [
                   GoRoute(
                     path: Routes.allNotes.lastPathComponent,
-                    pageBuilder: (BuildContext context, GoRouterState state) {
-                      return const NoTransitionPage(
-                          child: AllNotesListPage()
-                      );
+                    parentNavigatorKey: _rootNavigatorKey,
+                    builder: (BuildContext context, GoRouterState state) {
+                      return const AllNotesListPage();
                     },
                   ),
                   GoRoute(
                     path: Routes.searchSchedule.lastPathComponent,
+                    parentNavigatorKey: _rootNavigatorKey,
                     pageBuilder: (BuildContext context, GoRouterState state) {
                       return CustomTransitionPage(
                         child: const SearchSchedulePage(),
@@ -109,15 +91,14 @@ abstract class AppRouter {
                     routes: [
                       GoRoute(
                         path: Routes.searchScheduleResult.lastPathComponent,
-                        pageBuilder: (context, state) {
-                          return NoTransitionPage(
-                            child: SearchScheduleResultPage(
+                        parentNavigatorKey: _rootNavigatorKey,
+                        builder: (context, state) {
+                          return SearchScheduleResultPage(
                               scheduleSubject: state.extra as ScheduleSubject
-                            )
                           );
                         },
-                      )
-                    ]
+                      ),
+                    ],
                   )
                 ]
               ),
@@ -140,34 +121,43 @@ abstract class AppRouter {
             ],
         ),
         GoRoute(
+          path: Routes.favoriteSchedules.path,
+          builder: (BuildContext context, GoRouterState state) {
+            final data = state.extra as Map<String, dynamic>?;
+            return FavoriteSchedulesListPage(
+              afterRegistration: data?["afterRegistration"] ?? false
+            );
+          },
+          routes: [
+            GoRoute(
+              path: Routes.addFavoriteSchedule.lastPathComponent,
+              builder: (BuildContext context, GoRouterState state) {
+                return const FavoriteSchedulesAddPage();
+              },
+            ),
+          ],
+        ),
+        GoRoute(
             path: Routes.coupleNotesList.fullPath,
-            pageBuilder: (BuildContext context, GoRouterState state) {
-              return NoTransitionPage(
-                  child: CoupleNotesListPage(
-                      coupleID: state.pathParameters["couple_id"] ?? ""
-                  )
+            builder: (BuildContext context, GoRouterState state) {
+              return CoupleNotesListPage(
+                  coupleID: state.pathParameters["couple_id"] ?? ""
               );
             },
             routes: [
               GoRoute(
                   path: Routes.addNote.twoLastPathComponents,
-                  pageBuilder: (BuildContext context, GoRouterState state) {
-                    return NoTransitionPage(
-                        child: NoteAddPage(
-                          coupleID: state.pathParameters["couple_id"] ?? "",
-                          noteID: state.extra as int?,
-                        )
-                    );
-                  }
+                  builder: (context, state) => NoteAddPage(
+                    coupleID: state.pathParameters["couple_id"] ?? "",
+                    noteID: state.extra as int?,
+                  )
               ),
               GoRoute(
                   path: Routes.noteInfo.twoLastPathComponents,
-                  pageBuilder: (BuildContext context, GoRouterState state) {
-                    return NoTransitionPage(
-                        child: NoteInfoPage(
-                          coupleID: state.pathParameters["couple_id"] ?? "",
-                          noteID: int.parse(state.pathParameters["note_id"] ?? ""),
-                        )
+                  builder: (context, state) {
+                    return NoteInfoPage(
+                      coupleID: state.pathParameters["couple_id"] ?? "",
+                      noteID: int.parse(state.pathParameters["note_id"] ?? ""),
                     );
                   }
               )
@@ -175,23 +165,19 @@ abstract class AppRouter {
         ),
         GoRoute(
           path: Routes.addEvent.path,
-          pageBuilder: (BuildContext context, GoRouterState state) {
+          builder: (BuildContext context, GoRouterState state) {
             final data = state.extra as Map<String, dynamic>;
-            return NoTransitionPage(
-                child: EventAddPage(
-                  eventID: data["eventID"],
-                  initialDate: data["initialDate"],
-                )
+            return EventAddPage(
+              eventID: data["eventID"],
+              initialDate: data["initialDate"],
             );
           },
         ),
         GoRoute(
             path: Routes.eventInfo.fullPath,
-            pageBuilder: (BuildContext context, GoRouterState state) {
-              return NoTransitionPage(
-                  child: EventInfoPage(
-                      eventID: int.parse(state.pathParameters["event_id"] ?? "")
-                  )
+            builder: (BuildContext context, GoRouterState state) {
+              return EventInfoPage(
+                  eventID: int.parse(state.pathParameters["event_id"] ?? "")
               );
             },
         ),

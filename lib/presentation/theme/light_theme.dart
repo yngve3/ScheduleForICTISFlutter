@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:schedule_for_ictis_flutter/presentation/theme/src/button_theme.dart';
 import 'package:schedule_for_ictis_flutter/presentation/theme/src/card_theme.dart';
+import 'package:schedule_for_ictis_flutter/presentation/theme/src/date_picker_theme.dart';
 import 'package:schedule_for_ictis_flutter/presentation/theme/src/decorator_theme.dart';
 import 'package:schedule_for_ictis_flutter/presentation/theme/src/table_calendar/calendar_theme.dart';
 import 'package:schedule_for_ictis_flutter/presentation/theme/src/table_calendar/days_of_week_theme.dart';
 import 'package:schedule_for_ictis_flutter/presentation/theme/src/table_calendar/table_calendar_theme.dart';
 import 'package:schedule_for_ictis_flutter/presentation/theme/src/text_theme.dart';
+import 'package:schedule_for_ictis_flutter/presentation/theme/src/time_picker_theme.dart';
 import 'package:schedule_for_ictis_flutter/presentation/theme/theme_ext/colors_ext.dart';
 
 
@@ -20,6 +22,8 @@ ThemeData lightTheme() {
     daysOfWeekStyle: daysOfWeekStyleData(textTheme),
     calendarStyle: calendarStyleData(customColors, textTheme)
   );
+  final datePickerTheme = datePickerThemeData(customColors);
+  final timePickerTheme = timePickerThemeData(customColors);
 
   return ThemeData(
     brightness: Brightness.light,
@@ -28,6 +32,8 @@ ThemeData lightTheme() {
       customColors,
       tableCalendarTheme
     ],
+    datePickerTheme: datePickerTheme,
+    timePickerTheme: timePickerTheme,
     cardTheme: cardTheme,
     filledButtonTheme: filledButtonTheme,
     splashColor: Colors.transparent,

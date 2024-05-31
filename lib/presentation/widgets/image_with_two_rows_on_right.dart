@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-
-import '../theme/colors.dart';
+import 'package:schedule_for_ictis_flutter/presentation/extensions/context_ext.dart';
 
 class ImageWithTwoRowsOnRight extends StatelessWidget {
   const ImageWithTwoRowsOnRight({
@@ -20,7 +19,7 @@ class ImageWithTwoRowsOnRight extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         Card(
-          color: CustomColors.grey2,
+          color: context.colorScheme.secondaryContainer,
           child: Padding(
             padding: const EdgeInsets.all(20),
             child: image,

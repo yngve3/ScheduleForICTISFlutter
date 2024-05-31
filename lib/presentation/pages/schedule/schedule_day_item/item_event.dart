@@ -27,29 +27,20 @@ class ItemEvent extends StatelessWidget {
         indicatorInitPercentage: event.percent,
         onIndicatorEnd: onIndicatorEnd,
         showIndicator: showIndicator,
-        indicatorColor: context.customColors.text1,
+        indicatorColor: Colors.black,
         timeStart: TimeOfDay.fromDateTime(event.dateTimeStart),
         timeEnd: TimeOfDay.fromDateTime(event.dateTimeEnd),
-        color: context.customColors.accent,
+        color: context.colorScheme.primary,
         timePanelTopPadding: 5,
-        dividerColor: context.customColors.background,
-        timeStartTextStyle: context.textTheme.bodyLarge!.copyWith(
-            color: context.customColors.background
-        ),
-        timeEndTextStyle: context.textTheme.bodySmall!.copyWith(
-            color: context.customColors.card
-        ),
+        dividerColor: Colors.white,
+        timeStartTextStyle: context.textTheme.bodyLarge?.copyWith(color: context.colorScheme.onPrimary),
+        timeEndTextStyle: context.textTheme.bodySmall?.copyWith(color: context.colorScheme.onPrimary),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(event.title, style: context.textTheme.bodyLarge!.copyWith(
-                color: context.customColors.background
-            )),
+            Text(event.title, style: context.textTheme.bodyLarge?.copyWith(color: context.colorScheme.onPrimary)),
             const SizedBox(height: 5),
-            Text(event.location ?? "", style: context.textTheme.bodyLarge?.copyWith(
-                fontWeight: FontWeight.w400,
-                color: context.customColors.card
-            ))
+            Text(event.location ?? "", style: context.textTheme.bodyLarge?.copyWith(color: context.colorScheme.onPrimary))
           ],
         ),
       ),

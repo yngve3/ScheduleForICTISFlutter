@@ -35,9 +35,7 @@ class NotesListItem extends StatelessWidget {
                   Text(note.title, style: context.textTheme.titleLarge),
                   SizedBox.square(
                     dimension: 25,
-                    child: note.hasFiles ? Assets.icons.icAttach.image(
-                        color: context.customColors.accent
-                    ) : null,
+                    child: note.hasFiles ? Assets.icons.icAttach.image() : null,
                   )
                 ],
               ),
@@ -47,7 +45,7 @@ class NotesListItem extends StatelessWidget {
                   DateText(date: note.date),
                   Text(
                     "${note.date.hour}:${note.date.minute}",
-                    style: context.textTheme.bodyMedium?.copyWith(color: context.customColors.accent),
+                    style: context.textTheme.bodyMedium,
                   )
                 ],
               ) : const SizedBox.shrink()

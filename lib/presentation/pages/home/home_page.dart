@@ -37,12 +37,16 @@ class HomePage extends StatelessWidget {
                     child: Container(
                         padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
                         decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10),
-                            border: Border.all(width: 2, color: context.customColors.card)
+                          borderRadius: BorderRadius.circular(10),
+                          border: Border.all(width: 2, color: context.colorScheme.surface)
                         ),
                         child: Row(
                           children: [
-                            Assets.icons.icSearch.image(height: 25, width: 25),
+                            Assets.icons.icSearch.image(
+                              height: 25,
+                              width: 25,
+                              color: context.colorScheme.onBackground
+                            ),
                             const SizedBox(width: 10),
                             Expanded(
                               child: Text(
@@ -70,7 +74,7 @@ class HomePage extends StatelessWidget {
                     Text("Задания", style: context.textTheme.headlineMedium),
                     TextButton(
                         onPressed: () => context.go(Routes.allNotes.path),
-                        child: Text("ПОКАЗАТЬ ВСЕ", style: context.textTheme.bodyLarge?.copyWith(color: context.customColors.accent))
+                        child: Text("ПОКАЗАТЬ ВСЕ", style: context.textTheme.bodyLarge?.copyWith(color: context.colorScheme.primary))
                     ),
                   ],
                 ),

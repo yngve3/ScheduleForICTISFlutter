@@ -15,7 +15,8 @@ class App extends StatelessWidget {
         Locale('ru', 'RU')
       ],
       debugShowCheckedModeBanner: false,
-      theme: lightTheme(),
+      theme: AppTheme.light,
+      darkTheme: AppTheme.dark,
       routerConfig: AppRouter.router,
     );
   }

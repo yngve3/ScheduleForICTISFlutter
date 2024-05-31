@@ -31,7 +31,7 @@ class TimeProperty extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Property(
-      icon: Assets.icons.icTime.image(color: context.customColors.text1),
+      icon: Assets.icons.icTime.image(color: context.colorScheme.onSurface),
       children: [
         ClickableTile(
             title: Text(

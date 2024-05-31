@@ -44,6 +44,7 @@ class EventAdd extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final iconColor = context.colorScheme.onSurface;
     final cubit = BlocProvider.of<EventAddCubit>(context);
     return BlocBuilder<EventAddCubit, EventAddState>(
       builder: (context, state) => ScrollableScreen(
@@ -64,7 +65,7 @@ class EventAdd extends StatelessWidget {
                 hint: "Описание",
                 value: state.description,
                 isMultiLines: true,
-                icon: Assets.icons.icList.image(color: context.customColors.text1),
+                icon: Assets.icons.icList.image(color: iconColor),
                 onChanged: (value) => cubit.descriptionChanged(value)),
             TimeProperty(
               timeStart: state.timeStart,
@@ -79,7 +80,7 @@ class EventAdd extends StatelessWidget {
             InputProperty(
                 hint: "Локация",
                 value: state.location,
-                icon: Assets.icons.icLocation.image(),
+                icon: Assets.icons.icLocation.image(color: iconColor),
                 onChanged: (value) {
                   cubit.locationChanged(value);
                 }

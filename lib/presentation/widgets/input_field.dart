@@ -54,11 +54,10 @@ class _InputFiledState extends State<InputField> {
     return Container(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(10),
-        color: context.customColors.card
+        color: context.colorScheme.surface
       ),
       padding: const EdgeInsets.symmetric(horizontal: 15),
       child: TextField(
-        cursorColor: context.customColors.text1,
         onSubmitted: (value) => widget.onSubmit?.call(value),
         onChanged: (value) => widget.onChanged?.call(value),
         textInputAction: widget.textInputAction,

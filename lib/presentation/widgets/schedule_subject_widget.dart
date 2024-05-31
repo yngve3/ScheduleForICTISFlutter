@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:schedule_for_ictis_flutter/presentation/extensions/context_ext.dart';
 import 'package:schedule_for_ictis_flutter/utils/constants/callbacks.dart';
 
 import '../../domain/models/schedule_subject/schedule_subject.dart';
@@ -17,11 +18,11 @@ class ScheduleSubjectWidget extends StatelessWidget {
 
   TextStyle? _getTextStyle(BuildContext context) {
     if (!scheduleSubject.isChosen) {
-      return Theme.of(context).textTheme.bodyLarge;
+      return context.textTheme.bodyLarge;
     }
 
-    return Theme.of(context).textTheme.bodyLarge?.copyWith(
-        color: Colors.white
+    return context.textTheme.bodyLarge?.copyWith(
+        color: context.colorScheme.background
     );
   }
 
@@ -29,7 +30,7 @@ class ScheduleSubjectWidget extends StatelessWidget {
     if (!scheduleSubject.isChosen) {
       return null;
     }
-    return Colors.black;
+    return context.colorScheme.onBackground;
   }
 
   @override

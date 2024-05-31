@@ -27,6 +27,7 @@ class NoteInfoPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final iconColor = context.colorScheme.onSurface;
     return BlocProvider(
       create: (context) => NoteInfoCubit()..loadNote(noteID, coupleID),
       child: BlocBuilder<NoteInfoCubit, NoteInfoState>(
@@ -41,14 +42,14 @@ class NoteInfoPage extends StatelessWidget {
                     context.read<NoteInfoCubit>().deleteNote();
                     context.pop();
                   },
-                  icon: Assets.icons.icDelete.image(),
+                  icon: Assets.icons.icDelete.image(color: iconColor),
                 ),
                 IconButton(
                     onPressed: () {
                       context.pop();
                       context.push(Routes.addNote.path({"couple_id": coupleID}), extra: noteID);
                     },
-                    icon: Assets.icons.icEdit.image()
+                    icon: Assets.icons.icEdit.image(color: iconColor)
                 )
               ],
             ),
@@ -67,7 +68,7 @@ class NoteInfoPage extends StatelessWidget {
                   _getWidgetOrEmpty(
                       property: state.description,
                       style: context.textTheme.bodyLarge,
-                      icon: Assets.icons.icList.image()
+                      icon: Assets.icons.icList.image(color: iconColor)
                   ),
                   state.reminders.isNotEmpty ? RemindersProperty(
                     reminders: state.reminders,

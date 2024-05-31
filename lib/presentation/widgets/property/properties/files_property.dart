@@ -5,7 +5,6 @@ import 'package:schedule_for_ictis_flutter/presentation/extensions/context_ext.d
 
 import '../../../../domain/models/note_file/note_file.dart';
 import '../../../../gen/assets.gen.dart';
-import '../../../theme/colors.dart';
 import '../../icon_with_text_button.dart';
 import '../../image_with_two_rows_on_right.dart';
 
@@ -27,6 +26,7 @@ class FilesProperty extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final iconColor = context.colorScheme.onSurface;
     return Card(
       child: Padding(
         padding: const EdgeInsets.only(left: 15, right: 15, bottom: 15),
@@ -35,7 +35,7 @@ class FilesProperty extends StatelessWidget {
           children: [
             Row(
               children: [
-                SizedBox.square(dimension: 25, child: Assets.icons.icAttach.image()),
+                SizedBox.square(dimension: 25, child: Assets.icons.icAttach.image(color: iconColor)),
                 const SizedBox(width: 10),
                 Expanded(
                     child: Text("Вложения", style: context.textTheme.titleLarge)
@@ -55,7 +55,7 @@ class FilesProperty extends StatelessWidget {
                       ],
                     ),
                   ),
-                  icon: Assets.icons.icAlert.image(height: 25, width: 25),
+                  icon: Assets.icons.icAlert.image(height: 25, width: 25, color: iconColor),
                 )
               ],
             ),
@@ -104,10 +104,10 @@ class AddFileButton extends StatelessWidget {
         }
       },
       child: Card(
-        color: context.customColors.accent,
+        color: context.colorScheme.primary,
         child: Padding(
           padding: const EdgeInsets.all(10),
-          child: Assets.icons.icAdd.image(color: context.customColors.background),
+          child: Assets.icons.icAdd.image(color: context.colorScheme.onPrimary),
         ),
       ),
     );
@@ -130,13 +130,13 @@ class FileTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      color: CustomColors.grey2,
+      color: context.colorScheme.secondaryContainer,
       child: InkWell(
         onLongPress: () => _showBottomSheet(context),
         onTap: () => _openFile(context),
         child: Padding(
           padding: const EdgeInsets.all(10),
-          child: _getIcon(),
+          child: _getIcon(context.colorScheme.onSecondaryContainer),
         ),
       ),
     );
@@ -152,7 +152,7 @@ class FileTile extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           ImageWithTwoRowsOnRight(
-              image: _getIcon(),
+              image: _getIcon(context.colorScheme.onSecondaryContainer),
               title: file.name,
               subtitle: _getTypeName()
           ),
@@ -163,7 +163,7 @@ class FileTile extends StatelessWidget {
                 onDelete?.call(file);
                 Navigator.pop(context);
               },
-              icon: Assets.icons.icDelete.image(),
+              icon: Assets.icons.icDelete.image(color: context.colorScheme.onSurface),
               label: "Удалить"
           ) : const SizedBox.shrink(),
           IconWithTextButton(
@@ -171,12 +171,12 @@ class FileTile extends StatelessWidget {
                 _openFile(context);
                 Navigator.pop(context);
               },
-              icon: Assets.icons.icOpen.image(),
+              icon: Assets.icons.icOpen.image(color: context.colorScheme.onSurface),
               label: "Открыть"
           ),
           IconWithTextButton(
               onTap: () {},
-              icon: Assets.icons.icShare.image(),
+              icon: Assets.icons.icShare.image(color: context.colorScheme.onSurface),
               label: "Поделиться"
           ),
         ],
@@ -202,13 +202,13 @@ class FileTile extends StatelessWidget {
     ));
   }
 
-  Widget _getIcon() {
+  Widget _getIcon(Color color) {
     return switch(file.type!) {
-      TypeOfFile.pdf => Assets.icons.icFilePdf.image(),
-      TypeOfFile.doc => Assets.icons.icFileWord.image(),
-      TypeOfFile.img => Assets.icons.icFileImg.image(),
-      TypeOfFile.other => Assets.icons.icFile.image(),
-      TypeOfFile.code => Assets.icons.icFileCode.image()
+      TypeOfFile.pdf => Assets.icons.icFilePdf.image(color: color),
+      TypeOfFile.doc => Assets.icons.icFileWord.image(color: color),
+      TypeOfFile.img => Assets.icons.icFileImg.image(color: color),
+      TypeOfFile.other => Assets.icons.icFile.image(color: color),
+      TypeOfFile.code => Assets.icons.icFileCode.image(color: color)
     };
   }
 

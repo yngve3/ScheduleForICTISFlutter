@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 
-import '../theme_ext/colors_ext.dart';
-
 const String fontNameDefault = 'Roboto';
 
-TextTheme textThemeData(ThemeColors colors) => TextTheme(
+TextTheme textThemeData(ColorScheme colorScheme) => TextTheme(
     //headline
     headlineLarge: const TextStyle(
         fontFamily: fontNameDefault,
@@ -35,12 +33,12 @@ TextTheme textThemeData(ThemeColors colors) => TextTheme(
         fontFamily: fontNameDefault,
         fontWeight: FontWeight.w500,
         fontSize: 14,
-        color: colors.text2
+        color: colorScheme.secondary
     ),
     bodySmall: TextStyle(
         fontFamily: fontNameDefault,
         fontWeight: FontWeight.w500,
         fontSize: 12,
-        color: colors.text2
+        color: colorScheme.secondary
     )
 );

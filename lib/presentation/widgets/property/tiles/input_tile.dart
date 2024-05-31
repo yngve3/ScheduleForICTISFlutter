@@ -35,14 +35,14 @@ class _InputTileState extends State<InputTile> {
     _controller.text = widget.value;
     return TextField(
       controller: _controller,
-      cursorColor: Colors.black,
       onChanged: widget.onChanged,
       minLines: _getMinLines(),
       maxLines: _getMaxLines(),
       textInputAction: TextInputAction.next,
       decoration: InputDecoration(
           labelStyle: Theme.of(context).textTheme.bodyLarge,
-          labelText: widget.hint
+          labelText: widget.hint,
+
       ),
     );
   }

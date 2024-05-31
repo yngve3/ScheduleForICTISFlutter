@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:schedule_for_ictis_flutter/presentation/extensions/context_ext.dart';
 
 class TimeLeftPanel extends StatelessWidget {
   const TimeLeftPanel({
@@ -99,7 +98,7 @@ class _CardWithTimeOnLeftState extends State<CardWithTimeOnLeft> with TickerProv
 
   @override
   Widget build(BuildContext context) {
-    final valueColor = widget.indicatorColor ?? context.customColors.accent;
+    final valueColor = widget.indicatorColor ?? Theme.of(context).primaryColor;
     return Card(
       color: widget.color,
       child: IntrinsicHeight(
@@ -110,7 +109,7 @@ class _CardWithTimeOnLeftState extends State<CardWithTimeOnLeft> with TickerProv
               value: _controller.value,
               borderRadius: BorderRadius.circular(10),
               valueColor: AlwaysStoppedAnimation<Color>(valueColor.withOpacity(0.1)),
-              backgroundColor: widget.color ?? context.customColors.card,
+              backgroundColor: widget.color ?? Theme.of(context).colorScheme.surface,
             ) : const SizedBox.shrink(),
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 10),

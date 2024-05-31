@@ -63,7 +63,6 @@ class RegistrationPage extends StatelessWidget {
                     child: Text(
                       "Зарегистрироваться",
                       style: context.textTheme.bodyLarge
-                          ?.copyWith(color: context.customColors.background),
                     ),
                   ),
                   TextButton(

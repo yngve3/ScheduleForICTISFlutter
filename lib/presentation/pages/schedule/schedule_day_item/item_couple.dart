@@ -5,6 +5,7 @@ import 'package:schedule_for_ictis_flutter/presentation/extensions/context_ext.d
 import '../../../../domain/models/couple/couple_type.dart';
 import '../../../../domain/models/schedule/day_schedule_item.dart';
 import '../../../route/routes.dart';
+import '../../../theme/colors.dart';
 import '../../../widgets/card_with_time_on_left.dart';
 
 class ItemCouple extends StatelessWidget {
@@ -46,9 +47,7 @@ class ItemCouple extends StatelessWidget {
                 const SizedBox(width: 8),
                 Text(
                     couple.type.name,
-                    style: context.textTheme.bodyLarge?.copyWith(
-                        color: context.customColors.text2
-                    )
+                    style: context.textTheme.bodyLarge
                 )
               ],
             ),
@@ -72,18 +71,17 @@ class ItemCouple extends StatelessWidget {
     );
   }
   Color _getDividerColor(BuildContext context) {
-    if (couple.isOnline) return context.customColors.greenIndicator;
-
-    return context.customColors.accent;
+    if (couple.isOnline) return CustomColors.green;
+    return CustomColors.blue;
   }
 
   Color _getCircleColor(BuildContext context) {
     return switch (couple.type) {
-      CoupleType.laboratory => context.customColors.redIndicator,
-      CoupleType.practice => context.customColors.yellowIndicator,
-      CoupleType.lecture => context.customColors.greenIndicator,
-      CoupleType.exam => context.customColors.text1,
-      CoupleType.none => context.customColors.greenIndicator,
+      CoupleType.laboratory => CustomColors.red,
+      CoupleType.practice => CustomColors.yellow,
+      CoupleType.lecture => CustomColors.green,
+      CoupleType.exam => Colors.black,
+      CoupleType.none => CustomColors.green,
     };
   }
 }

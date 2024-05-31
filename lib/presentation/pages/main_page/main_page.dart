@@ -44,6 +44,8 @@ class MainPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final selectedIconColor = context.colorScheme.primary;
+    final unselectedIconColor = context.colorScheme.onBackground;
     return Scaffold(
       body: MultiBlocProvider(
         providers: [
@@ -59,25 +61,21 @@ class MainPage extends StatelessWidget {
       bottomNavigationBar: BottomNavigationBar(
         showSelectedLabels: false,
         showUnselectedLabels: false,
-        selectedItemColor: context.customColors.accent,
-        selectedIconTheme: IconThemeData(
-            color: context.customColors.accent
-        ),
         elevation: 0,
         items: [
           BottomNavigationBarItem(
-              icon: Assets.icons.icHome.image(),
-              activeIcon: Assets.icons.icHome.image(color: context.customColors.accent),
+              icon: Assets.icons.icHome.image(color: unselectedIconColor),
+              activeIcon: Assets.icons.icHome.image(color: selectedIconColor),
               label: "Home"
           ),
           BottomNavigationBarItem(
-            icon: Assets.icons.icSchedule.image(),
-            activeIcon: Assets.icons.icSchedule.image(color: context.customColors.accent),
+            icon: Assets.icons.icSchedule.image(color: unselectedIconColor),
+            activeIcon: Assets.icons.icSchedule.image(color: selectedIconColor),
             label: "Schedule",
           ),
           BottomNavigationBarItem(
-              icon: Assets.icons.icSettings.image(),
-              activeIcon: Assets.icons.icSettings.image(color: context.customColors.accent),
+              icon: Assets.icons.icSettings.image(color: unselectedIconColor),
+              activeIcon: Assets.icons.icSettings.image(color: selectedIconColor),
               label: "Preferences"
           ),
         ],

@@ -1,17 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:schedule_for_ictis_flutter/presentation/theme/theme_ext/colors_ext.dart';
 import 'package:table_calendar/table_calendar.dart';
 
-CalendarStyle calendarStyleData(ThemeColors colors, TextTheme textTheme) => CalendarStyle(
+import '../../colors.dart';
+
+CalendarStyle calendarStyleData(ColorScheme colorScheme, TextTheme textTheme) => CalendarStyle(
   isTodayHighlighted: false,
   tablePadding: const EdgeInsets.symmetric(horizontal: 20),
   defaultTextStyle: textTheme.bodyLarge!,
-  outsideTextStyle: textTheme.bodyLarge!.copyWith(color: colors.disabled),
-  selectedTextStyle: textTheme.bodyLarge!.copyWith(color: colors.background),
-  weekendTextStyle: textTheme.bodyLarge!.copyWith(color: colors.redIndicator),
+  outsideTextStyle: textTheme.bodyLarge!.copyWith(color: colorScheme.tertiary),
+  selectedTextStyle: textTheme.bodyLarge!.copyWith(color: colorScheme.onPrimary),
+  weekendTextStyle: textTheme.bodyLarge!.copyWith(color: CustomColors.red),
   selectedDecoration: BoxDecoration(
-      color: colors.accent,
-      shape: BoxShape.circle
+    shape: BoxShape.circle,
+    color: colorScheme.primary
   ),
 );
 

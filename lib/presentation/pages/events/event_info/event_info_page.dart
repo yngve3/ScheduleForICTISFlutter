@@ -24,6 +24,7 @@ class EventInfoPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final iconColor = context.colorScheme.onSurface;
     return BlocProvider(
       create: (context) => EventInfoCubit()..loadEvent(eventID),
       child: BlocBuilder<EventInfoCubit, EventInfoState>(
@@ -39,14 +40,14 @@ class EventInfoPage extends StatelessWidget {
                       cubit.deleteEvent();
                       context.pop();
                     },
-                    icon: Assets.icons.icDelete.image(),
+                    icon: Assets.icons.icDelete.image(color: context.colorScheme.onBackground),
                   ),
                   IconButton(
                       onPressed: () {
                         context.pop();
                         context.push(Routes.addEvent.path, extra: {"eventID": eventID});
                       },
-                      icon: Assets.icons.icEdit.image()
+                      icon: Assets.icons.icEdit.image(color: context.colorScheme.onBackground)
                   )
                 ],
               ),
@@ -63,7 +64,7 @@ class EventInfoPage extends StatelessWidget {
                       ],
                     ),
                     TextProperty(
-                      icon: Assets.icons.icTime.image(),
+                      icon: Assets.icons.icTime.image(color: iconColor),
                       children: [
                         TextTile(
                           text: "${state.timeStart?.format(context)}-${state.timeEnd?.format(context)}",
@@ -72,7 +73,7 @@ class EventInfoPage extends StatelessWidget {
                       ],
                     ),
                     TextProperty(
-                      icon: Assets.icons.icEvent.image(),
+                      icon: Assets.icons.icEvent.image(color: iconColor),
                       children: [
                         Padding(
                           padding: const EdgeInsets.symmetric(vertical: 10),
@@ -85,12 +86,12 @@ class EventInfoPage extends StatelessWidget {
                     ),
                     _getWidgetOrEmpty(
                       property: state.description,
-                      icon: Assets.icons.icList.image(),
+                      icon: Assets.icons.icList.image(color: iconColor),
                       context: context
                     ),
                     _getWidgetOrEmpty(
                       property: state.location,
-                      icon: Assets.icons.icLocation.image(),
+                      icon: Assets.icons.icLocation.image(color: iconColor),
                       context: context
                     ),
                     state.reminders?.isNotEmpty ?? [].isNotEmpty ? RemindersProperty(

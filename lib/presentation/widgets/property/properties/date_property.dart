@@ -30,7 +30,7 @@ class DateProperty extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Property(
-      icon: Assets.icons.icEvent.image(color: context.customColors.text1),
+      icon: Assets.icons.icEvent.image(color: context.colorScheme.onSurface),
       children: [
         ClickableTile(
           title: Text(

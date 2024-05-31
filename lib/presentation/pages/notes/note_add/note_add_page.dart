@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:schedule_for_ictis_flutter/presentation/extensions/context_ext.dart';
 import 'package:schedule_for_ictis_flutter/presentation/pages/notes/note_add/cubit/note_add_cubit.dart';
 import 'package:schedule_for_ictis_flutter/presentation/widgets/app_bar.dart';
 import 'package:schedule_for_ictis_flutter/presentation/widgets/discipline_and_date.dart';
@@ -52,7 +53,7 @@ class NoteAddPage extends StatelessWidget {
                     hint: "Описание",
                     onChanged: (value) => cubit.descriptionChanged(value),
                     isMultiLines: true,
-                    icon: Assets.icons.icList.image(),
+                    icon: Assets.icons.icList.image(color: context.colorScheme.onSurface),
                     value: state.description ?? "",
                   ),
                   RemindersProperty(

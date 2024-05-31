@@ -33,7 +33,7 @@ class RemindersProperty extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Property(
-      icon: Assets.icons.icNotification.image(),
+      icon: Assets.icons.icNotification.image(color: context.colorScheme.onSurface),
       children: _getWidgets(context),
     );
   }
@@ -95,7 +95,7 @@ class ReminderTile extends StatelessWidget {
           onPressed: () => onDelete?.call(reminder),
           icon: RotationTransition(
             turns: const AlwaysStoppedAnimation(45/360),
-            child: Assets.icons.icAdd.image(),
+            child: Assets.icons.icAdd.image(color: context.colorScheme.onSurface),
           ),
         ) : const SizedBox.square(dimension: 30)
       ],
@@ -124,7 +124,7 @@ class ReminderTileForChoose extends StatelessWidget {
         padding: const EdgeInsets.symmetric(vertical: 10),
         child: Row(
           children: [
-            Assets.icons.icCircle.image(height: 25, width: 25),
+            Assets.icons.icCircle.image(height: 25, width: 25, color: context.colorScheme.onSurface),
             const SizedBox(width: 10),
             Text(
               "За ${MinutesToString.minutesToString(reminder.minutesBefore)}",
@@ -154,7 +154,7 @@ class AddReminderTile extends StatelessWidget {
         padding: const EdgeInsets.symmetric(vertical: 10),
         child: Text(
             "Добавить уведомление",
-            style: context.textTheme.bodyLarge?.copyWith(color: context.customColors.text2)
+            style: context.textTheme.bodyLarge
         ),
       ),
     );

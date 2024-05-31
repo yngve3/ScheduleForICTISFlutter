@@ -24,6 +24,7 @@ class DateHeader extends StatelessWidget {
       centerTitle: false,
       automaticallyImplyLeading: false,
       titleSpacing: 0,
+      backgroundColor: context.colorScheme.background,
       title: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -36,7 +37,7 @@ class DateHeader extends StatelessWidget {
               Text(_getSubtitle(), style: context.textTheme.bodyMedium),
             ],
           ),
-          _getButton()
+          _getButton(context.colorScheme.onBackground)
         ],
       ),
     );
@@ -50,9 +51,9 @@ class DateHeader extends StatelessWidget {
     }
   }
 
-  Widget _getButton() {
+  Widget _getButton(Color? color) {
     return buttonIsVisible ? IconButton(
-      icon: Assets.icons.icEvent.image(),
+      icon: Assets.icons.icEvent.image(color: color),
       onPressed: onButtonToCurrentDateTapped,
     ) : const SizedBox.shrink();
   }

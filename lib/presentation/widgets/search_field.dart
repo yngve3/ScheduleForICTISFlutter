@@ -104,21 +104,20 @@ class SearchCategoryWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return ChoiceChip(
       onSelected: (selected) => categorySelected(category),
-      label: Text(_getCategoryName(category), style: context.textTheme.bodyMedium?.copyWith(color: _getTextColor(context))),
+      label: Text(_getCategoryName(category), style: context.textTheme.bodyMedium?.copyWith(color: isSelected ? context.colorScheme.onPrimary : context.colorScheme.onSurface)),
       selected: isSelected,
-      selectedColor: context.customColors.accent,
-      disabledColor: context.customColors.card,
-      backgroundColor: context.customColors.card,
       showCheckmark: false,
+      color: MaterialStateColor.resolveWith((states) =>
+        states.contains(MaterialState.selected)
+            ? context.colorScheme.primary
+            : context.colorScheme.surface
+      ),
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(100),
       ),
       side: BorderSide.none,
     );
   }
-
-  Color _getTextColor(BuildContext context) =>
-      isSelected ? context.customColors.background : context.customColors.text1;
 
   String _getCategoryName(SearchCategory category) =>
       switch(category) {

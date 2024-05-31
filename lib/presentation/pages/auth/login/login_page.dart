@@ -59,7 +59,6 @@ class LoginPage extends StatelessWidget {
                         child: Text(
                           "Войти",
                           style: context.textTheme.bodyLarge
-                              ?.copyWith(color: context.customColors.background)
                         )
                     ),
                     TextButton(

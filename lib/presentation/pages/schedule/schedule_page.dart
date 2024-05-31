@@ -18,6 +18,7 @@ class SchedulePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final fabIconColor = context.colorScheme.onPrimary;
     return Scaffold(
       body: const Schedule(),
       floatingActionButtonLocation: ExpandableFab.location,
@@ -25,13 +26,13 @@ class SchedulePage extends StatelessWidget {
         distance: 70,
         type: ExpandableFabType.up,
         openButtonBuilder: RotateFloatingActionButtonBuilder(
-          child: Assets.icons.icAdd.image(color: context.customColors.background),
+          child: Assets.icons.icAdd.image(color: fabIconColor),
           fabSize: ExpandableFabSize.regular,
         ),
         closeButtonBuilder: RotateFloatingActionButtonBuilder(
           child: RotationTransition(
               turns: const AlwaysStoppedAnimation(45/360),
-              child: Assets.icons.icAdd.image(color: context.customColors.background)
+              child: Assets.icons.icAdd.image(color: fabIconColor)
           ),
           fabSize: ExpandableFabSize.regular,
         ),
@@ -39,12 +40,12 @@ class SchedulePage extends StatelessWidget {
           FloatingActionButton.small(
             heroTag: null,
             onPressed: () => context.push(Routes.addEvent.path, extra: {"initialDate": BlocProvider.of<ScheduleCubit>(context).state.selectedDay}),
-            child: Assets.icons.icEvent.image(color: context.customColors.background),
+            child: Assets.icons.icEvent.image(color: fabIconColor),
           ),
           FloatingActionButton.small(
             heroTag: null,
             onPressed: () {},
-            child: Assets.icons.icTask.image(color: context.customColors.background),
+            child: Assets.icons.icTask.image(color: fabIconColor),
           ),
         ],
       )

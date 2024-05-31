@@ -15,7 +15,10 @@ class Screen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AnnotatedRegion<SystemUiOverlayStyle>(
-      value: SystemUiOverlayStyle.light.copyWith(statusBarColor: context.customColors.background, systemNavigationBarColor: context.customColors.background),
+      value: SystemUiOverlayStyle.light.copyWith(
+        statusBarColor: context.colorScheme.background,
+        systemNavigationBarColor: context.colorScheme.background,
+      ),
       child: Padding(
           padding: padding ?? const EdgeInsets.only(left: 15, right: 15, bottom: 15),
           child: child

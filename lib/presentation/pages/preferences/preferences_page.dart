@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:schedule_for_ictis_flutter/data/repositories/auth_repository.dart';
 import 'package:schedule_for_ictis_flutter/presentation/extensions/context_ext.dart';
+import 'package:schedule_for_ictis_flutter/presentation/widgets/app_bar.dart';
 
 import '../../route/routes.dart';
 
@@ -11,12 +12,10 @@ class PreferencesPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        centerTitle: true,
-        title: Padding(
-          padding: const EdgeInsets.only(top: 20),
-          child: Text("Настройки", style: context.textTheme.headlineLarge),
-        ),
+      appBar: MyAppBar(
+        appBar: AppBar(),
+        title: "Настройки",
+        showBackArrow: false,
       ),
       body: const Padding(
         padding: EdgeInsets.symmetric(horizontal: 15),

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:schedule_for_ictis_flutter/domain/interactors/schedule_interactor.dart';
@@ -46,41 +47,48 @@ class MainPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final selectedIconColor = context.colorScheme.primary;
     final unselectedIconColor = context.colorScheme.onBackground;
-    return Scaffold(
-      body: MultiBlocProvider(
-        providers: [
-          BlocProvider(
-            create: (context) => ScheduleCubit(ScheduleInteractor())
-          ),
-          BlocProvider(
-            create: (context) => HomePageCubit(),
-          ),
-        ],
-        child: child
+    const iconSize = 30.0;
+    return AnnotatedRegion(
+      value: SystemUiOverlayStyle.light.copyWith(
+        statusBarColor: context.colorScheme.background,
+        systemNavigationBarColor: context.colorScheme.background,
       ),
-      bottomNavigationBar: BottomNavigationBar(
-        showSelectedLabels: false,
-        showUnselectedLabels: false,
-        elevation: 0,
-        items: [
-          BottomNavigationBarItem(
-              icon: Assets.icons.icHome.image(color: unselectedIconColor),
-              activeIcon: Assets.icons.icHome.image(color: selectedIconColor),
-              label: "Home"
-          ),
-          BottomNavigationBarItem(
-            icon: Assets.icons.icSchedule.image(color: unselectedIconColor),
-            activeIcon: Assets.icons.icSchedule.image(color: selectedIconColor),
-            label: "Schedule",
-          ),
-          BottomNavigationBarItem(
-              icon: Assets.icons.icSettings.image(color: unselectedIconColor),
-              activeIcon: Assets.icons.icSettings.image(color: selectedIconColor),
-              label: "Preferences"
-          ),
-        ],
-        currentIndex: _calculateSelectedIndex(context),
-        onTap: (int idx) => _onItemTapped(idx, context),
+      child: Scaffold(
+        body: MultiBlocProvider(
+            providers: [
+              BlocProvider(
+                  create: (context) => ScheduleCubit(ScheduleInteractor())
+              ),
+              BlocProvider(
+                create: (context) => HomePageCubit(),
+              ),
+            ],
+            child: child
+        ),
+        bottomNavigationBar: BottomNavigationBar(
+          showSelectedLabels: false,
+          showUnselectedLabels: false,
+          elevation: 0,
+          items: [
+            BottomNavigationBarItem(
+                icon: Assets.icons.icHome.image(color: unselectedIconColor, height: iconSize, width: iconSize),
+                activeIcon: Assets.icons.icHome.image(color: selectedIconColor, height: iconSize, width: iconSize),
+                label: "Home"
+            ),
+            BottomNavigationBarItem(
+              icon: Assets.icons.icSchedule.image(color: unselectedIconColor, height: iconSize, width: iconSize),
+              activeIcon: Assets.icons.icSchedule.image(color: selectedIconColor, height: iconSize, width: iconSize),
+              label: "Schedule",
+            ),
+            BottomNavigationBarItem(
+                icon: Assets.icons.icSettings.image(color: unselectedIconColor, height: iconSize, width: iconSize),
+                activeIcon: Assets.icons.icSettings.image(color: selectedIconColor, height: iconSize, width: iconSize),
+                label: "Preferences"
+            ),
+          ],
+          currentIndex: _calculateSelectedIndex(context),
+          onTap: (int idx) => _onItemTapped(idx, context),
+        ),
       ),
     );
   }

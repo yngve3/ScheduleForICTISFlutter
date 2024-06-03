@@ -8,6 +8,7 @@ import 'package:schedule_for_ictis_flutter/presentation/widgets/date_header.dart
 import 'package:schedule_for_ictis_flutter/presentation/widgets/screen.dart';
 import 'package:schedule_for_ictis_flutter/utils/minutes_to_string.dart';
 
+import '../../../domain/models/note/note.dart';
 import '../../../domain/models/schedule/day_schedule_item.dart';
 import '../../../gen/assets.gen.dart';
 import '../../route/routes.dart';
@@ -79,13 +80,40 @@ class HomePage extends StatelessWidget {
                   ],
                 ),
                 Column(
-                    children: state.notes.map((note) => NotesListItem(note: note, coupleID: note.coupleID, showDate: true)).toList()
+                  children: _getNotes(state.notes, context),
                 )
               ],
             )
         );
       },
     );
+  }
+
+  List<Widget> _getNotes(List<Note> notes, BuildContext context) {
+    List<Widget> result = [];
+    if (notes.isEmpty) {
+      result.add(
+          Center(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                const SizedBox(height: 50),
+                Text("Нет ни одной актуального задания", style: context.textTheme.bodyLarge),
+                const SizedBox(height: 10),
+                Text("Для создания задания нажмите на любую пару", style: context.textTheme.bodyMedium),
+                const SizedBox(height: 50)
+              ],
+            ),
+          )
+      );
+    }
+    else {
+      result.addAll(
+          notes.map((note) => NotesListItem(note: note, coupleID: note.coupleID, showDate: true)).toList()
+      );
+    }
+
+    return result;
   }
 
   String _getTimeToComingEvent(List<DayScheduleItem> items) {

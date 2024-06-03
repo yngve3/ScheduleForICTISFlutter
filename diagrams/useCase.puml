@@ -1,0 +1,56 @@
+@startuml
+
+:Авторизованный пользователь: as RegUser
+:Неавторизованный пользователь: as UnRegUser
+
+(Синхронизация мероприятий, избранных расписаний и заданий) as Sync
+(Вход) as Login
+(Регистрация) as Registration
+(Просмотр учебного расписания, основного и ВПК) as Schedule
+(Просмотр мероприятий) as Events
+(Добавление мероприятия) as EventsAdd
+(Добавление заданий) as NoteAdd
+(Прикрепление к заданиям файлов) as File
+(Просмотр заданий определенного занятия) as CoupleNotes
+(Просмотр всех заданий) as AllNotes
+(Просмотр ближайших событий) as ComingEvents
+(Просмотр ближайших заданий) as ComingNotes
+(Поиск и просмотр расписания без необходимости переключатся на него) as Search
+(Добавление субъекта расписания в избранное) as FavAdd
+(Просмотр списка избранных расписаний) as FavList
+
+UnRegUser --> Login
+UnRegUser --> Registration
+
+RegUser -> Sync
+RegUser -> Schedule
+RegUser --> Events
+RegUser ---> EventsAdd
+RegUser ----> NoteAdd
+RegUser -----> File
+RegUser ------> CoupleNotes
+RegUser -----> AllNotes
+RegUser ----> ComingEvents
+RegUser ---> ComingNotes
+RegUser --> Search
+RegUser -> FavAdd
+RegUser -> FavList
+
+Schedule <------ UnRegUser
+Events <----- UnRegUser
+EventsAdd <---- UnRegUser
+NoteAdd <--- UnRegUser
+File <-- UnRegUser
+CoupleNotes <- UnRegUser
+AllNotes <- UnRegUser
+ComingEvents <-- UnRegUser
+ComingNotes <--- UnRegUser
+Search <---- UnRegUser
+FavAdd <----- UnRegUser
+FavList <------ UnRegUser
+
+
+
+
+
+@enduml

@@ -1,15 +1,14 @@
 import 'dart:async';
 
 import 'package:collection/collection.dart';
-import 'package:schedule_for_ictis_flutter/data/repositories/user_repository.dart';
-
 import 'package:schedule_for_ictis_flutter/data/repositories/couples_repository.dart';
 import 'package:schedule_for_ictis_flutter/data/repositories/events_repository.dart';
 import 'package:schedule_for_ictis_flutter/data/repositories/favorite_schedules_repository.dart';
+import 'package:schedule_for_ictis_flutter/data/repositories/user_repository.dart';
 import 'package:schedule_for_ictis_flutter/data/repositories/week_number_repository.dart';
-
 import 'package:schedule_for_ictis_flutter/domain/models/schedule/day_schedule/day_schedule.dart';
 import 'package:schedule_for_ictis_flutter/domain/models/week_number/week_number.dart';
+
 import '../../data/models/couple_db.dart';
 import '../../data/models/event_db.dart';
 import '../models/schedule/day_schedule_item.dart';
@@ -109,10 +108,14 @@ class ScheduleInteractor {
               .toList()
       );
 
+      bool isVPK = false;
+
       if (weekday != 7) {
-        List<CoupleDB> couplesDB = state.couplesDB;
+        List<CoupleDB> couplesDB = state.couplesDB.where((coupleDB) => coupleDB.dateTimeEnd.weekday == weekday).toList();
         if (couplesDB.firstWhereOrNull((element) => element.isVPKPlaceHolder) == null) {
           couplesDB = couplesDB.where((element) => element.scheduleSubject.target?.isNotVPK ?? true).toList();
+        } else if (couplesDB.firstWhereOrNull((element) => element.scheduleSubject.target?.isVPK ?? false) == null) {
+          isVPK = true;
         }
         items.addAll(
             couplesDB
@@ -123,7 +126,7 @@ class ScheduleInteractor {
       }
 
       items.sort((a, b) => a.dateTimeStart.compareTo(b.dateTimeStart));
-      daySchedules.add(DaySchedule(items: items));
+      daySchedules.add(DaySchedule(items: items, isVPK: isVPK));
     }
 
     return WeekSchedule(weekNumber: state.weekNumber ?? WeekNumber.empty(), daySchedules: daySchedules);

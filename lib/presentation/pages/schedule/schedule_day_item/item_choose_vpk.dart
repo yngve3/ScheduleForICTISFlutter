@@ -10,7 +10,7 @@ class ItemChooseVPK extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () => context.go(Routes.addFavoriteSchedule.path),
+      onTap: () => context.push(Routes.addFavoriteSchedule.path),
       child: Card(
         child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 30),

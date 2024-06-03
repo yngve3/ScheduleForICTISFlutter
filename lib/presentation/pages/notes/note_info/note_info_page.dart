@@ -42,14 +42,22 @@ class NoteInfoPage extends StatelessWidget {
                     context.read<NoteInfoCubit>().deleteNote();
                     context.pop();
                   },
-                  icon: Assets.icons.icDelete.image(color: iconColor),
+                  icon: Assets.icons.icDelete.image(
+                    color: iconColor,
+                    height: 30,
+                    width: 30
+                  ),
                 ),
                 IconButton(
                     onPressed: () {
                       context.pop();
                       context.push(Routes.addNote.path({"couple_id": coupleID}), extra: noteID);
                     },
-                    icon: Assets.icons.icEdit.image(color: iconColor)
+                    icon: Assets.icons.icEdit.image(
+                        color: iconColor,
+                        height: 30,
+                        width: 30
+                    ),
                 )
               ],
             ),

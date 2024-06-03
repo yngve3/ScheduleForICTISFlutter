@@ -1,0 +1,194 @@
+@startuml
+
+class WeekNumber {
+  +id: int
+  +calendarWeekNumber: int
+  +studyWeekNumber: int?
+  +weekStartDate: DateTime
+  +plus(weekCount: int): WeekNumber
+}
+
+abstract class DayScheduleItem {
+  +dateTimeStart: DateTime
+  +dateTimeEnd: DateTime
+  +isNow(): bool
+  +percent: double
+  +duration: Duration
+}
+
+class Couple {
+  +audiences: String
+  +type: CoupleType
+  +discipline: String
+  +lecturers: String
+  +id: String
+}
+
+class Event {
+  +title: String
+  +description: String
+  +location: String
+  +id: int
+  +reminders: List<Reminder>
+}
+
+class DaySchedule {
+  +items: List<DayScheduleItem>
+  +isVPK: bool
+  +isVUC: bool
+}
+
+class WeekSchedule {
+  +weekNumber: WeekNumber
+  +daySchedules: List<DaySchedule>
+}
+
+class ScheduleInteractor {
+  -couplesRepository: CouplesRepository
+  -favoriteSchedulesRepository: FavoriteSchedulesRepository
+  -eventsRepository: EventsRepository
+  -weekNumberRepository: WeekNumberRepository
+  -userRepository: UserRepository
+  -controller: StreamController<WeekSchedule>
+  -subscriptions: List<StreamSubscription>
+  -state: ScheduleInteractorState
+  +weekSchedule: Stream<WeekSchedule>
+  +changeWeek(weekNumber: WeekNumber): void
+  +dispose(): void
+  +createWeekSchedule(state: ScheduleInteractorState): WeekSchedule
+}
+
+class ScheduleInteractorState {
+  +eventsDB: List<EventDB>
+  +couplesDB: List<CoupleDB>
+  +favoriteSchedules: List<ScheduleSubject>
+  +weekNumber: WeekNumber
+  -controller: StreamController<ScheduleInteractorState>
+  +state: Stream<ScheduleInteractorState>
+  +setEventsDB(eventsDB: List<EventDB>): void
+  +setCouplesDB(couplesDB: List<CoupleDB>): void
+  +setFavoriteSchedules(favoriteSchedules: List<ScheduleSubject>): void
+  +setWeekNumber(weekNumber: WeekNumber): void
+}
+
+class CouplesRepository {
+  -couplesBox: Box<CoupleDB>
+  -couplesController: StreamController<List<CoupleDB>>
+  +couples: Stream<List<CoupleDB>>
+  +getCouplesFromNet(scheduleSubject: ScheduleSubject, weekNumber: WeekNumber?): Future<List<CoupleDB>>
+  +loadCouplesFromNetToDB(scheduleSubject: ScheduleSubject, weekNumber: WeekNumber?): Future<void>
+  +getCoupleByID(id: String): CoupleDB?
+  +loadCouples(weekNumber: WeekNumber, scheduleSubjects: List<ScheduleSubject>): void
+  +loadCouplesFromDB(weekNumber: WeekNumber, scheduleSubjects: List<ScheduleSubject>): void
+  +getCouplesAfter(dateTime: DateTime, scheduleSubjects: List<ScheduleSubject>): void
+  +dispose(): void
+}
+
+entity ScheduleSubject {
+  +dbId: int
+  +id: String
+  +name: String
+  +isChosen: bool
+  +userUID: String
+  +isVPK: bool
+  +isNotVPK(): bool
+  +isGroup(): bool
+  +isAudience(): bool
+  +isLector(): bool
+}
+
+entity CoupleDB {
+  +dbID: int
+  +id: String
+  +audiences: String
+  +discipline: String
+  +lecturers: String
+  +dateTimeStart: DateTime
+  +dateTimeEnd: DateTime
+  +type: CoupleType?
+  +isOnline(): bool
+  +isVUC(): bool
+  +isNotVPKPlaceHolder(): bool
+  +isVPKPlaceHolder(): bool
+  +isEmpty(): bool
+  +isNotEmpty(): bool
+}
+
+class EventsRepository {
+  -eventsBox: Box<EventDB>
+  -ref: DatabaseReference
+  -eventsController: StreamController<List<EventDB>>
+  +events: Stream<List<EventDB>>
+  +loadEvents(): Future<void>
+  +getEventsByWeekNum(weekNumber: WeekNumber, userUID: String): void
+  +getEventsAfter(dateTime: DateTime, userUID: String): void
+  +getEventById(id: int): EventDB
+  +addEvent(event: EventDB): void
+  +deleteEvent(id: int): void
+  +dispose(): void
+}
+
+class EventDB {
+  +id: int
+  +title: String
+  +description: String
+  +dateTimeStart: DateTime
+  +dateTimeEnd: DateTime
+  +location: String
+  +userUID: String
+}
+
+class FavoriteSchedulesRepository {
+  -favoriteSchedulesBox: Box<ScheduleSubject>
+  -handleRequestError(): Future<List<ScheduleSubject>>
+  -handleEmptySearch(): Future<List<ScheduleSubject>>
+  -handleOneResultSearch(json: Map<String, dynamic>): Future<List<ScheduleSubject>>
+  -handleManyResultsSearch(json: Map<String, dynamic>): Future<List<ScheduleSubject>>
+  -ref: DatabaseReference
+  -userRepository: UserRepository
+  -eventsController: StreamController<List<EventDB>>
+  +events: Stream<List<EventDB>>
+  +loadEvents(): Future<void>
+  +getEventsByWeekNum(weekNumber: WeekNumber, userUID: String?): void
+  +getEventsAfter(dateTime: DateTime, userUID: String?): void
+  +getEventById(id: int): EventDB?
+  +addEvent(event: EventDB): void
+  +deleteEvent(id: int): void
+  +dispose(): void
+}
+
+class WeekNumberRepository {
+  -weekNumberBox: Box<WeekNumber>
+  +add(weekNumber: WeekNumber): int
+  +getCurrentWeekNumber(): WeekNumber?
+  +getAll(): List<WeekNumber>
+}
+
+class UserRepository {
+  +isLogin: bool
+  +uid: String?
+}
+
+ScheduleInteractor -> ScheduleInteractorState
+ScheduleInteractor -> WeekSchedule
+
+WeekSchedule *-> DaySchedule
+WeekSchedule -> WeekNumber
+
+DaySchedule *-> DayScheduleItem
+
+DayScheduleItem <|-- Couple
+DayScheduleItem <|-- Event
+
+CouplesRepository -> CoupleDB
+CouplesRepository -> ScheduleSubject
+CouplesRepository -> WeekNumber
+
+EventsRepository -> EventDB
+EventsRepository -> WeekNumber
+EventsRepository -> UserRepository
+
+FavoriteSchedulesRepository -> ScheduleSubject
+FavoriteSchedulesRepository -> UserRepository
+
+@enduml

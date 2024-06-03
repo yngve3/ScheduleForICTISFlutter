@@ -23,6 +23,8 @@ class DateHeader extends StatelessWidget {
     return AppBar(
       centerTitle: false,
       automaticallyImplyLeading: false,
+      elevation: 0,
+      scrolledUnderElevation: 0,
       titleSpacing: 0,
       backgroundColor: context.colorScheme.background,
       title: Row(
@@ -53,7 +55,7 @@ class DateHeader extends StatelessWidget {
 
   Widget _getButton(Color? color) {
     return buttonIsVisible ? IconButton(
-      icon: Assets.icons.icEvent.image(color: color),
+      icon: Assets.icons.icEvent.image(color: color, height: 30, width: 30),
       onPressed: onButtonToCurrentDateTapped,
     ) : const SizedBox.shrink();
   }

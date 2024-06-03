@@ -1,0 +1,93 @@
+@startuml
+
+class WeekNumber {
+  +id: int
+  +calendarWeekNumber: int
+  +studyWeekNumber: int?
+  +weekStartDate: DateTime
+  +plus(weekCount: int): WeekNumber
+}
+
+class Reminder {
+  +id: int
+  +minutesBefore: int
+}
+
+class Note {
+  +id: int
+  +title: String
+  +description: String
+  +date: DateTime
+  +userUID: String
+  +hasFiles(): bool
+  +isPast(): bool
+  +isActual(): bool
+}
+
+class NoteFile {
+  +id: int
+  +path: String
+  +identifier: String
+  +type: TypeOfFile
+  +name: String
+}
+
+enum TypeOfFile {
+  other
+  doc
+  pdf
+  img
+  code
+}
+
+abstract class DayScheduleItem {
+  +dateTimeStart: DateTime
+  +dateTimeEnd: DateTime
+  +isNow(): bool
+  +percent: double
+  +duration: Duration
+}
+
+class Couple {
+  +audiences: String
+  +type: CoupleType
+  +discipline: String
+  +lecturers: String
+  +id: String
+}
+
+class Event {
+  +title: String
+  +description: String
+  +location: String
+  +id: int
+  +reminders: List<Reminder>
+}
+
+class DaySchedule {
+  +items: List<DayScheduleItem>
+  +isVPK: bool
+  +isVUC: bool
+}
+
+class WeekSchedule {
+  +weekNumber: WeekNumber
+  +daySchedules: List<DaySchedule>
+}
+
+WeekSchedule *--> DaySchedule
+WeekSchedule --> WeekNumber
+
+DaySchedule *--> DayScheduleItem
+
+DayScheduleItem <|-- Couple
+DayScheduleItem <|-- Event
+
+Note *--> NoteFile
+Note *--> Reminder
+Note *--> TypeOfFile
+
+Event *--> Reminder
+Couple *--> Note
+
+@enduml

@@ -69,6 +69,10 @@ class $AssetsIconsGen {
   AssetGenImage get icLocation =>
       const AssetGenImage('assets/icons/ic_location.png');
 
+  /// File path: assets/icons/ic_logout.png
+  AssetGenImage get icLogout =>
+      const AssetGenImage('assets/icons/ic_logout.png');
+
   /// File path: assets/icons/ic_notification.png
   AssetGenImage get icNotification =>
       const AssetGenImage('assets/icons/ic_notification.png');
@@ -115,6 +119,7 @@ class $AssetsIconsGen {
         icHome,
         icList,
         icLocation,
+        icLogout,
         icNotification,
         icOpen,
         icSchedule,
@@ -126,16 +131,39 @@ class $AssetsIconsGen {
       ];
 }
 
+class $AssetsThemeImagesGen {
+  const $AssetsThemeImagesGen();
+
+  /// File path: assets/theme_images/theme_mode_dark.jpg
+  AssetGenImage get themeModeDark =>
+      const AssetGenImage('assets/theme_images/theme_mode_dark.jpg');
+
+  /// File path: assets/theme_images/theme_mode_light.jpg
+  AssetGenImage get themeModeLight =>
+      const AssetGenImage('assets/theme_images/theme_mode_light.jpg');
+
+  /// File path: assets/theme_images/theme_mode_system.png
+  AssetGenImage get themeModeSystem =>
+      const AssetGenImage('assets/theme_images/theme_mode_system.png');
+
+  /// List of all assets
+  List<AssetGenImage> get values =>
+      [themeModeDark, themeModeLight, themeModeSystem];
+}
+
 class Assets {
   Assets._();
 
   static const $AssetsIconsGen icons = $AssetsIconsGen();
+  static const $AssetsThemeImagesGen themeImages = $AssetsThemeImagesGen();
 }
 
 class AssetGenImage {
-  const AssetGenImage(this._assetName);
+  const AssetGenImage(this._assetName, {this.size = null});
 
   final String _assetName;
+
+  final Size? size;
 
   Image image({
     Key? key,
@@ -145,8 +173,8 @@ class AssetGenImage {
     String? semanticLabel,
     bool excludeFromSemantics = false,
     double? scale,
-    double? width = 30,
-    double? height = 30,
+    double? width,
+    double? height,
     Color? color,
     Animation<double>? opacity,
     BlendMode? colorBlendMode,

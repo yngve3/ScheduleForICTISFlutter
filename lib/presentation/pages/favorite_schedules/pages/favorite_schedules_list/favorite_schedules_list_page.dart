@@ -36,7 +36,11 @@ class FavoriteSchedulesListPage extends StatelessWidget {
                       onPressed: () {
                         context.push(Routes.addFavoriteSchedule.path);
                       },
-                      icon: Assets.icons.icAdd.image(color: context.colorScheme.onBackground),
+                      icon: Assets.icons.icAdd.image(
+                        color: context.colorScheme.onBackground,
+                        height: 30,
+                        width: 30
+                      ),
                     )
                   ],
                 ),

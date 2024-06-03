@@ -19,7 +19,6 @@ import '../pages/favorite_schedules/pages/favorite_schedules_list/favorite_sched
 import '../pages/main_page/main_page.dart';
 import '../pages/notes/couple_notes_list/couple_notes_list.dart';
 import '../pages/preferences/preferences_page.dart';
-
 import '../pages/schedule/schedule_page.dart';
 
 abstract class AppRouter {

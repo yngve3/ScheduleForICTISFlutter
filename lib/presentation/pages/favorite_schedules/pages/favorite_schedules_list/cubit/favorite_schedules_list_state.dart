@@ -13,10 +13,8 @@ class FavoriteSchedulesListState with _$FavoriteSchedulesListState {
     @Default(false) isButtonSaveEnabled
   }) = _FavoriteSchedulesListState;
 
-  byScheduleSubject(List<ScheduleSubject> subjects) {
-    if (subjects.isEmpty) return FavoriteSchedulesListState();
-
-    if (subjects[0].isVPK) {
+  byScheduleSubject(List<ScheduleSubject> subjects, ScheduleSubject scheduleSubject) {
+    if (scheduleSubject.isVPK) {
       return copyWith(favoriteVPKs: subjects);
     } else {
       return copyWith(favoriteSchedules: subjects);

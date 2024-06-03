@@ -1,4 +1,5 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
+
 import '../../../../../data/models/couple_db.dart';
 import '../../../../../domain/models/note_file/note_file.dart';
 import '../../../../../domain/models/reminder/reminder.dart';

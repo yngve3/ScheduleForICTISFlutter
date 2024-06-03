@@ -1,0 +1,94 @@
+@startuml
+
+entity ScheduleSubject {
+  +dbId: int
+  +id: String
+  +name: String
+  +isChosen: bool
+  +userUID: String
+  +isVPK: bool
+  +isNotVPK(): bool
+  +isGroup(): bool
+  +isAudience(): bool
+  +isLector(): bool
+}
+
+entity CoupleDB {
+  +dbID: int
+  +id: String
+  +audiences: String
+  +discipline: String
+  +lecturers: String
+  +dateTimeStart: DateTime
+  +dateTimeEnd: DateTime
+  +type: CoupleType?
+  +isOnline(): bool
+  +isVUC(): bool
+  +isNotVPKPlaceHolder(): bool
+  +isVPKPlaceHolder(): bool
+  +isEmpty(): bool
+  +isNotEmpty(): bool
+}
+
+entity EventDB {
+  +id: int
+  +title: String
+  +description: String
+  +dateTimeStart: DateTime
+  +dateTimeEnd: DateTime
+  +location: String
+  +userUID: String
+}
+
+entity WeekNumber {
+  +id: int
+  +calendarWeekNumber: int
+  +studyWeekNumber: int?
+  +weekStartDate: DateTime
+  +plus(weekCount: int): WeekNumber
+}
+
+entity Reminder {
+  +id: int
+  +minutesBefore: int
+}
+
+entity Note {
+  +id: int
+  +title: String
+  +description: String
+  +date: DateTime
+  +userUID: String
+  +hasFiles(): bool
+  +isPast(): bool
+  +isActual(): bool
+}
+
+entity NoteFile {
+  +id: int
+  +path: String
+  +identifier: String
+  +type: TypeOfFile
+  +name: String
+}
+
+enum TypeOfFile {
+  other
+  doc
+  pdf
+  img
+  code
+}
+
+CoupleDB "*" -- "1" ScheduleSubject
+CoupleDB "*" -- "1" WeekNumber
+CoupleDB "1" -- "*" Note
+
+EventDB *-> Reminder
+EventDB "*" -- "1" WeekNumber
+
+Note *-> NoteFile
+Note *-> Reminder
+Note *-> TypeOfFile
+
+@enduml

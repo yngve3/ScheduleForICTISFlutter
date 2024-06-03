@@ -17,4 +17,5 @@ Future<void> main() async {
   );
   final themeMode = await PreferencesHelper.themeMode;
   runApp(App(themeMode: themeMode));
+
 }

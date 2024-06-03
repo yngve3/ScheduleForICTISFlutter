@@ -3,8 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:schedule_for_ictis_flutter/data/repositories/auth_repository.dart';
 import 'package:schedule_for_ictis_flutter/presentation/extensions/context_ext.dart';
-import 'package:schedule_for_ictis_flutter/presentation/extensions/theme_mode.dart';
 import 'package:schedule_for_ictis_flutter/presentation/widgets/app_bar.dart';
+import 'package:schedule_for_ictis_flutter/presentation/widgets/image_with_two_rows_on_right.dart';
 import 'package:schedule_for_ictis_flutter/utils/constants/callbacks.dart';
 
 import '../../../gen/assets.gen.dart';
@@ -21,6 +21,19 @@ class PreferencesPage extends StatelessWidget {
         appBar: AppBar(),
         title: "Настройки",
         showBackArrow: false,
+        actions: [
+          IconButton(
+            onPressed: () async {
+              await AuthRepository().logOut();
+              context.go(Routes.login.path);
+            },
+            icon: Assets.icons.icLogout.image(
+              color: context.colorScheme.onBackground,
+              height: 30,
+              width: 30
+            )
+          )
+        ],
       ),
       body: const Padding(
         padding: EdgeInsets.symmetric(horizontal: 15),
@@ -39,27 +52,21 @@ class PreferencesList extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         const PreferenceTitle(title: "Цветовая схема"),
+        const SizedBox(height: 10),
         PreferenceThemeMode(
           onThemeModeChange: (mode) => context.read<AppCubit>().changeThemeMode(mode),
         ),
         const PreferenceTitle(title: "Расписание"),
         PreferenceItem(
-          title: "Избранные расписания",
-          subtitle: "Настройка быстрого доступа к расписаниям",
-          onItemTapped: () => context.push(Routes.favoriteSchedules.path)
-        ),
-        PreferenceItem(
-          title: "Выход",
-          subtitle: "",
-          onItemTapped: () async {
-            await AuthRepository().logOut();
-            context.go(Routes.login.path);
-          }
+            title: "Избранные расписания",
+            subtitle: "Настройка быстрого доступа к расписаниям",
+            onItemTapped: () => context.push(Routes.favoriteSchedules.path)
         ),
       ],
     );
   }
 }
+
 
 class PreferenceThemeMode extends StatefulWidget {
   const PreferenceThemeMode({
@@ -126,28 +133,34 @@ class PreferenceThemeModeTile extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () => onChanged(themeMode),
-      child: Container(
-        decoration: groupValue == themeMode.index ? BoxDecoration(
-            borderRadius: BorderRadius.circular(10),
-            border: Border.all(color: context.colorScheme.primary, width: 2)
-        ) : null,
-        padding: EdgeInsets.zero,
-        margin: EdgeInsets.zero,
-        child: Stack(
-          alignment: AlignmentDirectional.center,
-          children: [
-            _getImage(themeMode),
-            Container(
-              padding: EdgeInsets.all(5),
-              child: Text(_getThemeModeName(themeMode)),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(5),
-                color: context.colorScheme.surface,
-              ),
+      child: Column(
+        children: [
+          Container(
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(10),
+              border: Border.all(
+                width: 2,
+                color: groupValue == themeMode.index
+                    ? context.colorScheme.primary
+                    : Colors.transparent
+              )
+            ),
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(8),
+              child: _getImage(themeMode),
+            ),
+          ),
+          const SizedBox(height: 5),
+          Text(
+            _getThemeModeName(themeMode),
+            style: context.textTheme.bodyMedium?.copyWith(
+              color: groupValue == themeMode.index
+                  ? context.colorScheme.primary
+                  : null
             )
-          ],
-        ),
-      ),
+          ),
+        ],
+      )
     );
   }
 
@@ -160,7 +173,12 @@ class PreferenceThemeModeTile extends StatelessWidget {
   }
 
   Widget _getImage(ThemeMode themeMode) {
-    return Assets.icons.icSchedule.image(fit: BoxFit.fitHeight, height: 110, width: 110, color: Colors.white);
+    const size = 110.0;
+    return switch(themeMode) {
+      ThemeMode.dark => Assets.themeImages.themeModeDark.image(height: size, width: size),
+      ThemeMode.light => Assets.themeImages.themeModeLight.image(height: size, width: size),
+      ThemeMode.system => Assets.themeImages.themeModeSystem.image(height: size, width: size)
+    };
   }
 }
 

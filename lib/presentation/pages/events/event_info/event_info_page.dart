@@ -40,14 +40,22 @@ class EventInfoPage extends StatelessWidget {
                       cubit.deleteEvent();
                       context.pop();
                     },
-                    icon: Assets.icons.icDelete.image(color: context.colorScheme.onBackground),
+                    icon: Assets.icons.icDelete.image(
+                      color: context.colorScheme.onBackground,
+                      height: 30,
+                      width: 30
+                    ),
                   ),
                   IconButton(
                       onPressed: () {
                         context.pop();
                         context.push(Routes.addEvent.path, extra: {"eventID": eventID});
                       },
-                      icon: Assets.icons.icEdit.image(color: context.colorScheme.onBackground)
+                      icon: Assets.icons.icEdit.image(
+                        color: context.colorScheme.onBackground,
+                        height: 30,
+                        width: 30
+                      )
                   )
                 ],
               ),

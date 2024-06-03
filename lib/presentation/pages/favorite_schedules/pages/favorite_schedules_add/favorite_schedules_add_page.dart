@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:schedule_for_ictis_flutter/presentation/pages/favorite_schedules/pages/favorite_schedules_add/cubit/favorite_schedules_add_cubit.dart';
 import 'package:schedule_for_ictis_flutter/presentation/widgets/app_bar.dart';
 import 'package:schedule_for_ictis_flutter/presentation/widgets/search_field.dart';
+
 import '../../../../widgets/screen.dart';
 import '../../../search_schedule_screen/cubit/search_schedule_state.dart';
 import 'cubit/favorite_schedules_add_state.dart';

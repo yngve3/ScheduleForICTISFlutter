@@ -1,9 +1,9 @@
 import 'dart:async';
 
+import 'package:collection/collection.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:schedule_for_ictis_flutter/domain/interactors/favorite_schedule_interactor.dart';
 import 'package:schedule_for_ictis_flutter/domain/models/schedule_subject/schedule_subject.dart';
-import 'package:collection/collection.dart';
 
 import 'favorite_schedules_list_state.dart';
 
@@ -37,15 +37,15 @@ class FavoriteSchedulesListCubit extends Cubit<FavoriteSchedulesListState> {
     _unselectSelected(list);
 
     list[list.indexOf(scheduleSubject)] = scheduleSubject.copyWith(isChosen: true);
-    emit(state.byScheduleSubject(list));
+    emit(state.byScheduleSubject(list, scheduleSubject));
   }
 
   void delete(ScheduleSubject scheduleSubject) {
     final list = _getList(scheduleSubject);
     list.remove(scheduleSubject);
     deletionIdsList.add(scheduleSubject.dbId);
-    emit(state.byScheduleSubject(list));
-    emit(state.copyWith(isButtonSaveEnabled: _isListsNotEmpty()));
+    emit(state.byScheduleSubject(list, scheduleSubject));
+    emit(state.copyWith(isButtonSaveEnabled: !_isListsEmpty()));
   }
 
   void saveChanges() {
@@ -64,7 +64,7 @@ class FavoriteSchedulesListCubit extends Cubit<FavoriteSchedulesListState> {
   ScheduleSubject? _findSelectedOrNull(List<ScheduleSubject> list) =>
     list.firstWhereOrNull((element) => element.isChosen);
 
-  bool _isListsNotEmpty() => state.favoriteVPKs.isNotEmpty || state.favoriteVPKs.isNotEmpty;
+  bool _isListsEmpty() => state.favoriteVPKs.isEmpty && state.favoriteSchedules.isEmpty;
 
   @override
   Future<void> close() {

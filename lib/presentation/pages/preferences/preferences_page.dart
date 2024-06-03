@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:schedule_for_ictis_flutter/data/repositories/auth_repository.dart';
 import 'package:schedule_for_ictis_flutter/presentation/extensions/context_ext.dart';
+import 'package:schedule_for_ictis_flutter/presentation/extensions/theme_mode.dart';
 import 'package:schedule_for_ictis_flutter/presentation/widgets/app_bar.dart';
+import 'package:schedule_for_ictis_flutter/utils/constants/callbacks.dart';
 
+import '../../app/cubit/app_cubit.dart';
 import '../../route/routes.dart';
 
 class PreferencesPage extends StatelessWidget {
@@ -33,6 +37,10 @@ class PreferencesList extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
+        const PreferenceTitle(title: "Цветовая схема"),
+        PreferenceThemeMode(
+          onThemeModeChange: (mode) => context.read<AppCubit>().changeThemeMode(mode),
+        ),
         const PreferenceTitle(title: "Расписание"),
         PreferenceItem(
           title: "Избранные расписания",
@@ -46,11 +54,113 @@ class PreferencesList extends StatelessWidget {
             await AuthRepository().logOut();
             context.go(Routes.login.path);
           }
-        )
+        ),
       ],
     );
   }
 }
+
+class PreferenceThemeMode extends StatefulWidget {
+  const PreferenceThemeMode({
+    super.key,
+    required this.onThemeModeChange
+  });
+
+  final ThemeModeCallback onThemeModeChange;
+
+  @override
+  State<PreferenceThemeMode> createState() => _PreferenceThemeModeState();
+}
+
+class _PreferenceThemeModeState extends State<PreferenceThemeMode> {
+  @override
+  Widget build(BuildContext context) {
+    final selectedMode = BlocProvider.of<AppCubit>(context).state.mode;
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        PreferenceThemeModeTile(
+          themeMode: ThemeMode.light,
+          groupValue: selectedMode.index,
+          onChanged: (value) {
+            widget.onThemeModeChange(ThemeModeFromIndexExtention.fromIndex(value));
+            setState(() {});
+          }
+        ),
+        PreferenceThemeModeTile(
+          themeMode: ThemeMode.dark,
+          groupValue: selectedMode.index,
+          onChanged: (value) {
+            widget.onThemeModeChange(ThemeModeFromIndexExtention.fromIndex(value));
+            setState(() {});
+          },
+        ),
+        PreferenceThemeModeTile(
+          themeMode: ThemeMode.system,
+          groupValue: selectedMode.index,
+          onChanged: (value) {
+            widget.onThemeModeChange(ThemeModeFromIndexExtention.fromIndex(value));
+            setState(() {});
+          },
+        ),
+      ],
+    );
+  }
+}
+
+
+class PreferenceThemeModeTile extends StatelessWidget {
+  const PreferenceThemeModeTile({
+    super.key,
+    required this.themeMode,
+    required this.groupValue,
+    required this.onChanged
+  });
+
+  final ThemeMode themeMode;
+  final int groupValue;
+  final IntCallback onChanged;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      decoration: groupValue == themeMode.index ? BoxDecoration(
+        borderRadius: BorderRadius.circular(10),
+        border: Border.all(color: context.colorScheme.primary, width: 2)
+      ) : null,
+      padding: EdgeInsets.zero,
+      margin: EdgeInsets.zero,
+      child: Stack(
+        alignment: AlignmentDirectional.center,
+        children: [
+          _getImage(themeMode),
+          Container(
+            padding: EdgeInsets.all(5),
+            child: Text(_getThemeModeName(themeMode)),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(5),
+              color: context.colorScheme.surface,
+            ),
+          )
+        ],
+      ),
+    );
+  }
+
+  String _getThemeModeName(ThemeMode themeMode) {
+    return switch(themeMode) {
+      ThemeMode.dark => "Темная",
+      ThemeMode.light => "Светлая",
+      ThemeMode.system => "Авто",
+    };
+  }
+
+  Widget _getImage(ThemeMode themeMode) {
+    return const Icon(Icons.image, size: 110);
+  }
+}
+
+
 
 class PreferenceTitle extends StatelessWidget {
   const PreferenceTitle({super.key, required this.title});
@@ -62,8 +172,8 @@ class PreferenceTitle extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.only(top: 20),
       child: Text(
-          title,
-          style: context.textTheme.headlineMedium
+        title,
+        style: context.textTheme.headlineMedium,
       ),
     );
   }

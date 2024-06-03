@@ -20,8 +20,8 @@ class Screen extends StatelessWidget {
         systemNavigationBarColor: context.colorScheme.background,
       ),
       child: Padding(
-          padding: padding ?? const EdgeInsets.only(left: 15, right: 15, bottom: 15),
-          child: child
+        padding: padding ?? const EdgeInsets.only(left: 15, right: 15, bottom: 15),
+        child: child,
       ),
     );
   }

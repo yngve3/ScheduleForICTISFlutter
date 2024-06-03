@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:schedule_for_ictis_flutter/domain/models/schedule_subject/schedule_subject.dart';
 
 import '../../presentation/pages/search_schedule_screen/cubit/search_schedule_state.dart';
@@ -5,3 +6,5 @@ import '../../presentation/pages/search_schedule_screen/cubit/search_schedule_st
 typedef StringCallback = Function(String value);
 typedef CategoryCallback = Function(SearchCategory category);
 typedef ScheduleSubjectCallback = Function(ScheduleSubject scheduleSubject);
+typedef IntCallback = Function(int? value);
+typedef ThemeModeCallback = Function(ThemeMode themeMode);

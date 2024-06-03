@@ -7,6 +7,7 @@ import 'package:schedule_for_ictis_flutter/presentation/extensions/theme_mode.da
 import 'package:schedule_for_ictis_flutter/presentation/widgets/app_bar.dart';
 import 'package:schedule_for_ictis_flutter/utils/constants/callbacks.dart';
 
+import '../../../gen/assets.gen.dart';
 import '../../app/cubit/app_cubit.dart';
 import '../../route/routes.dart';
 
@@ -83,7 +84,7 @@ class _PreferenceThemeModeState extends State<PreferenceThemeMode> {
           themeMode: ThemeMode.light,
           groupValue: selectedMode.index,
           onChanged: (value) {
-            widget.onThemeModeChange(ThemeModeFromIndexExtention.fromIndex(value));
+            widget.onThemeModeChange(value);
             setState(() {});
           }
         ),
@@ -91,7 +92,7 @@ class _PreferenceThemeModeState extends State<PreferenceThemeMode> {
           themeMode: ThemeMode.dark,
           groupValue: selectedMode.index,
           onChanged: (value) {
-            widget.onThemeModeChange(ThemeModeFromIndexExtention.fromIndex(value));
+            widget.onThemeModeChange(value);
             setState(() {});
           },
         ),
@@ -99,7 +100,7 @@ class _PreferenceThemeModeState extends State<PreferenceThemeMode> {
           themeMode: ThemeMode.system,
           groupValue: selectedMode.index,
           onChanged: (value) {
-            widget.onThemeModeChange(ThemeModeFromIndexExtention.fromIndex(value));
+            widget.onThemeModeChange(value);
             setState(() {});
           },
         ),
@@ -119,30 +120,33 @@ class PreferenceThemeModeTile extends StatelessWidget {
 
   final ThemeMode themeMode;
   final int groupValue;
-  final IntCallback onChanged;
+  final ThemeModeCallback onChanged;
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: groupValue == themeMode.index ? BoxDecoration(
-        borderRadius: BorderRadius.circular(10),
-        border: Border.all(color: context.colorScheme.primary, width: 2)
-      ) : null,
-      padding: EdgeInsets.zero,
-      margin: EdgeInsets.zero,
-      child: Stack(
-        alignment: AlignmentDirectional.center,
-        children: [
-          _getImage(themeMode),
-          Container(
-            padding: EdgeInsets.all(5),
-            child: Text(_getThemeModeName(themeMode)),
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(5),
-              color: context.colorScheme.surface,
-            ),
-          )
-        ],
+    return InkWell(
+      onTap: () => onChanged(themeMode),
+      child: Container(
+        decoration: groupValue == themeMode.index ? BoxDecoration(
+            borderRadius: BorderRadius.circular(10),
+            border: Border.all(color: context.colorScheme.primary, width: 2)
+        ) : null,
+        padding: EdgeInsets.zero,
+        margin: EdgeInsets.zero,
+        child: Stack(
+          alignment: AlignmentDirectional.center,
+          children: [
+            _getImage(themeMode),
+            Container(
+              padding: EdgeInsets.all(5),
+              child: Text(_getThemeModeName(themeMode)),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(5),
+                color: context.colorScheme.surface,
+              ),
+            )
+          ],
+        ),
       ),
     );
   }
@@ -156,11 +160,9 @@ class PreferenceThemeModeTile extends StatelessWidget {
   }
 
   Widget _getImage(ThemeMode themeMode) {
-    return const Icon(Icons.image, size: 110);
+    return Assets.icons.icSchedule.image(fit: BoxFit.fitHeight, height: 110, width: 110, color: Colors.white);
   }
 }
-
-
 
 class PreferenceTitle extends StatelessWidget {
   const PreferenceTitle({super.key, required this.title});
